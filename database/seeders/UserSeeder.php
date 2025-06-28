@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
 
         foreach ($users as $userData) {
             $user = User::create($userData);
-            if ($userData['email'] === 'admin@gmail.com') {
+            if ($userData['email'] === 'aherbertson@hotmail.com') {
                 $user->assignRole('admin');
             } else {
                 $user->assignRole('user');
