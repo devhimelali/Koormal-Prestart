@@ -29,8 +29,8 @@
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/libs/toastr/toastr.min.css') }}">
-    @yield('vendor-style')
-    @yield('page-style')
+    @yield('vendor-css')
+    @yield('page-css')
 </head>
 
 <body>

@@ -1,0 +1,2 @@
+@section('page-css')
+@endsection
