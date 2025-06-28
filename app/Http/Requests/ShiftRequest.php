@@ -22,7 +22,7 @@ class ShiftRequest extends FormRequest
      */
     public function rules(): array
     {
-        $shiftId = $this->route('shift')?->id ?? null;
+        $shiftId = $this->route('shift') ?? null;
 
         return [
             'name' => [

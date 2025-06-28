@@ -48,6 +48,33 @@ class ShiftController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Shift created successfully'], 201);
     }
 
+    public function edit($id)
+    {
+        $shift = Shift::find($id);
+
+        if (!$shift) {
+            return response()->json(['status' => 'error', 'message' => 'Shift not found'], 404);
+        }
+
+        return response()->json(['status' => 'success', 'data' => $shift], 200);
+    }
+
+    public function update(ShiftRequest $request, $id)
+    {
+        $shift = Shift::find($id);
+
+        if (!$shift) {
+            return response()->json(['status' => 'error', 'message' => 'Shift not found'], 404);
+        }
+
+        $shift->update([
+            'name' => $request->name,
+            'linked_shift_id' => $request->linked_shift_id,
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Shift updated successfully'], 200);
+    }
+
 
     public function getShitList()
     {
