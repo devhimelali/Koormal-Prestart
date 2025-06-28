@@ -151,8 +151,8 @@
             <button type="button" class="shadow-none btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="d-flex align-items-center">
-                    <img class="rounded-circle header-profile-user"
-                        src="{{ asset('assets/images/users/32/avatar-1.jpg') }}" alt="Header Avatar">
+                    <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/avatar-icon.png') }}"
+                        alt="Header Avatar">
                     <span class="text-start ms-xl-2">
                         <span
                             class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ auth()->user()->name }}</span>
@@ -168,9 +168,6 @@
                     href="{{ route('profile.show', auth()->user()->roles->pluck('name')->first()) }}"><i
                         class="align-middle mdi mdi-account-circle text-muted fs-lg me-1"></i> <span
                         class="align-middle">Profile</span></a>
-                <a class="dropdown-item" href="pages-profile-settings.html"><i
-                        class="align-middle mdi mdi-cog-outline text-muted fs-lg me-1"></i> <span
-                        class="align-middle">Settings</span></a>
                 <form action="{{ route('logout') }}" method="post" class="dropdown-item" id="logoutForm">
                     @csrf
                     <i class="align-middle mdi mdi-logout text-muted fs-lg me-1"></i>
