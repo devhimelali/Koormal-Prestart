@@ -1,3 +1,3 @@
 @section('vendor-css')
-    @include('components.common.datatable-script')
+    @include('components.common.datatable-css')
 @endsection

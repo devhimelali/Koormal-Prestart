@@ -20,15 +20,15 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">Shift Lists</h4>
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#addOrEditShiftModal">
+                    <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center" id="addShiftBtn">
+                        <i class="ph ph-plus me-1"></i>
                         Add New
                     </button>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped" id="datatable">
-                            <thead class="table-light">
+                        <table class="table table-centered align-middle mb-0" id="dataTable">
+                            <thead class="table-active">
                                 <tr>
                                     <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
                                     <th scope="col">Name</th>

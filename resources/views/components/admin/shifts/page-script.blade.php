@@ -1,7 +1,7 @@
 @section('page-script')
     <script>
         $(document).ready(function() {
-            let table = $('#datatable').DataTable({
+            let table = $('#dataTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('shifts.index') }}",
@@ -29,6 +29,20 @@
                 order: [
                     [1, 'asc']
                 ]
+            });
+
+            $('#addShiftBtn').on('click', function() {
+                $.ajax({
+                    url: "{{ route('shifts.get-shift-List') }}",
+                    type: 'GET',
+                    success: function(response) {
+                        $('.linked-shift-wrapper').html(response);
+                        $('#addOrEditShiftModal').modal('show');
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                    }
+                });
             });
         });
     </script>

@@ -20,12 +20,12 @@ class ShiftController extends Controller
                 })
                 ->addColumn('actions', function ($row) {
                     $btn = '<div class="btn-group">';
-                    $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-secondary btn-sm">
-                                    <i class="bi bi-pencil me-2"></i>
+                    $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-secondary btn-sm d-flex align-items-center">
+                                    <i class="ph ph-pencil me-1"></i>
                                     Edit
                               </a>';
-                    $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">
-                                    <i class="bi bi-trash me-2"></i>
+                    $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm d-flex align-items-center">
+                                    <i class="ph ph-trash me-1"></i>
                                     Delete
                               </a>';
                     $btn .= '</div>';
@@ -35,5 +35,12 @@ class ShiftController extends Controller
                 ->make(true);
         }
         return view('admin.shifts.index');
+    }
+
+
+    public function getShitList()
+    {
+        $shifts = Shift::get();
+        return view('components.admin.shifts.linked-shift-option', compact('shifts'));
     }
 }
