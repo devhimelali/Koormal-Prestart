@@ -64,6 +64,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Paths
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the paths that your application should use for
+    | specific routes. You are free to customize the paths according to
+    | your application's requirements.
+    |
+    */
+
+    'paths' => [
+        'login' => '/',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Home Path
     |--------------------------------------------------------------------------
     |

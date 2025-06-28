@@ -9,7 +9,5 @@ Route::get('/redirect', [RedirectController::class, 'redirect'])->name('redirect
 Route::get('{role}/profile', [ProfileController::class, 'show'])->name('profile.show');
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
-
+    return view('auth.login');
+})->middleware('guest')->name('login');
