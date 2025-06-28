@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Http\Requests\ShiftRequest;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,6 +36,16 @@ class ShiftController extends Controller
                 ->make(true);
         }
         return view('admin.shifts.index');
+    }
+
+    public function store(ShiftRequest $request)
+    {
+        Shift::create([
+            'name' => $request->name,
+            'linked_shift_id' => $request->linked_shift_id,
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Shift created successfully'], 201);
     }
 
 

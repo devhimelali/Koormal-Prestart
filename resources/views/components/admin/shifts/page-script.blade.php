@@ -44,6 +44,36 @@
                     }
                 });
             });
+
+            $('#shiftAddForm').on('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+                let method = $('#method').val();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: method,
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        ajaxBeforeSend('#shiftAddForm', '#shiftSubmitBtn');
+                    },
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            $('#addOrEditShiftModal').modal('hide');
+                            table.ajax.reload();
+                            $('#shiftAddForm')[0].reset();
+                            notify('success', response.message);
+                        }
+                    },
+                    error: handleAjaxErrors,
+                    complete: function() {
+                        ajaxComplete('#shiftSubmitBtn');
+                    }
+                });
+            });
         });
     </script>
 @endsection

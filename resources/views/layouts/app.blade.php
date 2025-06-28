@@ -170,8 +170,17 @@
             show('{{ $toast['type'] ?? 'info' }}', options);
         @endforeach
 
-        function notify(type, msg, position = 'topRight') {
-            toastr[type](msg);
+        function notify(type, msg, position = 'toast-bottom-right') {
+            if (['success', 'info', 'warning', 'error'].includes(type)) {
+                toastr.options = {
+                    closeButton: true,
+                    positionClass: position,
+                    progressBar: true
+                };
+                toastr[type](msg);
+            } else {
+                console.error(`Invalid toastr type: ${type}`);
+            }
         }
 
         function show(type, options) {
@@ -180,6 +189,70 @@
             } else {
                 toastr.show(options);
             }
+        }
+
+        function ajaxBeforeSend(formSelector, buttonSelector) {
+            $(formSelector).find('.is-invalid').removeClass('is-invalid');
+            $(buttonSelector).prop('disabled', true);
+            $(buttonSelector).html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...'
+            );
+        }
+
+        function handleAjaxErrors(xhr, status, error) {
+            switch (xhr.status) {
+                case 400:
+                    notify('error',
+                        'The request could not be processed due to invalid input. Please review your data and try again.'
+                    );
+                    break;
+                case 401:
+                    notify('error', 'Your session has expired or you are not logged in. Please log in to continue.');
+                    break;
+                case 403:
+                    notify('error',
+                        'You do not have permission to perform this action. Please contact your administrator if you believe this is an error.'
+                    );
+                    break;
+                case 404:
+                    notify('error', );
+                    message = 'The requested resource could not be found. It may have been moved or deleted.';
+                    break;
+                case 422:
+                    let errors = xhr.responseJSON.errors;
+                    $.each(errors, function(key, value) {
+                        notify('error', value);
+                        let input = $('[name="' + key + '"]');
+                        input.addClass('is-invalid');
+                        if (input.closest('.auth-pass-inputgroup').length) {
+                            input.closest('.auth-pass-inputgroup').find('.invalid-feedback').text(value);
+                        } else {
+                            input.next('.invalid-feedback').text(value);
+                        }
+                    });
+                    break;
+                case 429:
+                    notify('error', 'Too many requests. Please try again later.');
+                    break;
+                case 500:
+                    notify('error',
+                        'An unexpected server error occurred. Please try again later or contact support if the issue persists.'
+                    );
+                    break;
+                case 0:
+                    notify('error',
+                        'Network connection lost or server is unreachable. Please check your internet connection and try again.'
+                    );
+                    break;
+                default:
+                    notify('error', 'An unknown error occurred. Please try again or contact support.');
+                    break;
+            }
+        }
+
+        function ajaxComplete(buttonSelector, defaultText = 'Save') {
+            $(buttonSelector).prop('disabled', false);
+            $(buttonSelector).html(defaultText);
         }
     </script>
     <!-- App js -->
