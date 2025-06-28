@@ -103,6 +103,37 @@
                 });
             });
 
+            $('body').on('click', '.delete', function() {
+                let id = $(this).data('id');
+                let deleteUrl = "{{ route('shifts.destroy', ':id') }}".replace(':id', id);
+                $('#deleteForm').attr('action', deleteUrl);
+                $('#deleteModal').modal('show');
+            });
+
+            $('#deleteForm').submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var url = form.attr('action');
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: form.serialize(),
+                    beforeSend: function() {
+                        ajaxBeforeSend('#deleteForm', '#deleteBtn');
+                    },
+                    success: function(response) {
+                        $('#deleteModal').modal('hide');
+                        table.ajax.reload();
+                        notify('success', response.message);
+                    },
+                    error: handleAjaxErrors,
+                    complete: function() {
+                        ajaxComplete('#deleteBtn', 'Delete');
+                    }
+                });
+            });
+
             function getAllShifts() {
                 return $.ajax({
                     url: "{{ route('shifts.get-shift-List') }}",

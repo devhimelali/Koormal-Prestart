@@ -75,6 +75,19 @@ class ShiftController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Shift updated successfully'], 200);
     }
 
+    public function destroy($id)
+    {
+        $shift = Shift::find($id);
+
+        if (!$shift) {
+            return response()->json(['status' => 'error', 'message' => 'Shift not found'], 404);
+        }
+
+        $shift->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'Shift deleted successfully'], 200);
+    }
+
 
     public function getShitList()
     {
