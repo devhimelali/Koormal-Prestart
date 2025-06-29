@@ -34,7 +34,8 @@
     </div>
 
     @include('components.admin.shifts.add-or-edit-modal')
-    @include('components.admin.shifts.delete-modal')
+    <x-common.delete-modal id="deleteShiftModal" title="Delete Shift"
+        message="Are you sure you want to delete this shift?" />
 @endsection
 @include('components.admin.shifts.vendor-script')
 @include('components.admin.shifts.vendor-css')

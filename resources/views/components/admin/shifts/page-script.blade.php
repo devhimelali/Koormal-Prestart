@@ -107,7 +107,7 @@
                 let id = $(this).data('id');
                 let deleteUrl = "{{ route('shifts.destroy', ':id') }}".replace(':id', id);
                 $('#deleteForm').attr('action', deleteUrl);
-                $('#deleteModal').modal('show');
+                $('#deleteShiftModal').modal('show');
             });
 
             $('#deleteForm').submit(function(e) {
@@ -123,7 +123,7 @@
                         ajaxBeforeSend('#deleteForm', '#deleteBtn');
                     },
                     success: function(response) {
-                        $('#deleteModal').modal('hide');
+                        $('#deleteShiftModal').modal('hide');
                         table.ajax.reload();
                         notify('success', response.message);
                     },
