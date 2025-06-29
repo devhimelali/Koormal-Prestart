@@ -105,20 +105,12 @@ class ShiftRotationController extends Controller
 
     public function destroy($id)
     {
-        $shiftRotation = ShiftRotation::find($id);
-
-        if (!$shiftRotation) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Shift rotation not found'
-            ], 404);
-        }
-
-        $shiftRotation->delete();
+        $shift = ShiftRotation::findOrFail($id);
+        $shift->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Shift rotation deleted successfully'
+            'message' => 'Shift rotation deleted successfully.'
         ]);
     }
 }

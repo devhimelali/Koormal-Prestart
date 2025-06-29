@@ -222,6 +222,8 @@
                             {
                                 name: 'day_shift_id',
                                 type: 'select',
+                                required: true,
+                                label: 'Day Shift',
                                 options: [{
                                         value: '',
                                         label: 'Select Day Shift'
@@ -229,19 +231,24 @@
                                     @foreach ($dayShifts as $shift)
                                         {
                                             value: '{{ $shift->id }}',
-                                            label: '{{ $shift->name }}',
-                                            data: {
-                                                linked: '{{ $shift->linked_shift_id }}'
-                                            }
-                                        },
+                                            label: '{{ $shift->name }}'
+                                            @if ($shift->linked_shift_id !== null)
+                                                , data: {
+                                                    linked: '{{ $shift->linked_shift_id }}'
+                                                }
+                                            @endif
+                                        }
+                                        @if (!$loop->last)
+                                            ,
+                                        @endif
                                     @endforeach
-                                ],
-                                required: true,
-                                label: 'Day Shift'
+                                ]
                             },
                             {
                                 name: 'night_shift_id',
                                 type: 'select',
+                                required: true,
+                                label: 'Night Shift',
                                 options: [{
                                         value: '',
                                         label: 'Select Night Shift'
@@ -252,9 +259,7 @@
                                             label: '{{ $shift->name }}'
                                         },
                                     @endforeach
-                                ],
-                                required: true,
-                                label: 'Night Shift'
+                                ]
                             }
                         ]
                     });
@@ -270,9 +275,9 @@
 
             $('body').on('click', '.delete', function() {
                 let id = $(this).data('id');
-                let deleteUrl = "{{ route('rotation-settings.destroy', ':id') }}".replace(':id', id);
+                let deleteUrl = "{{ route('shift-rotations.destroy', ':id') }}".replace(':id', id);
                 $('#deleteForm').attr('action', deleteUrl);
-                $('#deleteRotationSettingModal').modal('show');
+                $('#deleteShiftRotationModal').modal('show');
             });
 
             $('#deleteForm').submit(function(e) {
@@ -288,7 +293,7 @@
                         ajaxBeforeSend('#deleteForm', '#deleteBtn');
                     },
                     success: function(response) {
-                        $('#deleteRotationSettingModal').modal('hide');
+                        $('#deleteShiftRotationModal').modal('hide');
                         table.ajax.reload();
                         notify('success', response.message);
                     },
