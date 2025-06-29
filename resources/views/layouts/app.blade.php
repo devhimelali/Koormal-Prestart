@@ -263,6 +263,7 @@
             modalId = 'addOrEditShiftModal',
             formId = 'shiftAddForm'
         }) {
+            // Set modal title and form config
             $(`#${modalId} .modal-title`).text(title);
             $(`#${formId}`).attr('action', action);
             $(`#${formId} #method`).val(method);
@@ -270,6 +271,7 @@
             const container = $(`#${modalId} #formFieldsContainer`);
             container.empty();
 
+            // Loop through fields and generate HTML
             fields.forEach(field => {
                 const {
                     type = 'text',
@@ -279,12 +281,16 @@
                         required = false,
                         placeholder = '',
                         options = [],
-                        checked = false, // for checkbox/radio
-                        multiple = false // for select/file
+                        checked = false,
+                        multiple = false,
+                        data = {}
                 } = field;
 
                 const requiredAttr = required ? 'required' : '';
                 const requiredStar = required ? '<span class="text-danger">*</span>' : '';
+                const dataAttrs = Object.entries(data)
+                    .map(([key, val]) => `data-${key}="${val}"`)
+                    .join(' ');
 
                 let inputHtml = '';
 
@@ -293,20 +299,32 @@
                         inputHtml = `
                     <div class="mb-2">
                         <label for="${name}" class="form-label">${label} ${requiredStar}</label>
-                        <textarea name="${name}" id="${name}" class="form-control" placeholder="${placeholder}" ${requiredAttr}>${value}</textarea>
+                        <textarea name="${name}" id="${name}" class="form-control" placeholder="${placeholder}" ${requiredAttr} ${dataAttrs}>${value}</textarea>
                         <div class="invalid-feedback"></div>
                     </div>
                 `;
                         break;
 
                     case 'select':
-                        let optionHtml = options.map(opt =>
-                            `<option value="${opt.value}" ${opt.value == value ? 'selected' : ''}>${opt.label}</option>`
-                        ).join('');
+                        let optionHtml = options.map(opt => {
+                            const {
+                                value: optValue,
+                                label: optLabel,
+                                data: optData = {}
+                            } = opt;
+
+                            const isSelected = optValue == value ? 'selected' : '';
+                            const optionDataAttrs = Object.entries(optData)
+                                .map(([k, v]) => `data-${k}="${v}"`)
+                                .join(' ');
+
+                            return `<option value="${optValue}" ${isSelected} ${optionDataAttrs}>${optLabel}</option>`;
+                        }).join('');
+
                         inputHtml = `
                     <div class="mb-2">
                         <label for="${name}" class="form-label">${label} ${requiredStar}</label>
-                        <select name="${name}" id="${name}" class="form-select" ${multiple ? 'multiple' : ''} ${requiredAttr}>
+                        <select name="${name}" id="${name}" class="form-select" ${multiple ? 'multiple' : ''} ${requiredAttr} ${dataAttrs}>
                             ${optionHtml}
                         </select>
                         <div class="invalid-feedback"></div>
@@ -318,7 +336,7 @@
                     case 'radio':
                         inputHtml = `
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="${type}" name="${name}" id="${name}" ${checked ? 'checked' : ''} ${requiredAttr}>
+                        <input class="form-check-input" type="${type}" name="${name}" id="${name}" ${checked ? 'checked' : ''} ${requiredAttr} ${dataAttrs}>
                         <label class="form-check-label" for="${name}">
                             ${label} ${requiredStar}
                         </label>
@@ -331,7 +349,10 @@
                         inputHtml = `
                     <div class="mb-2">
                         <label for="${name}" class="form-label">${label} ${requiredStar}</label>
-                        <input type="${type}" name="${name}" id="${name}" class="form-control" value="${value}" placeholder="${placeholder}" ${multiple && type === 'file' ? 'multiple' : ''} ${requiredAttr}>
+                        <input type="${type}" name="${name}" id="${name}" class="form-control"
+                            value="${value}" placeholder="${placeholder}"
+                            ${multiple && type === 'file' ? 'multiple' : ''}
+                            ${requiredAttr} ${dataAttrs}>
                         <div class="invalid-feedback"></div>
                     </div>
                 `;
@@ -341,12 +362,13 @@
                 container.append(inputHtml);
             });
 
-            // ✅ Dynamically inject dynamic-wrapper after the fields
-            if ($('.dynamic-wrapper').length === 0) {
+            // Ensure wrapper exists inside container
+            if ($(`#${modalId} .dynamic-wrapper`).length === 0) {
                 const wrapper = `<div class="mb-2 dynamic-wrapper"></div>`;
-                $(`#${modalId} #formFieldsContainer`).append(wrapper);
+                container.append(wrapper);
             }
 
+            // Show modal
             $(`#${modalId}`).modal('show');
         }
     </script>

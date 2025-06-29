@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\ShiftController;
+use App\Http\Controllers\admin\ShiftRotationController;
 use App\Http\Controllers\admin\RotationSettingController;
 
 Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
@@ -15,5 +16,9 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
 
     // Rotation Settings
     Route::resource('rotation-settings', RotationSettingController::class)
+        ->except(['show', 'create']);
+
+    // Shift Rotations
+    Route::resource('shift-rotations', ShiftRotationController::class)
         ->except(['show', 'create']);
 });
