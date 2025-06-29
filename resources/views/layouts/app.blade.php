@@ -254,6 +254,101 @@
             $(buttonSelector).prop('disabled', false);
             $(buttonSelector).html(defaultText);
         }
+
+        function openDynamicFormModal({
+            title,
+            action,
+            method = 'POST',
+            fields = [],
+            modalId = 'addOrEditShiftModal',
+            formId = 'shiftAddForm'
+        }) {
+            $(`#${modalId} .modal-title`).text(title);
+            $(`#${formId}`).attr('action', action);
+            $(`#${formId} #method`).val(method);
+
+            const container = $(`#${modalId} #formFieldsContainer`);
+            container.empty();
+
+            fields.forEach(field => {
+                const {
+                    type = 'text',
+                        label = '',
+                        name,
+                        value = '',
+                        required = false,
+                        placeholder = '',
+                        options = [],
+                        checked = false, // for checkbox/radio
+                        multiple = false // for select/file
+                } = field;
+
+                const requiredAttr = required ? 'required' : '';
+                const requiredStar = required ? '<span class="text-danger">*</span>' : '';
+
+                let inputHtml = '';
+
+                switch (type) {
+                    case 'textarea':
+                        inputHtml = `
+                    <div class="mb-2">
+                        <label for="${name}" class="form-label">${label} ${requiredStar}</label>
+                        <textarea name="${name}" id="${name}" class="form-control" placeholder="${placeholder}" ${requiredAttr}>${value}</textarea>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                `;
+                        break;
+
+                    case 'select':
+                        let optionHtml = options.map(opt =>
+                            `<option value="${opt.value}" ${opt.value == value ? 'selected' : ''}>${opt.label}</option>`
+                        ).join('');
+                        inputHtml = `
+                    <div class="mb-2">
+                        <label for="${name}" class="form-label">${label} ${requiredStar}</label>
+                        <select name="${name}" id="${name}" class="form-select" ${multiple ? 'multiple' : ''} ${requiredAttr}>
+                            ${optionHtml}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                `;
+                        break;
+
+                    case 'checkbox':
+                    case 'radio':
+                        inputHtml = `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="${type}" name="${name}" id="${name}" ${checked ? 'checked' : ''} ${requiredAttr}>
+                        <label class="form-check-label" for="${name}">
+                            ${label} ${requiredStar}
+                        </label>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                `;
+                        break;
+
+                    default:
+                        inputHtml = `
+                    <div class="mb-2">
+                        <label for="${name}" class="form-label">${label} ${requiredStar}</label>
+                        <input type="${type}" name="${name}" id="${name}" class="form-control" value="${value}" placeholder="${placeholder}" ${multiple && type === 'file' ? 'multiple' : ''} ${requiredAttr}>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                `;
+                        break;
+                }
+
+                container.append(inputHtml);
+            });
+
+            // ✅ Dynamically inject dynamic-wrapper after the fields
+            if ($('.dynamic-wrapper').length === 0) {
+                const wrapper = `<div class="mb-2 dynamic-wrapper"></div>`;
+                $(`#${modalId} #formFieldsContainer`).append(wrapper);
+            }
+
+            $(`#${modalId}`).modal('show');
+        }
     </script>
     <!-- App js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>

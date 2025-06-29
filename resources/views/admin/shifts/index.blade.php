@@ -33,7 +33,9 @@
         </div>
     </div>
 
-    @include('components.admin.shifts.add-or-edit-modal')
+    {{-- @include('components.admin.shifts.add-or-edit-modal') --}}
+    <x-common.dynamic-form-modal id="addOrEditShiftModal" form-id="shiftAddForm" title="Add a new shift"
+        submit-text="Save" />
     <x-common.delete-modal id="deleteShiftModal" title="Delete Shift"
         message="Are you sure you want to delete this shift?" />
 @endsection

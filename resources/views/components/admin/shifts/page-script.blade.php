@@ -32,8 +32,24 @@
             });
 
             $('#addShiftBtn').on('click', function() {
-                getAllShifts();
-                $('#addOrEditShiftModal').modal('show');
+                openDynamicFormModal({
+                    modalId: 'addOrEditShiftModal',
+                    formId: 'shiftAddForm',
+                    title: 'Add a new shift',
+                    action: "{{ route('shifts.store') }}",
+                    method: 'POST',
+                    fields: [{
+                        name: 'name',
+                        type: 'text',
+                        placeholder: 'Enter shift name',
+                        required: true,
+                        label: 'Name'
+                    }]
+                });
+                // Load linked shifts HTML separately and inject
+                getAllShifts().then(response => {
+                    $('.dynamic-wrapper').html(response);
+                });
             });
 
             $('#shiftAddForm').on('submit', function(e) {
@@ -68,6 +84,7 @@
                 });
             });
 
+            // Reset modal when closed
             $('#addOrEditShiftModal').on('hidden.bs.modal', function() {
                 $('#shiftAddForm')[0].reset();
                 $('#method').val('POST');
@@ -77,31 +94,40 @@
             });
 
             $('body').on('click', '.edit', function() {
-                var id = $(this).data('id');
-
+                let id = $(this).data('id');
                 $('#loader').show();
 
-                getAllShifts().then(function() {
-                    var editUrl = "{{ route('shifts.edit', ':id') }}".replace(':id', id);
+                let editUrl = "{{ route('shifts.edit', ':id') }}".replace(':id', id);
 
-                    $.get(editUrl, function(data) {
-                        $('#loader').hide();
+                $.get(editUrl, function(data) {
+                    $('#loader').hide();
 
-                        $('#addOrEditShiftModal .modal-title').text('Edit Shift');
-                        $('#shiftAddForm').attr('action',
-                            "{{ route('shifts.update', ':id') }}".replace(':id', id)
-                        );
-                        $('#method').val('PUT');
-                        $('#name').val(data.data.name);
-                        $('#linked_shift_id').val(data.data.linked_shift_id);
-
-                        $('#addOrEditShiftModal').modal('show');
-                    }).fail(function() {
-                        $('#loader').hide();
-                        notify('error', 'Something went wrong. Please try again.');
+                    openDynamicFormModal({
+                        modalId: 'addOrEditShiftModal',
+                        formId: 'shiftAddForm',
+                        title: 'Edit Shift',
+                        action: "{{ route('shifts.update', ':id') }}".replace(':id', id),
+                        method: 'PUT',
+                        fields: [{
+                            label: 'Name',
+                            name: 'name',
+                            type: 'text',
+                            required: true,
+                            value: data.data.name
+                        }]
                     });
+
+                    // Load linked shifts HTML and set selected value
+                    getAllShifts().then(response => {
+                        $('.dynamic-wrapper').html(response);
+                        $('#linked_shift_id').val(data.data.linked_shift_id);
+                    });
+                }).fail(function() {
+                    $('#loader').hide();
+                    notify('error', 'Something went wrong. Please try again.');
                 });
             });
+
 
             $('body').on('click', '.delete', function() {
                 let id = $(this).data('id');
@@ -139,7 +165,7 @@
                     url: "{{ route('shifts.get-shift-List') }}",
                     type: 'GET',
                     success: function(response) {
-                        $('.linked-shift-wrapper').html(response);
+                        return response;
                     },
                     error: function(xhr) {
                         console.error(xhr);
