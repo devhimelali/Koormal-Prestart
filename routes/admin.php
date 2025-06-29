@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\admin\ShiftController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\ShiftController;
+use App\Http\Controllers\admin\RotationSettingController;
 
 Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -11,4 +12,8 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     // Shifts
     Route::resource('shifts', ShiftController::class)->except(['show', 'create']);
     Route::get('get-shift-list', [ShiftController::class, 'getShitList'])->name('shifts.get-shift-List');
+
+    // Rotation Settings
+    Route::resource('rotation-settings', RotationSettingController::class)
+        ->except(['show', 'create']);
 });

@@ -48,11 +48,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('shifts.index') }}"
-                        class="nav-link menu-link @if (Route::current()->getName() == 'shifts.index') active @endif"
+                    <a href="{{ route('rotation-settings.index') }}"
+                        class="nav-link menu-link @if (Route::current()->getName() == 'rotation-settings.index') active @endif"
                         aria-expanded="false">
                         <i class="ph ph-arrows-clockwise"></i>
-                        <span data-key="t-shifts">Shifts</span>
+                        <span data-key="t-rotation-settings">Rotation Settings</span>
                     </a>
                 </li>
 
