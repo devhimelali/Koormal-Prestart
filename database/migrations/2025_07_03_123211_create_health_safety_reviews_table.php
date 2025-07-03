@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,6 +12,14 @@ return new class extends Migration
     {
         Schema::create('health_safety_reviews', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->enum('shift_type', ['day', 'night']);
+            $table->foreignId('shift_id')->constrained('shifts')->cascadeOnDelete();
+            $table->string('supervisor_name')->nullable();
+            $table->text('question_1')->nullable();
+            $table->string('question_1_audio')->nullable();
+            $table->text('question_2')->nullable();
+            $table->string('question_2_audio')->nullable();
             $table->timestamps();
         });
     }

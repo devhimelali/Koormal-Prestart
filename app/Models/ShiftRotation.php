@@ -28,51 +28,7 @@ class ShiftRotation extends Model
      * @param string $date Format: 'Y-m-d'
      * @return array ['day_shift' => Shift|null, 'night_shift' => Shift|null]
      */
-    // public function getShiftsForDate(string $date): array
-    // {
-    //     $startDate = Carbon::parse($this->start_date);
-    //     $currentDate = Carbon::parse($date);
 
-    //     $daysSinceStart = $startDate->diffInDays($currentDate);
-    //     $cycleLength = 4 * $this->rotation_days;
-
-    //     $dayInCycle = $daysSinceStart % $cycleLength;
-    //     $rotationIndex = intdiv($dayInCycle, $this->rotation_days);
-
-    //     // ✅ Build dynamic rotations based on linked shifts
-    //     $baseShifts = Shift::with('linkedShift')->get();
-
-    //     // Build pairs in the order A/B/C/D based on ID or name
-    //     $rotations = [];
-
-    //     foreach ($baseShifts as $shift) {
-    //         if (
-    //             $shift->linkedShift &&
-    //             // avoid duplicate pairs like A-C and C-A
-    //             !collect($rotations)->contains(
-    //                 fn($r) =>
-    //                 ($r['day'] === $shift->linkedShift->name && $r['night'] === $shift->name)
-    //             )
-    //         ) {
-    //             $rotations[] = [
-    //                 'day' => $shift->name,
-    //                 'night' => $shift->linkedShift->name,
-    //             ];
-    //         }
-    //     }
-
-    //     if (!isset($rotations[$rotationIndex])) {
-    //         return ['day_shift' => null, 'night_shift' => null];
-    //     }
-
-    //     $dayShift = Shift::where('name', $rotations[$rotationIndex]['day'])->first();
-    //     $nightShift = Shift::where('name', $rotations[$rotationIndex]['night'])->first();
-
-    //     return [
-    //         'day_shift' => $dayShift,
-    //         'night_shift' => $nightShift,
-    //     ];
-    // }
     public function getShiftsForDate(string $date)
     {
         $date = Carbon::parse($date);
