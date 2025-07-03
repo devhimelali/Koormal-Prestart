@@ -22,22 +22,25 @@ class ShiftRotationRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('shift_rotation');
-
         return [
-            'week_index' => 'required|integer|min:0|max:3|unique:shift_rotations,week_index,' . $id,
-            'day_shift_id' => 'required|exists:shifts,id|different:night_shift_id',
-            'night_shift_id' => 'required|exists:shifts,id|different:day_shift_id',
+            'start_date' => 'required|date_format:d-m-Y',
+            'rotation_days' => 'required|integer|min:1',
         ];
     }
 
-    public function withValidator($validator)
+    /**
+     * Custom validation messages for the request.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
-        $validator->after(function ($validator) {
-            $dayShift = Shift::find($this->day_shift_id);
-            if ($dayShift && $dayShift->linked_shift_id != $this->night_shift_id) {
-                $validator->errors()->add('night_shift_id', 'Selected night shift does not match the linked shift of the selected day shift.');
-            }
-        });
+        return [
+            'start_date.required' => 'The start date field is required.',
+            'start_date.date_format' => 'The start date field must be a valid date in the format d-m-Y.',
+            'rotation_days.required' => 'The rotation days field is required.',
+            'rotation_days.integer' => 'The rotation days field must be an integer.',
+            'rotation_days.min' => 'The rotation days field must be at least 1.',
+        ];
     }
 }
