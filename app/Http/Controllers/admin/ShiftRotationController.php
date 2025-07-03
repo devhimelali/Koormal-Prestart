@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ShiftRotationRequest;
+use Carbon\Carbon;
 use App\Models\Shift;
-use App\Models\ShiftRotation;
-use App\Services\ShiftRotationService;
 use Illuminate\Http\Request;
+use App\Models\ShiftRotation;
+use App\Http\Controllers\Controller;
+use App\Services\ShiftRotationService;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\ShiftRotationRequest;
 
 class ShiftRotationController extends Controller
 {
@@ -73,7 +74,16 @@ class ShiftRotationController extends Controller
 
         $dailySchedule = $this->shiftRotationService->getDailyShiftSchedule($startDate, $endDate);
         return view('shift_rotation.schedule', compact('dailySchedule'));
-        // return view('shift_rotation.schedule', compact('schedule'));
+    }
+
+    public function applyDataRangeFilter(Request $request)
+    {
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
+
+        $dailySchedule = $this->shiftRotationService->getDailyShiftSchedule($startDate, $endDate);
+
+        return response()->json($dailySchedule);
     }
 
 }

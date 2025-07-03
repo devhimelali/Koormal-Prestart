@@ -55,6 +55,14 @@
                         <span data-key="t-shift-rotations">Shift Rotations</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('shift-rotations.next-month-schedule') }}"
+                        class="nav-link menu-link @if (Route::current()->getName() == 'shift-rotations.next-month-schedule') active @endif"
+                        aria-expanded="false">
+                        <i class="ph ph-arrows-clockwise"></i>
+                        <span data-key="t-roster-list">Roster List</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->

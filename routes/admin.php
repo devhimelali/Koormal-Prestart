@@ -20,6 +20,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('shift-rotations', [ShiftRotationController::class, 'update'])->name('shift-rotations.update');
     Route::get('check-shift', [ShiftRotationController::class, 'checkForm'])->name('rotation.check.form');
     Route::post('check-shift', [ShiftRotationController::class, 'checkResult'])->name('rotation.check.result');
-    Route::get('list', [ShiftRotationController::class, 'showNextMonthSchedule'])->name('shift-rotations.next-month-schedule');
+    Route::get('roster-list', [ShiftRotationController::class, 'showNextMonthSchedule'])->name('shift-rotations.next-month-schedule');
+    Route::get('roster-fetch', [ShiftRotationController::class, 'applyDataRangeFilter'])->name('roster.fetch');
 
 });
