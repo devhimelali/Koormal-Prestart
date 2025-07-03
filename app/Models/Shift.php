@@ -36,4 +36,14 @@ class Shift extends Model
     {
         return $this->hasMany(Shift::class, 'linked_shift_id');
     }
+
+    /**
+     * The prestart entries that belong to this shift.
+     *
+     * @return HasMany
+     */
+    public function prestartEntries(): HasMany
+    {
+        return $this->hasMany(PrestartEntry::class);
+    }
 }
