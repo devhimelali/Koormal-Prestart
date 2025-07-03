@@ -2,36 +2,54 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShiftRotation extends Model
 {
     protected $fillable = [
-        'week_index',
-        'day_shift_id',
-        'night_shift_id',
+        'start_date',
+        'rotation_days'
     ];
 
     /**
-     * Get the day shift of the rotation.
+     * Get the active day and night shifts for a given date.
      *
-     * @return BelongsTo
+     * @param string $date Format: 'Y-m-d'
+     * @return array ['day_shift' => Shift|null, 'night_shift' => Shift|null]
      */
-    public function dayShift(): BelongsTo
+    public function getShiftsForDate(string $date): array
     {
-        return $this->belongsTo(Shift::class, 'day_shift_id');
-    }
+        $startDate = Carbon::parse($this->start_date);
+        $currentDate = Carbon::parse($date);
 
+        $daysSinceStart = $startDate->diffInDays($currentDate);
+        $cycleLength = 4 * $this->rotation_days;
 
-    /**
-     * Get the night shift of the rotation.
-     *
-     * @return BelongsTo
-     */
+        $dayInCycle = $daysSinceStart % $cycleLength;
+        $rotationIndex = intdiv($dayInCycle, $this->rotation_days);
 
-    public function nightShift(): BelongsTo
-    {
-        return $this->belongsTo(Shift::class, 'night_shift_id');
+        $rotations = [
+            ['day' => 'A', 'night' => 'C'],
+            ['day' => 'B', 'night' => 'D'],
+            ['day' => 'C', 'night' => 'A'],
+            ['day' => 'D', 'night' => 'B'],
+        ];
+
+        if (!isset($rotations[$rotationIndex])) {
+            return [
+                'day_shift' => null,
+                'night_shift' => null,
+            ];
+        }
+
+        $dayShift = Shift::where('name', $rotations[$rotationIndex]['day'])->first();
+        $nightShift = Shift::where('name', $rotations[$rotationIndex]['night'])->first();
+
+        return [
+            'day_shift' => $dayShift,
+            'night_shift' => $nightShift,
+        ];
     }
 }

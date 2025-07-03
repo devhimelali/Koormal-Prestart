@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,9 +12,8 @@ return new class extends Migration
     {
         Schema::create('shift_rotations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('week_index');
-            $table->foreignId('day_shift_id')->constrained('shifts')->cascadeOnDelete();
-            $table->foreignId('night_shift_id')->constrained('shifts')->cascadeOnDelete();
+            $table->date('start_date');
+            $table->integer('rotation_days')->default(7);
             $table->timestamps();
         });
     }
