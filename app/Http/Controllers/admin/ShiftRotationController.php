@@ -21,7 +21,8 @@ class ShiftRotationController extends Controller
     public function edit()
     {
         $rotation = ShiftRotation::where('is_active', true)->first();
-        return view('admin.shift-rotations.edit', compact('rotation'));
+        $isActive = $rotation ? true : false;
+        return view('admin.shift-rotations.edit', compact('rotation', 'isActive'));
     }
 
     public function update(ShiftRotationRequest $request)
@@ -82,4 +83,13 @@ class ShiftRotationController extends Controller
         return response()->json($dailySchedule);
     }
 
+    public function stop()
+    {
+        ShiftRotation::where('is_active', true)->update(['is_active' => false]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Shift rotation stopped successfully'
+        ], 200);
+    }
 }
