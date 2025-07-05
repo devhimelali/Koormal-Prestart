@@ -33,4 +33,14 @@ class Shift extends Model
     {
         return $this->hasMany(Shift::class, 'linked_shift_id');
     }
+
+    /**
+     * Get all health and safety reviews that belong to this shift.
+     *
+     * @return HasMany
+     */
+    public function healthSafetyReviews(): HasMany
+    {
+        return $this->hasMany(HealthSafetyReview::class);
+    }
 }

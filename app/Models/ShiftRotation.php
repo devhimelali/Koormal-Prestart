@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShiftRotation extends Model
@@ -15,12 +16,31 @@ class ShiftRotation extends Model
         'is_active',
     ];
 
+    /**
+     * Accessor and mutator for the start date attribute.
+     * 
+     * Formats the date from the database format 'Y-m-d' to 'd-m-Y' when retrieving,
+     * and from 'd-m-Y' to 'Y-m-d' when storing in the database.
+     *
+     * @return Attribute
+     */
+
     protected function startDate(): Attribute
     {
         return Attribute::make(
             get: fn($value) => Carbon::parse($value)->format('d-m-Y'),
             set: fn($value) => Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d'),
         );
+    }
+
+    /**
+     * Get all health and safety reviews that belong to this shift rotation.
+     *
+     * @return HasMany
+     */
+    public function healthSafetyReviews(): HasMany
+    {
+        return $this->hasMany(HealthSafetyReview::class);
     }
 
     /**
