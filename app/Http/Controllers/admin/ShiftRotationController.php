@@ -66,21 +66,32 @@ class ShiftRotationController extends Controller
 
     public function showNextMonthSchedule()
     {
+        $rotation = ShiftRotation::where('is_active', true)->first();
+
+        if (!$rotation) {
+            // Pass an empty collection to the view
+            return view('shift_rotation.schedule', ['blocks' => collect()]);
+        }
+
         $startDate = now()->startOfDay();
         $endDate = now()->addMonth()->endOfDay();
 
-        $dailySchedule = $this->shiftRotationService->getDailyShiftSchedule($startDate, $endDate);
-        return view('shift_rotation.schedule', compact('dailySchedule'));
+        $blocks = $rotation->getShiftBlocks($startDate, $endDate);
+
+        return view('shift_rotation.schedule', compact('blocks'));
     }
+
 
     public function applyDataRangeFilter(Request $request)
     {
+
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
 
-        $dailySchedule = $this->shiftRotationService->getDailyShiftSchedule($startDate, $endDate);
+        $rotation = ShiftRotation::where('is_active', true)->first();
+        $blocks = $rotation->getShiftBlocks($startDate, $endDate);
 
-        return response()->json($dailySchedule);
+        return response()->json($blocks);
     }
 
     public function stop()

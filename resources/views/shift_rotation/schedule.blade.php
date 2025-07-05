@@ -16,28 +16,33 @@
                         <table class="table table-centered align-middle mb-0 table-hover" id="scheduleTable">
                             <thead class="table-active">
                                 <tr>
-                                    <th scope="col">Date</th>
+                                    <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
+                                    <th scope="col">Start Date - End Date</th>
                                     <th scope="col">Shift</th>
                                     <th scope="col">Crew</th>
-                                    <th scope="col">Shift</th>
-                                    <th scope="col">Crew</th>
-                                    <th scope="col" style="min-width: 260px; width: 260px;">Actions</th>
+                                    <th scope="col" style="min-width: 120px; width: 120px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody style="vertical-align: middle">
-                                @foreach ($dailySchedule as $day)
+                                @foreach ($blocks as $day)
                                     <tr>
-                                        <td>{{ $day['date'] }}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ $day['start_date'] }} - {{ $day['end_date'] }}</td>
                                         <td>Day</td>
                                         <td>{{ $day['day_shift'] }}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-secondary viewBoard">View Board</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ $day['start_date'] }} - {{ $day['end_date'] }}</td>
                                         <td>Night</td>
                                         <td>{{ $day['night_shift'] }}</td>
                                         <td>
-                                            <div class="btn-group">
-                                                <a href="#" class="btn btn-sm btn-primary">View Day Board</a>
-                                                <a href="#" class="btn btn-sm btn-secondary">View Night Board</a>
-                                            </div>
-
+                                            <a href="#" class="btn btn-sm btn-secondary viewBoard">View Board</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -76,23 +81,30 @@
                 success: function(response) {
                     let tbody = $("#scheduleTable tbody");
                     tbody.empty();
+                    let sn = 1;
 
                     response.forEach(function(day) {
                         tbody.append(`
                             <tr>
-                                <td>${day.date}</td>
+                                <td>${sn}</td>
+                                <td>${day.start_date} - ${day.end_date}</td>
                                 <td>Day</td>
                                 <td>${day.day_shift}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-secondary viewBoard">View Board</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>${sn}</td>
+                                <td>${day.start_date} - ${day.end_date}</td>
                                 <td>Night</td>
                                 <td>${day.night_shift}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-primary">View Day Board</a>
-                                        <a href="#" class="btn btn-sm btn-secondary">View Night Board</a>
-                                    </div>
+                                    <a href="#" class="btn btn-sm btn-secondary viewBoard">View Board</a>
                                 </td>
                             </tr>
                         `);
+                        sn++;
                     });
                 },
                 error: function(xhr) {

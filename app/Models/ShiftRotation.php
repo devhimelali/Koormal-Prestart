@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -44,49 +45,68 @@ class ShiftRotation extends Model
     }
 
     /**
-     * Get the active day and night shifts for a given date.
+     * Get the shift blocks for this shift rotation.
      *
-     * @param string $date Format: 'Y-m-d'
-     * @return array ['day_shift' => Shift|null, 'night_shift' => Shift|null]
+     * @return Collection
      */
-
-    public function getShiftsForDate(string $date)
+    public function getShiftBlocks(?Carbon $filterStart = null, ?Carbon $filterEnd = null): Collection
     {
-        $date = Carbon::parse($date);
         $startDate = Carbon::parse($this->start_date);
         $rotationDays = $this->rotation_days;
 
-        // Validate essential data
-        if (!$startDate || !$rotationDays || $rotationDays <= 0) {
-            return ['day_shift' => null, 'night_shift' => null];
+        if (!$rotationDays || $rotationDays <= 0) {
+            return collect(); // Invalid config
         }
 
-        // Total length of full cycle (e.g. 7 days × 4 shifts = 28)
-        $cycleLength = $rotationDays * 4;
-
-        // Days difference from start date to given date
-        $daysSinceStart = $startDate->diffInDays($date);
-
-        // Find day position in cycle (0 to cycleLength - 1)
-        $dayInCycle = $daysSinceStart % $cycleLength;
-
-        // Determine block index (which 7-day shift block)
-        $blockIndex = intdiv($dayInCycle, $rotationDays);
-
-        // Fetch all shifts at once, cache by name for quick lookup
+        // Load shifts and map by name
         $shiftNames = ['A', 'B', 'C', 'D'];
-        $shiftsByName = Shift::whereIn('name', $shiftNames)
-            ->get()
-            ->keyBy('name');
+        $shiftsByName = Shift::whereIn('name', $shiftNames)->get()->keyBy('name');
+        $getShift = fn($name) => $shiftsByName->get($name);
 
-        // Define rotation pattern for each block index
         $rotationOrder = [
-            ['day_shift' => $shiftsByName->get('A'), 'night_shift' => $shiftsByName->get('C')],
-            ['day_shift' => $shiftsByName->get('B'), 'night_shift' => $shiftsByName->get('D')],
-            ['day_shift' => $shiftsByName->get('C'), 'night_shift' => $shiftsByName->get('A')],
-            ['day_shift' => $shiftsByName->get('D'), 'night_shift' => $shiftsByName->get('B')],
+            ['day_shift' => $getShift('A'), 'night_shift' => $getShift('C')],
+            ['day_shift' => $getShift('B'), 'night_shift' => $getShift('D')],
+            ['day_shift' => $getShift('C'), 'night_shift' => $getShift('A')],
+            ['day_shift' => $getShift('D'), 'night_shift' => $getShift('B')],
         ];
 
-        return $rotationOrder[$blockIndex] ?? ['day_shift' => null, 'night_shift' => null];
+        $blocks = collect();
+        $i = 0;
+
+        while (true) {
+            $blockStart = $startDate->copy()->addDays($i * $rotationDays);
+            $blockEnd = $blockStart->copy()->addDays($rotationDays - 1);
+
+            // 1. Stop if filterEnd is set and this block is completely after it
+            if ($filterEnd && $blockStart->gt($filterEnd)) {
+                break;
+            }
+
+            // 2. Skip this block if it ends before the filterStart
+            if ($filterStart && $blockEnd->lt($filterStart)) {
+                $i++;
+                continue;
+            }
+
+            // 3. Add block
+            $index = $i % 4;
+            $blocks->push([
+                'start_date' => $blockStart->format('d-m-Y'),
+                'end_date' => $blockEnd->format('d-m-Y'),
+                'day_shift' => $rotationOrder[$index]['day_shift']?->name ?? 'N/A',
+                'night_shift' => $rotationOrder[$index]['night_shift']?->name ?? 'N/A',
+            ]);
+
+            $i++;
+
+            // 4. Stop at 10 blocks if no filters were applied
+            if (!$filterStart && !$filterEnd && $i >= 10) {
+                break;
+            }
+        }
+
+        return $blocks;
     }
+
+
 }
