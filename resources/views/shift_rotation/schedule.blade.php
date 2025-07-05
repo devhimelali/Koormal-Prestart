@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Roster List')
 @section('content')
+    <x-common.breadcrumb :title="'Roster List'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Roster List']]" />
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -32,7 +33,8 @@
                                         <td>Day</td>
                                         <td>{{ $day['day_shift'] }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-secondary viewBoard">View Board</a>
+                                            <a href="#" class="btn btn-sm btn-secondary viewBoard"
+                                                data-crew="{{ $day['day_shift'] }}" data-shift="day">View Board</a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -42,7 +44,8 @@
                                         <td>Night</td>
                                         <td>{{ $day['night_shift'] }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-secondary viewBoard">View Board</a>
+                                            <a href="#" class="btn btn-sm btn-secondary viewBoard"
+                                                data-crew="{{ $day['night_shift'] }}" data-shift="night">View Board</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -68,6 +71,13 @@
                     fetchSchedule(startDate, endDate);
                 }
             }
+        });
+        // health-safety-review.index
+        $(document).on('click', '.viewBoard', function(e) {
+            let crew = $(this).data('crew');
+            let shift = $(this).data('shift');
+            window.location.href = "{{ route('health-safety-review.index') }}?crew=" + crew + "&shift=" + shift;
+            // window.location.href = "{{ route('health-safety-review.index') }}";
         });
 
         function fetchSchedule(startDate, endDate) {

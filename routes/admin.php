@@ -1,10 +1,9 @@
 <?php
 
+use App\Http\Controllers\admin\HealthSafetyReviewController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\ShiftController;
 use App\Http\Controllers\admin\ShiftRotationController;
-use App\Http\Controllers\admin\RotationSettingController;
-use App\Models\ShiftRotation;
 
 Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -23,5 +22,6 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('check-shift', [ShiftRotationController::class, 'checkResult'])->name('rotation.check.result');
     Route::get('roster-list', [ShiftRotationController::class, 'showNextMonthSchedule'])->name('shift-rotations.next-month-schedule');
     Route::get('roster-fetch', [ShiftRotationController::class, 'applyDataRangeFilter'])->name('roster.fetch');
-
+    Route::get('health-safety-review', [HealthSafetyReviewController::class, 'index'])->name('health-safety-review.index');
+    Route::post('health-safety-review', [HealthSafetyReviewController::class, 'store'])->name('health-safety-review.store');
 });

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Shift Rotation Configuration')
 @section('content')
+    <x-common.breadcrumb :title="'Shift Rotations'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Shift Rotations']]" />
     <div class="row">
         <div class="col-12">
             <div class="card">
