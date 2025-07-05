@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
+use Carbon\Carbon;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use App\Models\ShiftRotation;
+use App\Models\HealthSafetyReview;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HealthSafetyReviewRequest;
-use App\Models\HealthSafetyReview;
 
 class HealthSafetyReviewController extends Controller
 {
@@ -42,7 +43,7 @@ class HealthSafetyReviewController extends Controller
                 'shift_id' => $request->shift_id,
                 'rotation_id' => $request->rotation_id,
                 'shift_type' => $request->shift_type,
-                'date' => $request->date,
+                'date' => Carbon::createFromFormat('d-m-Y', $request->date)->format('Y-m-d'),
             ],
             [
                 'supervisor_name' => $request->supervisor_name,
