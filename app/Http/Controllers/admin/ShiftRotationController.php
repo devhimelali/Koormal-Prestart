@@ -20,26 +20,22 @@ class ShiftRotationController extends Controller
 
     public function edit()
     {
-        $rotation = ShiftRotation::latest()->first();
+        $rotation = ShiftRotation::where('is_active', true)->first();
         return view('admin.shift-rotations.edit', compact('rotation'));
     }
 
     public function update(ShiftRotationRequest $request)
     {
-        $rotation = ShiftRotation::latest()->first();
+        // deactivate existing
+        ShiftRotation::where('is_active', true)->update(['is_active' => false]);
 
-        if (!$rotation) {
-            ShiftRotation::create([
-                'start_date' => $request->start_date,
-                'rotation_days' => $request->rotation_days,
-            ]);
-            return redirect()->back()->with('success', 'Shift rotation created successfully');
-        }
-
-        $rotation->update([
+        // create new active rotation
+        ShiftRotation::create([
             'start_date' => $request->start_date,
             'rotation_days' => $request->rotation_days,
+            'is_active' => true,
         ]);
+
         return redirect()->back()->with('success', 'Shift rotation updated successfully');
     }
 
@@ -55,7 +51,7 @@ class ShiftRotationController extends Controller
             'type' => 'required|in:day,night',
         ]);
 
-        $rotation = ShiftRotation::latest()->first();
+        $rotation = ShiftRotation::where('is_active', true)->first();
         $shifts = $rotation->getShiftsForDate($request->date);
 
         $selected = $request->type === 'day' ? $shifts['day_shift'] : $shifts['night_shift'];

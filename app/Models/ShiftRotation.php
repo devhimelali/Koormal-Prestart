@@ -11,7 +11,8 @@ class ShiftRotation extends Model
 {
     protected $fillable = [
         'start_date',
-        'rotation_days'
+        'rotation_days',
+        'is_active',
     ];
 
     protected function startDate(): Attribute
