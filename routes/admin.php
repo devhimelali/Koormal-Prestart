@@ -13,7 +13,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
 
     // Shifts
     Route::resource('shifts', ShiftController::class)->except(['show', 'create']);
-    Route::get('get-shift-list', [ShiftController::class, 'getShitList'])->name('shifts.get-shift-List');
+    Route::get('get-shift-list', [ShiftController::class, 'getShiftList'])->name('shifts.get-shift-List');
 
     // Shift Rotations
     Route::get('shift-rotations', [ShiftRotationController::class, 'edit'])->name('shift-rotations.edit');

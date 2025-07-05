@@ -22,4 +22,15 @@ class Shift extends Model
     {
         return $this->belongsTo(Shift::class, 'linked_shift_id');
     }
+
+    /**
+     * Get all shifts that are linked to this shift.
+     *
+     * @return HasMany
+     */
+
+    public function linkedByShifts(): HasMany
+    {
+        return $this->hasMany(Shift::class, 'linked_shift_id');
+    }
 }

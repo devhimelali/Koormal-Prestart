@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->date('start_date');
             $table->integer('rotation_days')->default(7);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
