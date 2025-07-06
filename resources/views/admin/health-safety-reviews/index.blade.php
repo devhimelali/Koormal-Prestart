@@ -275,10 +275,9 @@
             let questionOneData = {};
             let questionTwoData = {};
             let supervisorName = null;
-            let supervisorNameSaved = false;
 
             function sendSupervisorName() {
-                if (!supervisorName || supervisorNameSaved) return;
+
 
                 $.ajax({
                     url: '{{ route('health-safety-review.store') }}',
@@ -293,7 +292,6 @@
                     success: function(response) {
                         if (response.status === 'success') {
                             notify('success', 'Supervisor name saved successfully.');
-                            supervisorNameSaved = true;
                         }
                     },
                     error: function(xhr) {
@@ -309,7 +307,7 @@
                 const q2 = questionTwoData[date] ?? null;
 
                 // Skip if both are empty
-                if (!q1 && !q2) return;
+                // if (!q1 && !q2) return;
 
                 $.ajax({
                     url: '{{ route('health-safety-review.store') }}',

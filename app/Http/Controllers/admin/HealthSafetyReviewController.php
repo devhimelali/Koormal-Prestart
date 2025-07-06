@@ -74,23 +74,23 @@ class HealthSafetyReviewController extends Controller
         );
 
         // Update supervisor name if provided
-        if ($supervisorName !== null) {
-            $review->supervisor_name = $supervisorName;
-        }
+
+        $review->supervisor_name = $supervisorName;
+
 
         // Merge question_1 if provided
-        if ($answer_one !== null) {
-            $existingQuestion1 = $review->question_1 ?? [];
-            $existingQuestion1[$dateKey] = $answer_one;
-            $review->question_1 = $existingQuestion1;
-        }
+        // if ($answer_one !== null) {
+        $existingQuestion1 = $review->question_1 ?? [];
+        $existingQuestion1[$dateKey] = $answer_one;
+        $review->question_1 = $existingQuestion1;
+        // }
 
         // Merge question_2 if provided
-        if ($answer_two !== null) {
-            $existingQuestion2 = $review->question_2 ?? [];
-            $existingQuestion2[$dateKey] = $answer_two;
-            $review->question_2 = $existingQuestion2;
-        }
+        // if ($answer_two !== null) {
+        $existingQuestion2 = $review->question_2 ?? [];
+        $existingQuestion2[$dateKey] = $answer_two;
+        $review->question_2 = $existingQuestion2;
+        // }
 
         $review->save();
 
