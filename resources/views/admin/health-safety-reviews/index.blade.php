@@ -24,7 +24,7 @@
             <h4 class="mb-1 d-flex align-items-center justify-content-center gap-2">
                 Supervisor Name:
                 <span contenteditable="true" class="d-inline-block supervisor-name"
-                    style="border: 1px solid #ccc; padding: 4px 8px; min-width: 250px; width: 250px; border-radius: 4px; background-color: #f9f9f9;">
+                    style="border: 1px solid #ccc; padding: 4px 8px; min-width: 250px; width: 250px; border-radius: 4px; background-color: #f9f9f9; text-align: left;">
                     {{ $healthSafetyReviews['supervisor_name'] }}
                 </span>
             </h4>
@@ -382,7 +382,7 @@
 
         .card-body {
             background-color: #00680e;
-            padding: 1.5rem;
+            padding: 0.5rem;
         }
 
         .board-container {
