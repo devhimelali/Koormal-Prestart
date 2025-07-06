@@ -34,7 +34,9 @@
                                         <td>{{ $day['day_shift'] }}</td>
                                         <td>
                                             <a href="#" class="btn btn-sm btn-secondary viewBoard"
-                                                data-crew="{{ $day['day_shift'] }}" data-shift="day">View Board</a>
+                                                data-start_date="{{ $day['start_date'] }}"
+                                                data-end_date="{{ $day['end_date'] }}" data-crew="{{ $day['day_shift'] }}"
+                                                data-shift="day">View Board</a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -45,6 +47,8 @@
                                         <td>{{ $day['night_shift'] }}</td>
                                         <td>
                                             <a href="#" class="btn btn-sm btn-secondary viewBoard"
+                                                data-start_date="{{ $day['start_date'] }}"
+                                                data-end_date="{{ $day['end_date'] }}"
                                                 data-crew="{{ $day['night_shift'] }}" data-shift="night">View Board</a>
                                         </td>
                                     </tr>
@@ -74,10 +78,13 @@
         });
         // health-safety-review.index
         $(document).on('click', '.viewBoard', function(e) {
+            let start_date = $(this).data('start_date');
+            let end_date = $(this).data('end_date');
             let crew = $(this).data('crew');
             let shift = $(this).data('shift');
-            window.location.href = "{{ route('health-safety-review.index') }}?crew=" + crew + "&shift=" + shift;
-            // window.location.href = "{{ route('health-safety-review.index') }}";
+            window.location.href = "{{ route('health-safety-review.index') }}?start_date=" + start_date +
+                "&end_date=" + end_date +
+                "&crew=" + crew + "&shift=" + shift;
         });
 
         function fetchSchedule(startDate, endDate) {

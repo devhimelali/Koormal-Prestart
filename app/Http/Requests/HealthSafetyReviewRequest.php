@@ -22,13 +22,14 @@ class HealthSafetyReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shift_id' => 'required|integer|exists:shifts,id',
-            'rotation_id' => 'required|integer|exists:shift_rotations,id',
-            'shift_type' => 'required|string|max:255',
-            'date' => 'required|date|before_or_equal:today',
-            'supervisor_name' => 'required|string|max:255',
-            'question_one' => 'nullable|string',
-            'question_two' => 'nullable|string',
+            'start_date' => 'required|date_format:d-m-Y',
+            'crew' => 'required|string',
+            'shift' => 'required|string|in:day,night',
+            'date' => 'required|date_format:d-m-Y',
+            'question_1' => 'nullable|array',
+            'question_1.*' => 'nullable|string',
+            'question_2' => 'nullable|array',
+            'question_2.*' => 'nullable|string',
         ];
 
     }

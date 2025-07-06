@@ -10,15 +10,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class HealthSafetyReview extends Model
 {
     protected $fillable = [
-        'date',
+        'start_date',
         'shift_type',
         'shift_id',
         'rotation_id',
         'supervisor_name',
         'question_1',
-        'question_1_audio',
         'question_2',
-        'question_2_audio'
+    ];
+
+    protected $casts = [
+        'question_1' => 'array',
+        'question_2' => 'array',
     ];
 
     /**
@@ -43,14 +46,14 @@ class HealthSafetyReview extends Model
 
 
     /**
-     * Accessor and mutator for the date attribute.
+     * Accessor and mutator for the start_date attribute.
      * 
-     * Formats the date from the database format 'Y-m-d' to 'd-m-Y' when retrieving,
+     * Formats the start_date from the database format 'Y-m-d' to 'd-m-Y' when retrieving,
      * and from 'd-m-Y' to 'Y-m-d' when storing in the database.
      *
      * @return Attribute
      */
-    protected function date(): Attribute
+    protected function start_date(): Attribute
     {
         return Attribute::make(
             get: fn($value) => Carbon::parse($value)->format('d-m-Y'),

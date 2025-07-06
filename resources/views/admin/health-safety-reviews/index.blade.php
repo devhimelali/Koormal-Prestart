@@ -1,9 +1,26 @@
 @extends('layouts.app')
 @section('title', 'Health Safety Review')
 @section('content')
+    @php
+        $start_date = request('start_date');
+        $end_date = request('end_date');
+        $crew = request('crew');
+        $shift = request('shift');
+        function dateRangeBetween($startDate, $endDate)
+        {
+            $dates = [];
+            $currentDate = \Carbon\Carbon::parse($startDate);
+            while ($currentDate->lte($endDate)) {
+                $dates[] = $currentDate->format('d-m-Y');
+                $currentDate->addDay();
+            }
+            return $dates;
+        }
+        $dateArrayBetween = dateRangeBetween($start_date, $end_date);
+    @endphp
     <x-common.breadcrumb :title="'Our Health & Safety List'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Our Health & Safety List']]" />
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-6">
             <div class="card shadow">
                 <div class="card-header text-center">
                     <h4 class="card-title mb-0">Our Health & Safety</h4>
@@ -13,16 +30,16 @@
                         <div class="board">
                             <!-- Header with Logos and Title -->
                             <div class="row align-items-center board-header mb-3">
-                                <div class="col-3 col-md-4 text-start text-md-center mb-2 mb-md-0">
+                                <div class="col-2 col-md-2 text-start text-md-center mb-2 mb-md-0">
                                     <img src="{{ asset('assets/logos/4emus-logo.png') }}"
                                         class="img-fluid header-logo float-start">
                                 </div>
-                                <div class="col-6 col-md-4 text-center">
+                                <div class="col-8 col-md-8 text-center">
                                     <h5 class="board-title mb-1">Review of Health & Safety</h5>
-                                    <p class="text-muted small mb-0">Shift: {{ ucfirst(request('shift')) }}</p>
-                                    <p class="text-muted small mb-0">Crew: {{ ucfirst(request('crew')) }}</p>
+                                    <p class="text-muted small mb-0">Shift: {{ ucfirst($shift) }}</p>
+                                    <p class="text-muted small mb-0">Crew: {{ ucfirst($crew) }}</p>
                                 </div>
-                                <div class="col-3 col-md-4 text-end text-md-center">
+                                <div class="col-2 col-md-2 text-end text-md-center">
                                     <img src="{{ asset('assets/logos/koormal-logo.png') }}"
                                         class="img-fluid header-logo float-end">
                                 </div>
@@ -31,44 +48,40 @@
                             <!-- Question 1 -->
                             <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
                                 <h6 class="mb-2 mb-md-0">Question 1 - What did we do to work more safely or improve our
-                                    health on our last shift?</h6>
-                                <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
-                                    data-bs-toggle="offcanvas" data-bs-target="#addOrEditOffCanvas"
-                                    aria-controls="addOrEditOffCanvas">
-                                    <i class="ph ph-plus"></i> Add
-                                </button>
+                                    health on our last shift? <span class="play-icon"
+                                        data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
+                                        <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy" focusable="false"
+                                            aria-hidden="true" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
+                                            </path>
+                                        </svg>
+                                    </span></h6>
                             </div>
 
                             <div class="table-responsive">
                                 <table class="table table-bordered text-nowrap">
-                                    <thead class="bg-light text-center">
-                                        <tr style="vertical-align: middle;">
-                                            <th style="max-width: 160px; width: 160px;">Day (Date)</th>
-                                            <th>Answer</th>
-                                            <th style="max-width: 180px; width: 180px;">Supervisor</th>
-                                            <th style="max-width: 160px; width: 160px;">Action</th>
-                                        </tr>
-                                    </thead>
                                     <tbody>
-                                        @forelse ($healthSafetyReviews as $data)
+                                        @forelse ($dateArrayBetween as $date)
                                             <tr style="vertical-align: middle;">
-                                                <td>{{ \Carbon\Carbon::parse($data->date)->format('l') }}
-                                                    ({{ $data->date }})
+                                                <td style="max-width: 180px; width: 180px;" class="bg-light">
+                                                    {{ $date }}
+                                                    ({{ \Carbon\Carbon::parse($date)->format('l') }})
                                                 </td>
-                                                <td>{{ $data->question_1 }}</td>
-                                                <td>{{ $data->supervisor_name }}</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
-                                                            data-id="{{ $data->id }}">
-                                                            <i class="ph ph-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-danger d-flex align-items-center gap-1"
-                                                            data-id="{{ $data->id }}">
-                                                            <i class="ph ph-trash"></i>
-                                                        </button>
+                                                <td style="padding: 2px !important; vertical-align: top;">
+                                                    <div contenteditable="true" class="question-one"
+                                                        data-date="{{ $date }}"
+                                                        style="
+            border: 1px solid #ccc;
+            padding: 4px;
+            width: 200px;
+            min-height: 40px;
+            box-sizing: border-box;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        ">
+                                                        {{ $healthSafetyReviews['question_1'][$date] ?? '' }}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -83,40 +96,33 @@
 
                             <!-- Question 2 -->
                             <div class="mt-4 mb-2">
-                                <h6>Question 2 - What wasn’t as healthy or safe as it should have been on our last shift?
+                                <h6>Question 2 - What wasn’t as healthy or safe as it should have been on our last
+                                    shift?<span class="play-icon"
+                                        data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
+                                        <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy" focusable="false"
+                                            aria-hidden="true" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
+                                            </path>
+                                        </svg>
+                                    </span>
                                 </h6>
                             </div>
 
                             <div class="table-responsive">
                                 <table class="table table-bordered text-nowrap">
-                                    <thead class="bg-light text-center">
-                                        <tr style="vertical-align: middle;">
-                                            <th style="max-width: 160px; width: 160px;">Day (Date)</th>
-                                            <th>Answer</th>
-                                            <th style="max-width: 180px; width: 180px;">Supervisor</th>
-                                            <th style="max-width: 160px; width: 160px;">Action</th>
-                                        </tr>
-                                    </thead>
                                     <tbody>
-                                        @forelse ($healthSafetyReviews as $data)
+                                        @forelse ($dateArrayBetween as $date)
                                             <tr style="vertical-align: middle;">
-                                                <td>{{ \Carbon\Carbon::parse($data->date)->format('l') }}
-                                                    ({{ $data->date }})
+                                                <td style="max-width: 190px; width: 190px;" class="bg-light">
+                                                    {{ $date }}
+                                                    ({{ \Carbon\Carbon::parse($date)->format('l') }})
                                                 </td>
-                                                <td>{{ $data->question_2 }}</td>
-                                                <td>{{ $data->supervisor_name }}</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
-                                                            data-id="{{ $data->id }}">
-                                                            <i class="ph ph-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-danger d-flex align-items-center gap-1"
-                                                            data-id="{{ $data->id }}">
-                                                            <i class="ph ph-trash"></i>
-                                                        </button>
+                                                <td style="padding: 2px !important;">
+                                                    <div contenteditable="true" class="question-two"
+                                                        data-date="{{ $date }}"
+                                                        style="border: 1px solid #ccc; padding: 4px;">
+                                                        {{ $healthSafetyReviews['question_2'][$date] ?? '' }}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -135,13 +141,13 @@
             </div>
         </div>
     </div>
+    <audio id="myAudio" src=""></audio>
     @include('components.admin.health-safety-review.modals.add-or-edit-modal')
 @endsection
 @section('page-script')
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-
             flatpickr("#date", {
                 dateFormat: "d-m-Y",
                 maxDate: "today",
@@ -238,11 +244,71 @@
                     }
                 });
             });
+
+
+            let questionOneData = {};
+            let questionTwoData = {};
+
+            // Common function to send data
+            function sendReviewUpdate(date) {
+                const q1 = questionOneData[date] ?? null;
+                const q2 = questionTwoData[date] ?? null;
+
+                // Skip if both are empty
+                if (!q1 && !q2) return;
+
+                $.ajax({
+                    url: '{{ route('health-safety-review.store') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_date: '{{ $start_date ?? '' }}',
+                        crew: '{{ $crew ?? '' }}',
+                        shift: '{{ $shift ?? '' }}',
+                        date: date,
+                        question_1: q1 ? {
+                            [date]: q1
+                        } : null,
+                        question_2: q2 ? {
+                            [date]: q2
+                        } : null,
+                    },
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            notify('success', response.message);
+                            setTimeout(() => location.reload(), 1000);
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Error saving for date:', date, xhr.responseText);
+                    }
+                });
+            }
+            // Handle question-one blur
+            $(document).on('blur', '.question-one', function() {
+                let answer = $(this).text().trim();
+                let date = $(this).data('date');
+                questionOneData[date] = answer;
+                sendReviewUpdate(date);
+            });
+
+            // Handle question-two blur
+            $(document).on('blur', '.question-two', function() {
+                let answer = $(this).text().trim();
+                let date = $(this).data('date');
+                questionTwoData[date] = answer;
+                sendReviewUpdate(date);
+            });
         });
     </script>
 @endsection
 @section('page-css')
     <style>
+        .question-one,
+        .question-two {
+            padding: 2px;
+        }
+
         .card-header {
             background-color: #0d0172;
             border-bottom: 1px solid #060041;
@@ -305,6 +371,12 @@
         span.play-icon.active {
             background-color: #28a745;
             transform: scale(1.1);
+        }
+
+        span.play-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
         }
 
         i.ph {

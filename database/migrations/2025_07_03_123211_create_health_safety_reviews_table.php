@@ -12,15 +12,13 @@ return new class extends Migration {
     {
         Schema::create('health_safety_reviews', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('start_date');
             $table->enum('shift_type', ['day', 'night']);
             $table->foreignId('shift_id')->constrained('shifts')->cascadeOnDelete();
             $table->foreignId('rotation_id')->constrained('shift_rotations')->cascadeOnDelete();
             $table->string('supervisor_name')->nullable();
-            $table->text('question_1')->nullable();
-            $table->string('question_1_audio')->nullable();
-            $table->text('question_2')->nullable();
-            $table->string('question_2_audio')->nullable();
+            $table->json('question_1')->nullable();
+            $table->json('question_2')->nullable();
             $table->timestamps();
         });
     }
