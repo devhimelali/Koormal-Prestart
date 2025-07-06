@@ -25,11 +25,12 @@ class HealthSafetyReviewRequest extends FormRequest
             'start_date' => 'required|date_format:d-m-Y',
             'crew' => 'required|string',
             'shift' => 'required|string|in:day,night',
-            'date' => 'required|date_format:d-m-Y',
+            'date' => 'nullable|date_format:d-m-Y',
             'question_1' => 'nullable|array',
             'question_1.*' => 'nullable|string',
             'question_2' => 'nullable|array',
             'question_2.*' => 'nullable|string',
+            'supervisor_name' => 'nullable|string|max:255'
         ];
 
     }

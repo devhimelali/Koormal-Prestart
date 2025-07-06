@@ -20,7 +20,21 @@
     @endphp
     <x-common.breadcrumb :title="'Our Health & Safety List'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Our Health & Safety List']]" />
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-12 mx-auto bg-white p-3 mb-4 border rounded shadow-sm text-center">
+            <h4 class="mb-1">
+                Supervisor Name:
+                <span contenteditable="true" class="d-inline-block supervisor-name"
+                    style="border: 1px solid #ccc; padding: 4px 8px; min-width: 250px; width: 250px; border-radius: 4px; background-color: #f9f9f9;">
+                    {{ $healthSafetyReviews['supervisor_name'] }}
+                </span>
+            </h4>
+            <p class="mb-0 text-secondary" style="font-size: 16px;">Date: <strong>{{ $start_date }}</strong> to
+                <strong>{{ $end_date }}</strong>
+            </p>
+            <p class="mb-0 text-secondary" style="font-size: 16px;">Shift: <strong>{{ ucfirst($shift) }}</strong></p>
+            <p class="mb-0 text-secondary" style="font-size: 16px;">Crew: <strong>{{ ucfirst($crew) }}</strong></p>
+        </div>
+        <div class="col-12 col-lg-6">
             <div class="card shadow">
                 <div class="card-header text-center">
                     <h4 class="card-title mb-0">Our Health & Safety</h4>
@@ -36,8 +50,6 @@
                                 </div>
                                 <div class="col-8 col-md-8 text-center">
                                     <h5 class="board-title mb-1">Review of Health & Safety</h5>
-                                    <p class="text-muted small mb-0">Shift: {{ ucfirst($shift) }}</p>
-                                    <p class="text-muted small mb-0">Crew: {{ ucfirst($crew) }}</p>
                                 </div>
                                 <div class="col-2 col-md-2 text-end text-md-center">
                                     <img src="{{ asset('assets/logos/koormal-logo.png') }}"
@@ -63,23 +75,25 @@
                                 <table class="table table-bordered text-nowrap">
                                     <tbody>
                                         @forelse ($dateArrayBetween as $date)
-                                            <tr style="vertical-align: middle;">
-                                                <td style="max-width: 180px; width: 180px;" class="bg-light">
+                                            <tr class="align-middle">
+                                                <td class="bg-light text-nowrap w-50 w-md-auto" style="min-width: 100px;">
                                                     {{ $date }}
                                                     ({{ \Carbon\Carbon::parse($date)->format('l') }})
                                                 </td>
-                                                <td style="padding: 2px !important; vertical-align: top;">
+                                                <td class="p-1 align-top">
                                                     <div contenteditable="true" class="question-one"
                                                         data-date="{{ $date }}"
                                                         style="
             border: 1px solid #ccc;
-            padding: 4px;
-            width: 200px;
-            min-height: 40px;
-            box-sizing: border-box;
-            word-break: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
+                 padding: 6px 8px;
+                 min-height: 50px;
+                 width: 100%;
+                 box-sizing: border-box;
+                 word-break: break-word;
+                 overflow-wrap: break-word;
+                 white-space: normal;
+                 background-color: #fff;
+                 border-radius: 4px;
         ">
                                                         {{ $healthSafetyReviews['question_1'][$date] ?? '' }}
                                                     </div>
@@ -113,15 +127,27 @@
                                 <table class="table table-bordered text-nowrap">
                                     <tbody>
                                         @forelse ($dateArrayBetween as $date)
-                                            <tr style="vertical-align: middle;">
-                                                <td style="max-width: 190px; width: 190px;" class="bg-light">
+                                            <tr class="align-middle">
+                                                <td class="bg-light text-nowrap w-50 w-md-auto" style="min-width: 100px;">
                                                     {{ $date }}
                                                     ({{ \Carbon\Carbon::parse($date)->format('l') }})
                                                 </td>
-                                                <td style="padding: 2px !important;">
+                                                <td class="p-1 align-top">
                                                     <div contenteditable="true" class="question-two"
                                                         data-date="{{ $date }}"
-                                                        style="border: 1px solid #ccc; padding: 4px;">
+                                                        style="
+            border: 1px solid #ccc;
+                 padding: 6px 8px;
+                 min-height: 50px;
+                 width: 100%;
+                 box-sizing: border-box;
+                 word-break: break-word;
+                 overflow-wrap: break-word;
+                 white-space: normal;
+                 background-color: #fff;
+                 border-radius: 4px;
+        ">
+
                                                         {{ $healthSafetyReviews['question_2'][$date] ?? '' }}
                                                     </div>
                                                 </td>
@@ -248,9 +274,37 @@
 
             let questionOneData = {};
             let questionTwoData = {};
+            let supervisorName = null;
+            let supervisorNameSaved = false;
+
+            function sendSupervisorName() {
+                if (!supervisorName || supervisorNameSaved) return;
+
+                $.ajax({
+                    url: '{{ route('health-safety-review.store') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_date: '{{ $start_date ?? '' }}',
+                        crew: '{{ $crew ?? '' }}',
+                        shift: '{{ $shift ?? '' }}',
+                        supervisor_name: supervisorName
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            notify('success', 'Supervisor name saved successfully.');
+                            supervisorNameSaved = true;
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Error saving supervisor name:', xhr.responseText);
+                    }
+                });
+            }
+
 
             // Common function to send data
-            function sendReviewUpdate(date) {
+            function sendReviewUpdate(date = null, supervisorName = null) {
                 const q1 = questionOneData[date] ?? null;
                 const q2 = questionTwoData[date] ?? null;
 
@@ -272,6 +326,7 @@
                         question_2: q2 ? {
                             [date]: q2
                         } : null,
+                        supervisor_name: supervisorName
                     },
                     success: function(response) {
                         if (response.status == 'success') {
@@ -284,6 +339,12 @@
                     }
                 });
             }
+            // Handle supervisor name blur
+            $(document).on('blur', '.supervisor-name', function() {
+                supervisorName = $(this).text().trim();
+                sendSupervisorName();
+            });
+
             // Handle question-one blur
             $(document).on('blur', '.question-one', function() {
                 let answer = $(this).text().trim();
@@ -313,11 +374,11 @@
             background-color: #0d0172;
             border-bottom: 1px solid #060041;
             color: #fff;
-            padding: 1.25rem 1rem;
+            padding: 0.8rem 1rem;
         }
 
         .card-title {
-            font-size: 1.75rem;
+            font-size: 1.45rem;
             font-weight: 600;
         }
 
@@ -340,7 +401,7 @@
         }
 
         .board-title {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 600;
         }
 

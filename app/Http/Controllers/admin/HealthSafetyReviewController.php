@@ -41,21 +41,21 @@ class HealthSafetyReviewController extends Controller
         $data = $request->validated();
 
         $shiftType = $data['shift'];
-        $dateKey = $data['date'];
+        $dateKey = $data['date'] ?? null;
         $crewName = $data['crew'];
+        $supervisorName = $data['supervisor_name'] ?? null;
 
-        // Convert start_date to Y-m-d for DB storage
+        // Convert start_date to Y-m-d
         $startDate = Carbon::createFromFormat('d-m-Y', $data['start_date'])->format('Y-m-d');
 
-        // Extract answers for the specific date key
+        // Optional question answers
         $answer_one = $data['question_1'][$dateKey] ?? null;
         $answer_two = $data['question_2'][$dateKey] ?? null;
 
-        // Find shift and rotation IDs
+        // Find shift and rotation
         $shift = Shift::select('id')->where('name', $crewName)->first();
         $rotation = ShiftRotation::select('id')->where('start_date', '<=', $startDate)->orderByDesc('start_date')->first();
 
-        // Return error if shift or rotation not found
         if (!$shift || !$rotation) {
             return response()->json([
                 'status' => 'error',
@@ -63,35 +63,35 @@ class HealthSafetyReviewController extends Controller
             ], 422);
         }
 
-        // Find or create the health safety review record
+        // Find or create the health safety review
         $review = HealthSafetyReview::firstOrCreate(
             [
                 'shift_id' => $shift->id,
                 'rotation_id' => $rotation->id,
                 'shift_type' => $shiftType,
                 'start_date' => $startDate,
-            ],
-            [
-                'question_1' => [],
-                'question_2' => [],
             ]
         );
 
-        // Merge existing question_1 answers with new one
-        $existingQuestion1 = $review->question_1 ?? [];
+        // Update supervisor name if provided
+        if ($supervisorName !== null) {
+            $review->supervisor_name = $supervisorName;
+        }
+
+        // Merge question_1 if provided
         if ($answer_one !== null) {
+            $existingQuestion1 = $review->question_1 ?? [];
             $existingQuestion1[$dateKey] = $answer_one;
+            $review->question_1 = $existingQuestion1;
         }
 
-        // Merge existing question_2 answers with new one
-        $existingQuestion2 = $review->question_2 ?? [];
+        // Merge question_2 if provided
         if ($answer_two !== null) {
+            $existingQuestion2 = $review->question_2 ?? [];
             $existingQuestion2[$dateKey] = $answer_two;
+            $review->question_2 = $existingQuestion2;
         }
 
-        // Assign merged answers back to the model
-        $review->question_1 = $existingQuestion1;
-        $review->question_2 = $existingQuestion2;
         $review->save();
 
         return response()->json([
