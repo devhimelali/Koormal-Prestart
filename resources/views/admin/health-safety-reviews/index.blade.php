@@ -21,7 +21,7 @@
     <x-common.breadcrumb :title="'Our Health & Safety List'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Our Health & Safety List']]" />
     <div class="row">
         <div class="col-12 mx-auto bg-white p-3 mb-4 border rounded shadow-sm text-center">
-            <h4 class="mb-1">
+            <h4 class="mb-1 d-flex align-items-center justify-content-center gap-2">
                 Supervisor Name:
                 <span contenteditable="true" class="d-inline-block supervisor-name"
                     style="border: 1px solid #ccc; padding: 4px 8px; min-width: 250px; width: 250px; border-radius: 4px; background-color: #f9f9f9;">
@@ -86,7 +86,7 @@
                                                         style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
-                 min-height: 50px;
+                 min-height: 25px;
                  width: 100%;
                  box-sizing: border-box;
                  word-break: break-word;
@@ -138,7 +138,7 @@
                                                         style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
-                 min-height: 50px;
+                 min-height: 25px;
                  width: 100%;
                  box-sizing: border-box;
                  word-break: break-word;
