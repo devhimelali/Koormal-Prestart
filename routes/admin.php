@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\CrossCriteriaController;
 use App\Http\Controllers\admin\HealthSafetyReviewController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\ShiftController;
@@ -24,4 +25,5 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('roster-fetch', [ShiftRotationController::class, 'applyDataRangeFilter'])->name('roster.fetch');
     Route::get('health-safety-review', [HealthSafetyReviewController::class, 'index'])->name('health-safety-review.index');
     Route::post('health-safety-review', [HealthSafetyReviewController::class, 'store'])->name('health-safety-review.store');
+    Route::resource('cross-criteria', CrossCriteriaController::class);
 });

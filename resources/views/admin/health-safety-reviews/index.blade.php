@@ -25,7 +25,7 @@
                 Supervisor Name:
                 <span contenteditable="true" class="d-inline-block supervisor-name"
                     style="border: 1px solid #ccc; padding: 4px 8px; min-width: 250px; width: 250px; border-radius: 4px; background-color: #f9f9f9; text-align: left;">
-                    {{ $healthSafetyReviews['supervisor_name'] }}
+                    {{ $healthSafetyReviews['supervisor_name'] ?? '' }}
                 </span>
             </h4>
             <p class="mb-0 text-secondary" style="font-size: 16px;">Date: <strong>{{ $start_date }}</strong> to
@@ -34,7 +34,7 @@
             <p class="mb-0 text-secondary" style="font-size: 16px;">Shift: <strong>{{ ucfirst($shift) }}</strong></p>
             <p class="mb-0 text-secondary" style="font-size: 16px;">Crew: <strong>{{ ucfirst($crew) }}</strong></p>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12">
             <div class="card shadow">
                 <div class="card-header text-center">
                     <h4 class="card-title mb-0">Our Health & Safety</h4>
@@ -49,41 +49,44 @@
                                         class="img-fluid header-logo float-start">
                                 </div>
                                 <div class="col-8 col-md-8 text-center">
-                                    <h5 class="board-title mb-1">Review of Health & Safety</h5>
+                                    <h5 class="board-title mb-0">Review of Health & Safety</h5>
                                 </div>
                                 <div class="col-2 col-md-2 text-end text-md-center">
                                     <img src="{{ asset('assets/logos/koormal-logo.png') }}"
                                         class="img-fluid header-logo float-end">
                                 </div>
                             </div>
+                            <div class="row my-4">
+                                <!-- Question 1 -->
+                                <div class="col-12 col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                        <h6 class="mb-2">Question 1 - What did we do to work more safely or improve
+                                            our
+                                            health on our last shift? <span class="play-icon"
+                                                data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
+                                                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy"
+                                                    focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
+                                                    </path>
+                                                </svg>
+                                            </span></h6>
+                                    </div>
 
-                            <!-- Question 1 -->
-                            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                                <h6 class="mb-2 mb-md-0">Question 1 - What did we do to work more safely or improve our
-                                    health on our last shift? <span class="play-icon"
-                                        data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
-                                        <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy" focusable="false"
-                                            aria-hidden="true" viewBox="0 0 24 24">
-                                            <path
-                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
-                                            </path>
-                                        </svg>
-                                    </span></h6>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-nowrap">
-                                    <tbody>
-                                        @forelse ($dateArrayBetween as $date)
-                                            <tr class="align-middle">
-                                                <td class="bg-light text-nowrap w-50 w-md-auto" style="min-width: 100px;">
-                                                    {{ $date }}
-                                                    ({{ \Carbon\Carbon::parse($date)->format('l') }})
-                                                </td>
-                                                <td class="p-1 align-top">
-                                                    <div contenteditable="true" class="question-one"
-                                                        data-date="{{ $date }}"
-                                                        style="
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-nowrap">
+                                            <tbody>
+                                                @forelse ($dateArrayBetween as $date)
+                                                    <tr class="align-middle">
+                                                        <td class="bg-light text-nowrap"
+                                                            style="min-width: 100px !important;max-width: 180px;width: 180px;">
+                                                            {{ $date }}
+                                                            ({{ \Carbon\Carbon::parse($date)->format('l') }})
+                                                        </td>
+                                                        <td class="p-1 align-top w-auto">
+                                                            <div contenteditable="true" class="question-one"
+                                                                data-date="{{ $date }}"
+                                                                style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
                  min-height: 25px;
@@ -95,47 +98,49 @@
                  background-color: #fff;
                  border-radius: 4px;
         ">
-                                                        {{ $healthSafetyReviews['question_1'][$date] ?? '' }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center">No data found</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                                                {{ $healthSafetyReviews['question_1'][$date] ?? '' }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">No data found</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Question 2 -->
+                                <div class="col-12 col-md-6">
+                                    <div>
+                                        <h6>Question 2 - What wasn’t as healthy or safe as it should have been on our last
+                                            shift?<span class="play-icon"
+                                                data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
+                                                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy"
+                                                    focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                        </h6>
+                                    </div>
 
-                            <!-- Question 2 -->
-                            <div class="mt-4 mb-2">
-                                <h6>Question 2 - What wasn’t as healthy or safe as it should have been on our last
-                                    shift?<span class="play-icon"
-                                        data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
-                                        <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy" focusable="false"
-                                            aria-hidden="true" viewBox="0 0 24 24">
-                                            <path
-                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                </h6>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-nowrap">
-                                    <tbody>
-                                        @forelse ($dateArrayBetween as $date)
-                                            <tr class="align-middle">
-                                                <td class="bg-light text-nowrap w-50 w-md-auto" style="min-width: 100px;">
-                                                    {{ $date }}
-                                                    ({{ \Carbon\Carbon::parse($date)->format('l') }})
-                                                </td>
-                                                <td class="p-1 align-top">
-                                                    <div contenteditable="true" class="question-two"
-                                                        data-date="{{ $date }}"
-                                                        style="
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-nowrap">
+                                            <tbody>
+                                                @forelse ($dateArrayBetween as $date)
+                                                    <tr class="align-middle">
+                                                        <td class="bg-light text-nowrap"
+                                                            style="min-width: 100px !important;max-width: 180px;width: 180px;">
+                                                            {{ $date }}
+                                                            ({{ \Carbon\Carbon::parse($date)->format('l') }})
+                                                        </td>
+                                                        <td class="p-1 align-top">
+                                                            <div contenteditable="true" class="question-two"
+                                                                data-date="{{ $date }}"
+                                                                style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
                  min-height: 25px;
@@ -148,18 +153,21 @@
                  border-radius: 4px;
         ">
 
-                                                        {{ $healthSafetyReviews['question_2'][$date] ?? '' }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center">No data found</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                                                                {{ $healthSafetyReviews['question_2'][$date] ?? '' }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">No data found</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
+                            <button type="button" class="btn btn-primary">Next</button>
 
                         </div>
                     </div>

@@ -63,6 +63,14 @@
                         <span data-key="t-roster-list">Roster List</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('cross-criteria.index') }}"
+                        class="nav-link menu-link @if (Route::current()->getName() == 'cross-criteria.index') active @endif"
+                        aria-expanded="false">
+                        <i class="ph ph-arrows-clockwise"></i>
+                        <span data-key="t-cross-criteria">Cross Criteria</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->
