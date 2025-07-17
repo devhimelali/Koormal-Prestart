@@ -32,4 +32,6 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
 
 
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index')->middleware('daily.shift.entry');
+    Route::post('update-supervisor-name', [BoardController::class, 'updateSupervisorName'])->name('boards.updateSupervisorName');
+    Route::post('show-board', [BoardController::class, 'show'])->name('boards.show.board');
 });
