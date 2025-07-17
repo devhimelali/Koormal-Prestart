@@ -947,12 +947,11 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property array|null $question_2
-     * @property array|null $question_1
+     * @property string|null $question_2
+     * @property string|null $question_1
      * @property int $daily_shift_entry_id
      * @property int $id
-     * @property-read \App\Models\Shift $shift
-     * @property-read \App\Models\ShiftRotation $rotation
+     * @property-read \App\Models\DailyShiftEntry $dailyShiftEntry
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereDailyShiftEntryId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereQuestion1($value)

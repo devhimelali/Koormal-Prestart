@@ -41,7 +41,19 @@ class BoardController extends Controller
         if ($step == 1) {
             $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
 
-            return view('admin.boards.health-safety-review', [
+            return view('admin.boards.health-safety-review-question-one', [
+                'healthSafetyReview' => $healthSafetyReview
+            ]);
+        } elseif ($step == 2) {
+            $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
+
+            return view('admin.boards.health-safety-review-question-two', [
+                'healthSafetyReview' => $healthSafetyReview
+            ]);
+        } elseif ($step == 3) {
+            $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
+
+            return view('admin.boards.health-safety-cross-criteria', [
                 'healthSafetyReview' => $healthSafetyReview
             ]);
         }

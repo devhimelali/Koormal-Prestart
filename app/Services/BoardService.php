@@ -17,6 +17,8 @@ class BoardService
 
     public function getHealthSafetyReview($dailyShiftEntryId)
     {
-        return HealthSafetyReview::where('daily_shift_entry_id', $dailyShiftEntryId)->get();
+        return HealthSafetyReview::with('dailyShiftEntry')
+            ->whereNotNull('question_1')
+            ->get();
     }
 }
