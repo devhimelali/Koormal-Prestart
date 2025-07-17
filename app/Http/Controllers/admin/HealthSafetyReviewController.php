@@ -23,9 +23,7 @@ class HealthSafetyReviewController extends Controller
             return back()->with('error', 'Invalid crew or no active rotation.');
         }
 
-        $healthSafetyReviews = HealthSafetyReview::where('shift_id', $shift->id)
-            ->where('rotation_id', $rotation->id)
-            ->where('shift_type', $shiftType)
+        $healthSafetyReviews = HealthSafetyReview::where('daily_shift_entry_id', $request->daily_shift_entry_id)
             ->first();
 
         return view('admin.health-safety-reviews.index', [

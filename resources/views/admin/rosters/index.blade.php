@@ -82,7 +82,7 @@
             let end_date = $(this).data('end_date');
             let crew = $(this).data('crew');
             let shift = $(this).data('shift');
-            window.location.href = "{{ route('health-safety-review.index') }}?start_date=" + start_date +
+            window.location.href = "{{ route('boards.index') }}?start_date=" + start_date +
                 "&end_date=" + end_date +
                 "&crew=" + crew + "&shift=" + shift;
         });

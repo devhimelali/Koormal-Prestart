@@ -10,11 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('health_safety_reviews', function (Blueprint $table) {
+        Schema::create('health_safety_cross_criterias', function (Blueprint $table) {
             $table->id();
             $table->foreignId('daily_shift_entry_id')->constrained('daily_shift_entries')->cascadeOnDelete();
-            $table->text('question_1')->nullable();
-            $table->text('question_2')->nullable();
+            $table->foreignId('cross_criteria_id')->constrained('cross_criterias')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('health_safety_reviews');
+        Schema::dropIfExists('health_safety_cross_criterias');
     }
 };

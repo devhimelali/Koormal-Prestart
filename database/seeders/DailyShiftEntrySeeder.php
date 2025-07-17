@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PrestartEntrySeeder extends Seeder
+class DailyShiftEntrySeeder extends Seeder
 {
     /**
      * Run the database seeds.
