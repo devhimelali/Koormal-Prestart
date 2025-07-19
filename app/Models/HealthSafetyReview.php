@@ -11,8 +11,8 @@ class HealthSafetyReview extends Model
 {
     protected $fillable = [
         'daily_shift_entry_id',
-        'question_1',
-        'question_2',
+        'question_number',
+        'answer',
     ];
 
     public function dailyShiftEntry(): BelongsTo

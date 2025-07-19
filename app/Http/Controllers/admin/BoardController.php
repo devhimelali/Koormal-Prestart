@@ -39,24 +39,35 @@ class BoardController extends Controller
         $step = $request->step;
         $dailyShiftEntryId = $request->daily_shift_entry_id;
         if ($step == 1) {
-            $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
+            $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionOne($dailyShiftEntryId);
 
             return view('admin.boards.health-safety-review-question-one', [
                 'healthSafetyReview' => $healthSafetyReview
-            ]);
+            ])->render();
         } elseif ($step == 2) {
-            $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
+            $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionTwo($dailyShiftEntryId);
 
             return view('admin.boards.health-safety-review-question-two', [
                 'healthSafetyReview' => $healthSafetyReview
-            ]);
+            ])->render();
         } elseif ($step == 3) {
-            $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
+            // $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
 
             return view('admin.boards.health-safety-cross-criteria', [
-                'healthSafetyReview' => $healthSafetyReview
+                // 'healthSafetyReview' => $healthSafetyReview
             ]);
         }
+    }
+
+    public function storeHealthSafetyReview(Request $request)
+    {
+        $this->boardService->storeHealthSafetyReview($request);
+        $step = $request->question_number == 'question_one' ? 1 : 2;
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Health and Safety Review saved successfully',
+            'step' => $step
+        ]);
     }
 }
 

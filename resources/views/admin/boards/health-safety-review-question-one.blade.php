@@ -14,8 +14,8 @@
     <div class="row my-4">
         <!-- Question 1 -->
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
-                <h6 class="mb-2">Question 1 - What did we do to work more safely or improve
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
+                <h6>Question 1 - What did we do to work more safely or improve
                     our
                     health on our last shift? <span class="play-icon"
                         data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
@@ -27,6 +27,10 @@
                         </svg>
                     </span>
                 </h6>
+                <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
+                    id="addQuestionOneBtn">
+                    <i class="ph ph-plus"></i>
+                </button>
             </div>
 
             <div class="table-responsive">
@@ -53,7 +57,7 @@
                  background-color: #fff;
                  border-radius: 4px;
         ">
-                                        {{ $healthSafetyReview->question_1 }}
+                                        {{ $healthSafetyReview->answer }}
                                     </div>
                                 </td>
                             </tr>

@@ -947,15 +947,15 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property string|null $question_2
-     * @property string|null $question_1
+     * @property string|null $answer
+     * @property mixed $question_number
      * @property int $daily_shift_entry_id
      * @property int $id
      * @property-read \App\Models\DailyShiftEntry $dailyShiftEntry
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereDailyShiftEntryId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereQuestion1($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereQuestion2($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereQuestionNumber($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereAnswer($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyReview>|HealthSafetyReview newModelQuery()

@@ -14,7 +14,7 @@
     <div class="row my-4">
         <!-- Question 1 -->
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-2">
                 <h6>Question 2 - What wasn’t as healthy or safe as it should have been on our last
                     shift?<span class="play-icon"
                         data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
@@ -26,28 +26,30 @@
                         </svg>
                     </span>
                 </h6>
+                <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
+                    id="addQuestionTwoBtn">
+                    <i class="ph ph-plus"></i>
+                </button>
             </div>
 
             <div class="table-responsive">
                 <table class="table table-bordered text-nowrap">
                     <tbody>
                         @forelse ($healthSafetyReview as $review)
-                            @if (!empty($review->question_1) && $review->dailyShiftEntry)
-                                <tr class="align-middle">
-                                    <td class="bg-light text-nowrap"
-                                        style="min-width: 100px !important; max-width: 180px; width: 180px;">
-                                        {{ $review->dailyShiftEntry->date }}
-                                        ({{ \Carbon\Carbon::parse($review->dailyShiftEntry->date)->format('l') }})
-                                    </td>
-                                    <td class="p-1 align-top w-auto">
-                                        <div contenteditable="true" class="question-one"
-                                            data-date="{{ $review->dailyShiftEntry->date }}"
-                                            style="border: 1px solid #ccc; padding: 6px 8px; min-height: 25px; width: 100%; box-sizing: border-box; word-break: break-word; overflow-wrap: break-word; white-space: normal; background-color: #fff; border-radius: 4px;">
-                                            {{ $review->question_1 }}
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
+                            <tr class="align-middle">
+                                <td class="bg-light text-nowrap"
+                                    style="min-width: 100px !important; max-width: 180px; width: 180px;">
+                                    {{ $review->dailyShiftEntry->date }}
+                                    ({{ \Carbon\Carbon::parse($review->dailyShiftEntry->date)->format('l') }})
+                                </td>
+                                <td class="p-1 align-top w-auto">
+                                    <div contenteditable="true" class="question-two"
+                                        data-date="{{ $review->dailyShiftEntry->date }}"
+                                        style="border: 1px solid #ccc; padding: 6px 8px; min-height: 25px; width: 100%; box-sizing: border-box; word-break: break-word; overflow-wrap: break-word; white-space: normal; background-color: #fff; border-radius: 4px;">
+                                        {{ $review->answer }}
+                                    </div>
+                                </td>
+                            </tr>
                         @empty
                             <tr>
                                 <td colspan="4" class="text-center">No data found</td>

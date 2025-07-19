@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('health_safety_reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('daily_shift_entry_id')->constrained('daily_shift_entries')->cascadeOnDelete();
-            $table->text('question_1')->nullable();
-            $table->text('question_2')->nullable();
+            $table->enum('question_number', ['question_one', 'question_two']);
+            $table->text('answer')->nullable();
             $table->timestamps();
         });
     }
