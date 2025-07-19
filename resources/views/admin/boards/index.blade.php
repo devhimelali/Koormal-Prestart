@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-
+    @include('components.admin.boards.modal.cross-criteria-view')
 @endsection
 @include('components.admin.boards.page-css')
 @include('components.admin.boards.page-script')

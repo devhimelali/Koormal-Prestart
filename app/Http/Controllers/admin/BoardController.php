@@ -52,10 +52,11 @@ class BoardController extends Controller
             ])->render();
         } elseif ($step == 3) {
             // $healthSafetyReview = $this->boardService->getHealthSafetyReview($dailyShiftEntryId);
+            $crossCriteria = $this->boardService->getCrossCriteria();
 
             return view('admin.boards.health-safety-cross-criteria', [
-                // 'healthSafetyReview' => $healthSafetyReview
-            ]);
+                'crossCriteria' => $crossCriteria
+            ])->render();
         }
     }
 

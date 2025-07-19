@@ -1,3 +1,18 @@
+@php
+    function hexToRgbaBlade($hex, $opacity)
+    {
+        $hex = str_replace('#', '', $hex);
+        if (strlen($hex) == 3) {
+            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+        }
+
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+
+        return "rgba($r, $g, $b, $opacity)";
+    }
+@endphp
 <div class="board">
     <!-- Header with Logos and Title -->
     <div class="row align-items-center board-header mb-3">
@@ -73,29 +88,23 @@
                 <div class="calendar-cell green">31</div>
             </div>
         </div>
+
         <!-- Legend -->
         <div class="legend">
-            <div class="legend-item">
-                <div class="color-box color-blue"></div>
-                Sustainable Health and Safety Improvement/s
-            </div>
-            <div class="legend-item">
-                <div class="color-box color-green"></div>
-                Healthy & Safe Shift
-            </div>
-            <div class="legend-item">
-                <div class="color-box color-yellow"></div>
-                Less Healthy or Safe Shift
-            </div>
-            <div class="legend-item">
-                <div class="color-box color-red"></div>
-                Unhealthy and/or less Safe Shift
-            </div>
+            @forelse ($crossCriteria as $legend)
+                <div class="legend-item" data-name="{{ $legend->name }}" data-color="{{ $legend->color }}"
+                    data-description="{{ $legend->description }}">
+                    <div class="color-box"
+                        style="background-color: {{ hexToRgbaBlade($legend->color, 0.3) }}; border-color: {{ $legend->color }};">
+                    </div>
+                    {{ $legend->name }}
+                </div>
+            @empty
+            @endforelse
+
         </div>
     </div>
 </div>
-
-
 <style>
     .safety-calendar-board {
         max-width: 1000px;
@@ -149,6 +158,7 @@
         align-items: center;
         margin-bottom: 15px;
         font-size: 14px;
+        cursor: pointer;
     }
 
     .color-box {

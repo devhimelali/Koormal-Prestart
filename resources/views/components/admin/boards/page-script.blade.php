@@ -105,6 +105,20 @@
                     }
                 });
             }
+
+            $(document).on('click', '.legend-item', function() {
+                let name = $(this).data('name');
+                let color = $(this).data('color');
+                let description = $(this).data('description');
+                $('#crossCriteriaViewModal .cross-criteria-title').text(name);
+                $('#crossCriteriaViewModal .cross-criteria-content').html(`
+                <div style="border: ${color} 2px dashed;padding: 10px; border-radius: 5px;">
+                    ${description}
+                    </div>
+                `);
+                $('#crossCriteriaViewModal').modal('show');
+            });
+
         });
     </script>
 @endsection

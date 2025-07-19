@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\CrossCriteria;
 use Illuminate\Http\Request;
 use App\Models\DailyShiftEntry;
 use App\Models\HealthSafetyReview;
@@ -44,5 +45,10 @@ class BoardService
         ], [
             'answer' => $validated['answer']
         ]);
+    }
+
+    public function getCrossCriteria()
+    {
+        return CrossCriteria::get();
     }
 }
