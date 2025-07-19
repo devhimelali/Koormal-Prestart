@@ -203,6 +203,7 @@
             switch (xhr.status) {
                 case 400:
                     notify('error',
+                        xhr.responseJSON.message ||
                         'The request could not be processed due to invalid input. Please review your data and try again.'
                     );
                     break;

@@ -643,6 +643,8 @@ namespace App\Models {
      * @property int $cross_criteria_id
      * @property int $daily_shift_entry_id
      * @property int $id
+     * @property-read \App\Models\DailyShiftEntry $dailyShiftEntry
+     * @property-read \App\Models\CrossCriteria $crossCriteria
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereDailyShiftEntryId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereCrossCriteriaId($value)

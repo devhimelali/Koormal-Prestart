@@ -52,12 +52,12 @@ class BoardController extends Controller
             ])->render();
         } elseif ($step == 3) {
             $crossCriteria = $this->boardService->getCrossCriteria();
-            // $safetyCalendar = $this->boardService->getSafetyCalendarData();
+            $safetyCalendar = $this->boardService->getSafetyCalendarData();
 
             return view('admin.boards.health-safety-cross-criteria', [
                 'crossCriteria' => $crossCriteria,
-                // 'safetyCalendar' => $safetyCalendar,
                 'dailyShiftEntryId' => $dailyShiftEntryId,
+                'safetyCalendar' => $safetyCalendar
             ])->render();
         }
     }
@@ -71,6 +71,11 @@ class BoardController extends Controller
             'message' => 'Health and Safety Review saved successfully',
             'step' => $step
         ]);
+    }
+
+    public function storeHealthSafetyCrossCriteria(Request $request)
+    {
+        return $this->boardService->storeHealthSafetyCrossCriteria($request);
     }
 }
 

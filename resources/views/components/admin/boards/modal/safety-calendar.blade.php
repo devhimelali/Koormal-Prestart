@@ -6,7 +6,8 @@
                 <h5 class="modal-title" id="myModalLabel">Safety Calendar</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
-            <form action="" method="POST" id="safetyCalendarForm">
+            <form action="{{ route('boards.store.health-safety-cross-criteria') }}" method="POST"
+                id="safetyCalendarForm">
                 @csrf
                 <input type="hidden" name="daily_shift_entry_id" value="{{ $dailyShiftEntryId }}">
                 <input type="hidden" name="cell" id="safetyCalendarCell">

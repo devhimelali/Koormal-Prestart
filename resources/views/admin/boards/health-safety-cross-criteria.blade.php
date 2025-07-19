@@ -13,6 +13,7 @@
             <img src="{{ asset('assets/logos/koormal-logo.png') }}" class="img-fluid header-logo float-end">
         </div>
     </div>
+    @dd($safetyCalendar)
     <div class="safety-calendar-board my-4">
         <div class="calendar">
             <!-- Row 1: 2 cells -->

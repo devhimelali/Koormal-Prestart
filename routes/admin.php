@@ -35,5 +35,5 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('update-supervisor-name', [BoardController::class, 'updateSupervisorName'])->name('boards.updateSupervisorName');
     Route::post('show-board', [BoardController::class, 'show'])->name('boards.show.board');
     Route::post('store-health-safety-review', [BoardController::class, 'storeHealthSafetyReview'])->name('boards.store.health-safety-review');
-    Route::post('update-health-safety-review', [BoardController::class, 'updateHealthSafetyReview'])->name('boards.update.health-safety-review');
+    Route::post('store-health-safety-cross-criteria', [BoardController::class, 'storeHealthSafetyCrossCriteria'])->name('boards.store.health-safety-cross-criteria');
 });

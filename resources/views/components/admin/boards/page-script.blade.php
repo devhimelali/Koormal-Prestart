@@ -165,6 +165,30 @@
                 }
             });
 
+            $(document).on('submit', '#safetyCalendarForm', function(e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    beforeSend: function() {
+                        ajaxBeforeSend('#safetyCalendarForm', '#safetyCalendarSubmitBtn')
+                    },
+                    success: function(response) {
+                        notify('success', response.message);
+                        $('#safetyCalendarModal').modal('hide');
+                        setTimeout(() => {
+                            updateBoard(response.step);
+                        }, 500);
+                    },
+                    error: handleAjaxErrors,
+                    complete: function() {
+                        ajaxComplete('#safetyCalendarSubmitBtn');
+                    }
+                });
+            });
+
         });
     </script>
 @endsection

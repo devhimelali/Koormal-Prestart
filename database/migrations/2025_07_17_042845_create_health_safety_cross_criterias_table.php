@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('daily_shift_entry_id')->constrained('daily_shift_entries')->cascadeOnDelete();
             $table->foreignId('cross_criteria_id')->constrained('cross_criterias')->cascadeOnDelete();
+            $table->string('cell_number')->comment('Cell number in the safety calendar, e.g., 1-31 for days of the month');
             $table->timestamps();
         });
     }
