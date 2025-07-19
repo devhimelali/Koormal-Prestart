@@ -10,22 +10,48 @@
                 @csrf
                 <input type="hidden" name="daily_shift_entry_id" value="{{ $dailyShiftEntryId }}">
                 <input type="hidden" name="cell" id="safetyCalendarCell">
+                <input type="hidden" name="criteria_id" id="safetyCalendarCriteriaId">
                 <div class="modal-body">
-                    <div class="mb-2">
-                        <label for="cross_criteria" class="form-label">Cross Criteria</label>
-                        <select name="cross_criteria" id="cross_criteria" class="form-select">
-                            <option value="">Select Cross Criteria</option>
-                            @foreach ($crossCriteria as $criteria)
-                                <option value="{{ $criteria->id }}">{{ $criteria->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="row">
+                        @foreach ($crossCriteria as $criteria)
+                            <div class="col-3 criteria-option" data-id="{{ $criteria->id }}"
+                                data-color="{{ $criteria->color }}" data-bg="{{ $criteria->bg_color }}">
+                                <div class="option"
+                                    style="border: {{ $criteria->color }} 2px solid; background-color: {{ $criteria->bg_color }};">
+                                    {{ $criteria->name }}
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-secondary" id="safetyCalendarSubmitBtn">Save</button>
-                    <button type="button" class="btn subtle-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-subtle-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<style>
+    .criteria-option {
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    .option {
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: auto;
+        height: 120px;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .option.selected {
+        border: 2px solid #000 !important;
+        background-color: #f0f0f0 !important;
+    }
+</style>
