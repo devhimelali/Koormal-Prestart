@@ -119,6 +119,12 @@
                 $('#crossCriteriaViewModal').modal('show');
             });
 
+            $(document).on('click', '.calendar-cell', function() {
+                let cell = $(this).data('cell');
+                $('#safetyCalendarModal #safetyCalendarCell').val(cell);
+                $('#safetyCalendarModal').modal('show');
+            })
+
         });
     </script>
 @endsection

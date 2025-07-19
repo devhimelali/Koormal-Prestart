@@ -32,60 +32,60 @@
         <div class="calendar">
             <!-- Row 1: 2 cells -->
             <div class="calendar-row">
-                <div class="calendar-cell green">1</div>
-                <div class="calendar-cell green">2</div>
+                <div class="calendar-cell green" data-cell="1">1</div>
+                <div class="calendar-cell green" data-cell="2">2</div>
             </div>
 
             <!-- Row 2: 3 cells -->
             <div class="calendar-row">
-                <div class="calendar-cell green">3</div>
-                <div class="calendar-cell">4</div>
-                <div class="calendar-cell green">5</div>
+                <div class="calendar-cell green" data-cell="3">3</div>
+                <div class="calendar-cell" data-cell="4">4</div>
+                <div class="calendar-cell green" data-cell="5">5</div>
             </div>
 
             <!-- Row 3: 7 cells -->
             <div class="calendar-row">
-                <div class="calendar-cell blue">6</div>
-                <div class="calendar-cell">7</div>
-                <div class="calendar-cell">8</div>
-                <div class="calendar-cell">9</div>
-                <div class="calendar-cell">10</div>
-                <div class="calendar-cell">11</div>
-                <div class="calendar-cell">12</div>
+                <div class="calendar-cell blue" data-cell="6">6</div>
+                <div class="calendar-cell" data-cell="7">7</div>
+                <div class="calendar-cell" data-cell="8">8</div>
+                <div class="calendar-cell" data-cell="9">9</div>
+                <div class="calendar-cell" data-cell="10">10</div>
+                <div class="calendar-cell" data-cell="11">11</div>
+                <div class="calendar-cell" data-cell="12">12</div>
             </div>
 
             <!-- Row 4: 7 cells -->
             <div class="calendar-row">
-                <div class="calendar-cell">13</div>
-                <div class="calendar-cell">14</div>
-                <div class="calendar-cell">15</div>
-                <div class="calendar-cell">16</div>
-                <div class="calendar-cell green">17</div>
-                <div class="calendar-cell green">18</div>
-                <div class="calendar-cell blue">19</div>
+                <div class="calendar-cell" data-cell="13">13</div>
+                <div class="calendar-cell" data-cell="14">14</div>
+                <div class="calendar-cell" data-cell="15">15</div>
+                <div class="calendar-cell" data-cell="16">16</div>
+                <div class="calendar-cell" data-cell="17">17</div>
+                <div class="calendar-cell" data-cell="18">18</div>
+                <div class="calendar-cell" data-cell="19">19</div>
             </div>
             <!-- Row 4: 7 cells -->
             <div class="calendar-row">
-                <div class="calendar-cell">20</div>
-                <div class="calendar-cell">21</div>
-                <div class="calendar-cell">22</div>
-                <div class="calendar-cell">23</div>
-                <div class="calendar-cell green">24</div>
-                <div class="calendar-cell green">25</div>
-                <div class="calendar-cell blue">26</div>
+                <div class="calendar-cell" data-cell="20">20</div>
+                <div class="calendar-cell" data-cell="21">21</div>
+                <div class="calendar-cell" data-cell="22">22</div>
+                <div class="calendar-cell" data-cell="23">23</div>
+                <div class="calendar-cell" data-cell="24">24</div>
+                <div class="calendar-cell" data-cell="25">25</div>
+                <div class="calendar-cell" data-cell="26">26</div>
             </div>
 
             <!-- Row 5: 3 cells -->
             <div class="calendar-row">
-                <div class="calendar-cell green">27</div>
-                <div class="calendar-cell green">28</div>
-                <div class="calendar-cell green">29</div>
+                <div class="calendar-cell" data-cell="27">27</div>
+                <div class="calendar-cell" data-cell="28">28</div>
+                <div class="calendar-cell" data-cell="29">29</div>
             </div>
 
             <!-- Row 6: 2 cells -->
             <div class="calendar-row">
-                <div class="calendar-cell green">30</div>
-                <div class="calendar-cell green">31</div>
+                <div class="calendar-cell" data-cell="30">30</div>
+                <div class="calendar-cell" data-cell="31">31</div>
             </div>
         </div>
 
@@ -105,6 +105,7 @@
         </div>
     </div>
 </div>
+@include('components.admin.boards.modal.safety-calendar')
 <style>
     .safety-calendar-board {
         max-width: 1000px;
