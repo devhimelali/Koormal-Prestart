@@ -10,5 +10,6 @@ class CrossCriteria extends Model
         'name',
         'description',
         'color',
+        'bg_color',
     ];
 }

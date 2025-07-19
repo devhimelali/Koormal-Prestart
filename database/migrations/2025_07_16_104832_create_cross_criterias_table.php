@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->longText('description')->nullable();
             $table->string('color')->nullable();
+            $table->string('bg_color')->nullable();
             $table->timestamps();
         });
     }

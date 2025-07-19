@@ -7,6 +7,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $bg_color
      * @property string|null $color
      * @property string|null $description
      * @property string $name
@@ -15,6 +16,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<CrossCriteria>|CrossCriteria whereName($value)
      * @method static \Illuminate\Database\Eloquent\Builder<CrossCriteria>|CrossCriteria whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<CrossCriteria>|CrossCriteria whereColor($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<CrossCriteria>|CrossCriteria whereBgColor($value)
      * @method static \Illuminate\Database\Eloquent\Builder<CrossCriteria>|CrossCriteria whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<CrossCriteria>|CrossCriteria whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<CrossCriteria>|CrossCriteria newModelQuery()

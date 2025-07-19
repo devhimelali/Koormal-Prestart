@@ -78,15 +78,14 @@
         <div class="legend">
             @forelse ($crossCriteria as $legend)
                 <div class="legend-item" data-name="{{ $legend->name }}" data-color="{{ $legend->color }}"
-                    data-description="{{ $legend->description }}">
+                    data-bg-color="{{ $legend->bg_color }}" data-description="{{ $legend->description }}">
                     <div class="color-box"
                         style="background-color: {{ $legend->bg_color }}; border-color: {{ $legend->color }};">
+                        {{ $legend->name }}
                     </div>
-                    {{ $legend->name }}
                 </div>
             @empty
             @endforelse
-
         </div>
     </div>
 </div>
@@ -148,10 +147,15 @@
     }
 
     .color-box {
-        width: 18px;
-        height: 18px;
-        margin-right: 8px;
+        width: 200px;
+        height: 120px;
+        margin-right: 4px;
         border: 2px solid #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 4px;
     }
 
     .color-blue {
