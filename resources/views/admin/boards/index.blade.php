@@ -1,23 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Boards')
 @section('content')
-    @php
-        // $start_date = request('start_date');
-        // $end_date = request('end_date');
-        // $crew = request('crew');
-        // $shift = request('shift');
-        // function dateRangeBetween($startDate, $endDate)
-        // {
-        //     $dates = [];
-        //     $currentDate = \Carbon\Carbon::parse($startDate);
-        //     while ($currentDate->lte($endDate)) {
-        //         $dates[] = $currentDate->format('d-m-Y');
-        //         $currentDate->addDay();
-        //     }
-        //     return $dates;
-        // }
-        // $dateArrayBetween = dateRangeBetween($start_date, $end_date);
-    @endphp
     <x-common.breadcrumb :title="'Boards'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Boards']]" />
     <div class="row">
         <div class="col-12 mx-auto bg-white p-3 mb-4 border rounded shadow-sm text-center">

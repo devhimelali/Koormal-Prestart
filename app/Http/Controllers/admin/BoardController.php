@@ -39,13 +39,13 @@ class BoardController extends Controller
         $step = $request->step;
         $dailyShiftEntryId = $request->daily_shift_entry_id;
         if ($step == 1) {
-            $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionOne($dailyShiftEntryId);
+            $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionOne($request);
 
             return view('admin.boards.health-safety-review-question-one', [
                 'healthSafetyReview' => $healthSafetyReview
             ])->render();
         } elseif ($step == 2) {
-            $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionTwo($dailyShiftEntryId);
+            $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionTwo($request);
 
             return view('admin.boards.health-safety-review-question-two', [
                 'healthSafetyReview' => $healthSafetyReview

@@ -17,18 +17,28 @@ class BoardService
         $dailyShiftEntry->save();
     }
 
-    public function getHealthSafetyReviewForQuestionOne($dailyShiftEntryId)
+    public function getHealthSafetyReviewForQuestionOne($request)
     {
+        $validated = $request->validate([
+            'shift_id' => 'required|exists:shifts,id',
+            'rotation_id' => 'required|exists:shift_rotations,id',
+            'shift_type' => 'required|string|in:day,night'
+        ]);
+
         return HealthSafetyReview::with('dailyShiftEntry')
             ->where('question_number', 'question_one')
-            ->where('daily_shift_entry_id', $dailyShiftEntryId)
+            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
+                $query->where('shift_id', $validated['shift_id'])
+                    ->where('shift_rotation_id', $validated['rotation_id'])
+                    ->where('shift_type', $validated['shift_type']);
+            })
             ->get();
     }
-    public function getHealthSafetyReviewForQuestionTwo($dailyShiftEntryId)
+
+    public function getHealthSafetyReviewForQuestionTwo($request)
     {
         return HealthSafetyReview::with('dailyShiftEntry')
             ->where('question_number', 'question_two')
-            ->where('daily_shift_entry_id', $dailyShiftEntryId)
             ->get();
     }
 

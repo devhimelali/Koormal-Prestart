@@ -640,6 +640,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string $cell_number
      * @property int $cross_criteria_id
      * @property int $daily_shift_entry_id
      * @property int $id
@@ -648,6 +649,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereDailyShiftEntryId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereCrossCriteriaId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereCellNumber($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HealthSafetyCrossCriteria>|HealthSafetyCrossCriteria newModelQuery()

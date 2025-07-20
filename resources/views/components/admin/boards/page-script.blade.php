@@ -1,6 +1,8 @@
 @section('page-script')
     <script>
-        function updateBoard(step, heading = "Our Health & Safety") {
+        function updateBoard(step, heading = "Our Health & Safety", $shift_id = {{ $dailyShiftEntry->shift_id }},
+            $rotation_id = {{ $dailyShiftEntry->shift_rotation_id }}, $shift_type = "{{ $dailyShiftEntry->shift_type }}"
+        ) {
             $('#board-title').text(heading);
             $.ajax({
                 url: "{{ route('boards.show.board') }}",
@@ -8,6 +10,9 @@
                 data: {
                     step: step,
                     daily_shift_entry_id: {{ $dailyShiftEntry->id }},
+                    shift_id: $shift_id,
+                    rotation_id: $rotation_id,
+                    shift_type: $shift_type,
                     _token: '{{ csrf_token() }}'
                 },
                 beforeSend: function() {
