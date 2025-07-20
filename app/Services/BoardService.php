@@ -7,6 +7,7 @@ use App\Models\HealthSafetyCrossCriteria;
 use Illuminate\Http\Request;
 use App\Models\DailyShiftEntry;
 use App\Models\HealthSafetyReview;
+use App\Models\ReviewPreviousShift;
 
 class BoardService
 {
@@ -110,5 +111,62 @@ class BoardService
             'message' => 'Cross Criteria created successfully',
             'step' => 3
         ], 201);
+    }
+
+    public function getProductiveQuestionOne($request)
+    {
+        $validated = $request->validate([
+            'shift_id' => 'required|exists:shifts,id',
+            'rotation_id' => 'required|exists:shift_rotations,id',
+            'shift_type' => 'required|string|in:day,night'
+        ]);
+
+        return ReviewPreviousShift::with('dailyShiftEntry')
+            ->where('question_number', 'question_one')
+            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
+                $query->where('shift_id', $validated['shift_id'])
+                    ->where('shift_rotation_id', $validated['rotation_id'])
+                    ->where('shift_type', $validated['shift_type']);
+            })
+            ->get();
+    }
+    public function getProductiveQuestionTwo($request)
+    {
+        $validated = $request->validate([
+            'shift_id' => 'required|exists:shifts,id',
+            'rotation_id' => 'required|exists:shift_rotations,id',
+            'shift_type' => 'required|string|in:day,night'
+        ]);
+
+        return ReviewPreviousShift::with('dailyShiftEntry')
+            ->where('question_number', 'question_two')
+            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
+                $query->where('shift_id', $validated['shift_id'])
+                    ->where('shift_rotation_id', $validated['rotation_id'])
+                    ->where('shift_type', $validated['shift_type']);
+            })
+            ->get();
+    }
+
+    public function storeProductiveQuestion($request)
+    {
+        $validated = $request->validate([
+            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
+            'question_number' => 'required|in:question_one,question_two',
+            'answer' => 'nullable|string',
+        ]);
+
+        ReviewPreviousShift::updateOrCreate([
+            'daily_shift_entry_id' => $validated['daily_shift_entry_id'],
+            'question_number' => $validated['question_number']
+        ], [
+            'answer' => $validated['answer']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Productive Question saved successfully',
+            'step' => $validated['question_number'] == 'question_one' ? 4 : 5
+        ]);
     }
 }

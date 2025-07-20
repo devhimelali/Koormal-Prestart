@@ -59,6 +59,16 @@ class BoardController extends Controller
                 'dailyShiftEntryId' => $dailyShiftEntryId,
                 'safetyCalendar' => $safetyCalendar
             ])->render();
+        } elseif ($step == 4) {
+            $productiveQuestionOne = $this->boardService->getProductiveQuestionOne($request);
+            return view('admin.boards.review_of_previous_shift_question_one', [
+                'productiveQuestionOne' => $productiveQuestionOne
+            ])->render();
+        } elseif ($step == 5) {
+            $productiveQuestionTwo = $this->boardService->getProductiveQuestionTwo($request);
+            return view('admin.boards.review_of_previous_shift_question_two', [
+                'productiveQuestionTwo' => $productiveQuestionTwo
+            ])->render();
         }
     }
 
@@ -76,6 +86,11 @@ class BoardController extends Controller
     public function storeHealthSafetyCrossCriteria(Request $request)
     {
         return $this->boardService->storeHealthSafetyCrossCriteria($request);
+    }
+
+    public function storeProductiveQuestion(Request $request)
+    {
+        return $this->boardService->storeProductiveQuestion($request);
     }
 }
 

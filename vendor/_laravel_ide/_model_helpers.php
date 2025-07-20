@@ -1263,7 +1263,19 @@ namespace App\Models {
     /**
      * App\Models\ReviewPreviousShift
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $answer
+     * @property mixed $question_number
+     * @property int $daily_shift_entry_id
+     * @property int $id
      * @property-read \App\Models\DailyShiftEntry $dailyShiftEntry
+     * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift whereDailyShiftEntryId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift whereQuestionNumber($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift whereAnswer($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ReviewPreviousShift>|ReviewPreviousShift query()

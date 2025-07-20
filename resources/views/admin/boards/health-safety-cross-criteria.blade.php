@@ -208,6 +208,17 @@
     </div>
 </div>
 @include('components.admin.boards.modal.safety-calendar')
+<script>
+    $('#previousStepBtn').on('click', function() {
+        currentStep = 2;
+        updateBoard(currentStep);
+    })
+
+    $('#nextStepBtn').on('click', function() {
+        currentStep = 4;
+        updateBoard(currentStep, "Our Productivity");
+    })
+</script>
 <style>
     .safety-calendar-board {
         max-width: 1000px;
