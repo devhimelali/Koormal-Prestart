@@ -38,10 +38,11 @@
                     <tbody>
                         @forelse ($healthSafetyReview as $healthSafetyReview)
                             <tr class="align-middle">
-                                <td class="bg-light text-nowrap"
-                                    style="min-width: 100px !important;max-width: 180px;width: 180px;">
-                                    {{ $healthSafetyReview->dailyShiftEntry->date }}
-                                    ({{ \Carbon\Carbon::parse($healthSafetyReview->dailyShiftEntry->date)->format('l') }})
+                                <td class="bg-light td-date">
+                                    <span>
+                                        {{ $healthSafetyReview->dailyShiftEntry->date }}
+                                        ({{ \Carbon\Carbon::parse($healthSafetyReview->dailyShiftEntry->date)->format('l') }})
+                                    </span>
                                 </td>
                                 <td class="p-1 align-top w-auto">
                                     <div contenteditable="true" class="question-one" data-date=""

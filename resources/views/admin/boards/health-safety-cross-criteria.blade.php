@@ -184,12 +184,12 @@
 
         <!-- Legend -->
         <div class="legend">
-            <div style="margin-bottom: 10px;">
+            {{-- <div style="margin-bottom: 10px;">
                 <button type="button" class="btn btn-danger d-flex align-items-center gap-1" id="resetLegendBtn">
                     <i class="ph ph-clock-clockwise"></i>
                     Reset
                 </button>
-            </div>
+            </div> --}}
             @forelse ($crossCriteria as $legend)
                 <div class="legend-item" data-name="{{ $legend->name }}" data-color="{{ $legend->color }}"
                     data-bg-color="{{ $legend->bg_color }}" data-description="{{ $legend->description }}">
@@ -265,14 +265,6 @@
         text-align: center;
     }
 
-    /* .legend {
-        flex: 1;
-        min-width: 164px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-    } */
     .legend {
         flex: 1;
         min-width: 164px;
@@ -330,8 +322,8 @@
         }
 
         .calendar-cell {
-            flex: 0 0 45px;
-            height: 45px;
+            flex: 0 0 70px;
+            height: 70px;
             font-size: 12px;
         }
 
@@ -346,12 +338,21 @@
         }
 
         .legend-item {
-            width: 45%;
+            width: 100%;
             margin-bottom: 10px;
+            justify-content: center;
         }
     }
 
     @media (max-width: 480px) {
+        .safety-calendar-board {
+            padding: 20px 5px;
+        }
+
+        .calendar-row {
+            flex-wrap: nowrap;
+        }
+
         .calendar-cell {
             flex: 0 0 38px;
             height: 38px;
@@ -361,6 +362,7 @@
 
         .legend-item {
             width: 100%;
+            justify-content: center;
         }
     }
 </style>

@@ -22,9 +22,9 @@
                             <thead>
                                 <tr>
                                     <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col" style="max-width: 80px; width: 80px;">Color Code</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col" class="th-name">Name</th>
+                                    <th scope="col" class="th-color-code">Color Code</th>
+                                    <th scope="col" class="th-description">Description</th>
                                     <th scope="col" style="max-width: 120px; width: 120px;">Actions</th>
                                 </tr>
                             </thead>
@@ -34,6 +34,25 @@
             </div>
         </div>
     </div>
+    <style>
+        .th-color-code {
+            min-width: 100px;
+        }
+
+        @media only screen and (max-width: 480px) {
+            .th-name {
+                min-width: 150px;
+            }
+
+            .th-color-code {
+                min-width: 100px;
+            }
+
+            .th-description {
+                min-width: 250px;
+            }
+        }
+    </style>
     <!-- Add or Edit Modal -->
     @include('components.admin.cross-criteria.modal.add-or-edit')
     <!-- Delete Modal -->

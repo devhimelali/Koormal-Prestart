@@ -19,8 +19,8 @@
                             <thead class="table-active">
                                 <tr>
                                     <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Linked Shift</th>
+                                    <th scope="col" class="th-name">Name</th>
+                                    <th scope="col" class="th-linked-shift">Linked Shift</th>
                                     <th scope="col" style="max-width: 180px; width: 180px;">Actions</th>
                                 </tr>
                             </thead>
@@ -32,7 +32,15 @@
             </div>
         </div>
     </div>
+    <style>
+        @media only screen and (max-width: 767px) {
 
+            .th-name,
+            .th-linked-shift {
+                min-width: 100px;
+            }
+        }
+    </style>
     <x-common.dynamic-form-modal id="addOrEditShiftModal" form-id="shiftAddForm" title="Add a new shift"
         submit-text="Save" />
     <x-common.delete-modal id="deleteShiftModal" title="Delete Shift"

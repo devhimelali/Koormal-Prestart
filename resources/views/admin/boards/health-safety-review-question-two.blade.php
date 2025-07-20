@@ -37,8 +37,7 @@
                     <tbody>
                         @forelse ($healthSafetyReview as $review)
                             <tr class="align-middle">
-                                <td class="bg-light text-nowrap"
-                                    style="min-width: 100px !important; max-width: 180px; width: 180px;">
+                                <td class="bg-light td-date">
                                     {{ $review->dailyShiftEntry->date }}
                                     ({{ \Carbon\Carbon::parse($review->dailyShiftEntry->date)->format('l') }})
                                 </td>

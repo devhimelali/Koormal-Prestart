@@ -85,6 +85,12 @@
             font-size: 16px;
         }
 
+        .td-date {
+            min-width: 100px !important;
+            max-width: 180px;
+            width: 180px;
+        }
+
         @media only screen and (max-width: 768px) {
             .board-title {
                 font-size: 1rem;
@@ -99,7 +105,6 @@
             }
 
             .btn-sm {
-                width: 100%;
                 margin-top: 0.5rem;
             }
 
@@ -109,6 +114,11 @@
         }
 
         @media only screen and (max-width: 480px) {
+
+            .board {
+                padding: 1.5rem .6rem;
+            }
+
             .supervisor-name {
                 font-size: 16px;
                 padding: 6px 10px;
@@ -135,6 +145,15 @@
             .board-container {
                 border-radius: 3px;
                 padding: 0.5rem;
+            }
+
+            .td-date {
+                min-width: 95px !important;
+                max-width: 95px;
+                width: 95px !important;
+                overflow-wrap: break-word;
+                word-break: break-word;
+                white-space: normal;
             }
         }
     </style>

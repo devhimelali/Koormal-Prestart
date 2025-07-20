@@ -18,7 +18,7 @@
                             <thead class="table-active">
                                 <tr>
                                     <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
-                                    <th scope="col">Start Date - End Date</th>
+                                    <th scope="col" class="th-range">Start Date - End Date</th>
                                     <th scope="col">Shift</th>
                                     <th scope="col">Crew</th>
                                     <th scope="col" style="min-width: 120px; width: 120px;">Actions</th>
@@ -130,4 +130,19 @@
             });
         }
     </script>
+@endsection
+@section('page-css')
+    <style>
+        @media only screen and (max-width: 480px) {
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 10px;
+            }
+
+            .th-range {
+                min-width: 200px;
+            }
+        }
+    </style>
 @endsection

@@ -18,12 +18,12 @@
                     <form method="POST" action="{{ route('shift-rotations.update') }}">
                         @csrf
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-md-6 mb-2">
                                 <label class="form-label" for="start_date">Start Date:</label>
                                 <input type="text" name="start_date" class="form-control flatpickr" id="start_date"
                                     value="{{ old('start_date', optional($rotation)->start_date) }}" required>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 mb-2">
                                 <label class="form-label" for="rotation_days">Rotation Days (e.g. 7):</label>
                                 <input type="number" name="rotation_days" class="form-control" id="rotation_days"
                                     min="1" value="{{ old('rotation_days', optional($rotation)->rotation_days) }}"
