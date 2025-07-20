@@ -15,8 +15,13 @@ class BoardService
 {
     public function saveSupervisorName(Request $request)
     {
-        $dailyShiftEntry = DailyShiftEntry::find($request->daily_shift_entry_id);
-        $dailyShiftEntry->supervisor_name = $request->supervisor_name;
+        $validated = $request->validate([
+            'supervisor_name' => 'required|string|max:255',
+            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
+        ]);
+
+        $dailyShiftEntry = DailyShiftEntry::find($validated['daily_shift_entry_id']);
+        $dailyShiftEntry->supervisor_name = $validated['supervisor_name'];
         $dailyShiftEntry->save();
     }
 
@@ -70,8 +75,6 @@ class BoardService
     {
         $currentMonth = now()->format('m');
         $currentYear = now()->format('Y');
-        $startDate = now()->startOfMonth()->format('d-m-Y');
-        $endDate = now()->endOfMonth()->format('d-m-Y');
 
         return HealthSafetyCrossCriteria::with('crossCriteria')
             ->whereHas('dailyShiftEntry', function ($query) use ($currentMonth, $currentYear) {
