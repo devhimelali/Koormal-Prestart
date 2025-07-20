@@ -113,12 +113,14 @@
 
             $(document).on('click', '#addProductivityQuestionOneBtn', function() {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
-                addBlankProductiveQuestion('question_one', daily_shift_entry_id);
+                let answer = $('.productivity-question-one').text().trim();
+                addBlankProductiveQuestion('question_one', daily_shift_entry_id, answer);
             });
 
             $(document).on('click', '#addProductivityQuestionTwoBtn', function() {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
-                addBlankProductiveQuestion('question_two', daily_shift_entry_id);
+                let answer = $('.productivity-question-two').text().trim();
+                addBlankProductiveQuestion('question_two', daily_shift_entry_id, answer);
             });
 
             $(document).on('blur', '.productivity-question-one', function() {
@@ -141,6 +143,43 @@
                         daily_shift_entry_id: daily_shift_entry_id,
                         question_number: question_number,
                         answer: answer,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    beforeSend: function() {
+                        $('#loader').show();
+                    },
+                    success: function(response) {
+                        notify('success', response.message);
+                        setTimeout(() => {
+                            updateBoard(response.step);
+                        }, 500);
+                    },
+                    error: handleAjaxErrors,
+                    complete: function() {
+                        $('#loader').hide();
+                    }
+                });
+            }
+
+            $(document).on('click', '#addSuccessNoteBtn', function() {
+                let note = $('.success-note').text().trim();
+                addBlankSuccessNote(note);
+            });
+
+            $(document).on('blur', '.success-note', function() {
+                let note = $(this).text().trim();
+                addBlankSuccessNote(note);
+            });
+
+            function addBlankSuccessNote(note =
+                null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
+            ) {
+                $.ajax({
+                    url: "{{ route('boards.store.celebrate-success') }}",
+                    method: 'POST',
+                    data: {
+                        daily_shift_entry_id: daily_shift_entry_id,
+                        note: note,
                         _token: '{{ csrf_token() }}'
                     },
                     beforeSend: function() {

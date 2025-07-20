@@ -69,6 +69,13 @@ class BoardController extends Controller
             return view('admin.boards.review_of_previous_shift_question_two', [
                 'productiveQuestionTwo' => $productiveQuestionTwo
             ])->render();
+        } elseif ($step == 6) {
+            $celebrateSuccesses = $this->boardService->getCelebrateSuccesses($request);
+            return view('admin.boards.celebrate_success', [
+                'celebrateSuccesses' => $celebrateSuccesses
+            ])->render();
+        } elseif ($step == 7) {
+            return view('admin.boards.site_communication')->render();
         }
     }
 
@@ -91,6 +98,11 @@ class BoardController extends Controller
     public function storeProductiveQuestion(Request $request)
     {
         return $this->boardService->storeProductiveQuestion($request);
+    }
+
+    public function storeCelebrateSuccess(Request $request)
+    {
+        return $this->boardService->storeCelebrateSuccess($request);
     }
 }
 
