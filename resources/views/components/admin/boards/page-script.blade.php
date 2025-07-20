@@ -198,6 +198,43 @@
                 });
             }
 
+            $(document).on('click', '#addSiteCommunicationBtn', function() {
+                let note = $('.site-communication-note').text().trim();
+                addBlankSiteCommunication(note);
+            });
+
+            $(document).on('blur', '.site-communication-note', function() {
+                let note = $(this).text().trim();
+                addBlankSiteCommunication(note);
+            });
+
+            function addBlankSiteCommunication(note =
+                null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
+            ) {
+                $.ajax({
+                    url: "{{ route('boards.store.site-communication') }}",
+                    method: 'POST',
+                    data: {
+                        daily_shift_entry_id: daily_shift_entry_id,
+                        note: note,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    beforeSend: function() {
+                        $('#loader').show();
+                    },
+                    success: function(response) {
+                        notify('success', response.message);
+                        setTimeout(() => {
+                            updateBoard(response.step);
+                        }, 500);
+                    },
+                    error: handleAjaxErrors,
+                    complete: function() {
+                        $('#loader').hide();
+                    }
+                });
+            }
+
             $(document).on('click', '.legend-item', function() {
                 let name = $(this).data('name');
                 let color = $(this).data('color');

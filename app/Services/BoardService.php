@@ -9,6 +9,7 @@ use App\Models\CelebrateSuccess;
 use App\Models\HealthSafetyReview;
 use App\Models\ReviewPreviousShift;
 use App\Models\HealthSafetyCrossCriteria;
+use App\Models\SiteCommunication;
 
 class BoardService
 {
@@ -205,6 +206,43 @@ class BoardService
             'status' => 'success',
             'message' => 'Celebrate Success saved successfully',
             'step' => 6
+        ]);
+    }
+
+    public function getSiteCommunications($request)
+    {
+        $validated = $request->validate([
+            'shift_id' => 'required|exists:shifts,id',
+            'rotation_id' => 'required|exists:shift_rotations,id',
+            'shift_type' => 'required|string|in:day,night'
+        ]);
+
+        return SiteCommunication::with('dailyShiftEntry')
+            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
+                $query->where('shift_id', $validated['shift_id'])
+                    ->where('shift_rotation_id', $validated['rotation_id'])
+                    ->where('shift_type', $validated['shift_type']);
+            })
+            ->get();
+    }
+
+    public function storeSiteCommunication($request)
+    {
+        $validated = $request->validate([
+            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
+            'note' => 'nullable|string',
+        ]);
+
+        SiteCommunication::updateOrCreate([
+            'daily_shift_entry_id' => $validated['daily_shift_entry_id']
+        ], [
+            'note' => $validated['note']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Site Communication saved successfully',
+            'step' => 7
         ]);
     }
 }

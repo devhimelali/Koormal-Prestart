@@ -75,7 +75,10 @@ class BoardController extends Controller
                 'celebrateSuccesses' => $celebrateSuccesses
             ])->render();
         } elseif ($step == 7) {
-            return view('admin.boards.site_communication')->render();
+            $siteCommunications = $this->boardService->getSiteCommunications($request);
+            return view('admin.boards.site_communication', [
+                'siteCommunications' => $siteCommunications
+            ])->render();
         }
     }
 
@@ -103,6 +106,10 @@ class BoardController extends Controller
     public function storeCelebrateSuccess(Request $request)
     {
         return $this->boardService->storeCelebrateSuccess($request);
+    }
+    public function storeSiteCommunication(Request $request)
+    {
+        return $this->boardService->storeSiteCommunication($request);
     }
 }
 
