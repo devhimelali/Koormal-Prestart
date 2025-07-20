@@ -1,4 +1,5 @@
 @section('page-script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function updateBoard(step, heading = "Our Health & Safety", $shift_id = {{ $dailyShiftEntry->shift_id }},
             $rotation_id = {{ $dailyShiftEntry->shift_rotation_id }}, $shift_type = "{{ $dailyShiftEntry->shift_type }}"
@@ -304,6 +305,41 @@
                     error: handleAjaxErrors,
                     complete: function() {
                         ajaxComplete('#safetyCalendarSubmitBtn');
+                    }
+                });
+            });
+
+            $(document).on('click', '#resetLegendBtn', function() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will reset the safety calendar to its default state.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, reset it!',
+                    confirmButtonColor: '#d33',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('boards.reset.safety-calendar') }}",
+                            method: 'POST',
+                            data: {
+                                daily_shift_entry_id: {{ $dailyShiftEntry->id }},
+                                _token: '{{ csrf_token() }}'
+                            },
+                            beforeSend: function() {
+                                $('#loader').show();
+                            },
+                            success: function(response) {
+                                notify('success', response.message);
+                                setTimeout(() => {
+                                    updateBoard(response.step);
+                                }, 500);
+                            },
+                            error: handleAjaxErrors,
+                            complete: function() {
+                                $('#loader').hide();
+                            }
+                        });
                     }
                 });
             });

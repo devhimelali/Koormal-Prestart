@@ -184,6 +184,12 @@
 
         <!-- Legend -->
         <div class="legend">
+            <div style="margin-bottom: 10px;">
+                <button type="button" class="btn btn-danger d-flex align-items-center gap-1" id="resetLegendBtn">
+                    <i class="ph ph-clock-clockwise"></i>
+                    Reset
+                </button>
+            </div>
             @forelse ($crossCriteria as $legend)
                 <div class="legend-item" data-name="{{ $legend->name }}" data-color="{{ $legend->color }}"
                     data-bg-color="{{ $legend->bg_color }}" data-description="{{ $legend->description }}">
@@ -259,13 +265,22 @@
         text-align: center;
     }
 
-    .legend {
+    /* .legend {
         flex: 1;
         min-width: 164px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-end;
+    } */
+    .legend {
+        flex: 1;
+        min-width: 164px;
+        max-width: 170px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .legend-item {

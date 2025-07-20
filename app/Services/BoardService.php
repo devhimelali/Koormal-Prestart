@@ -70,8 +70,8 @@ class BoardService
     {
         $currentMonth = now()->format('m');
         $currentYear = now()->format('Y');
-        $startDate = now()->startOfMonth()->format('d-m-Y'); // example 01-07-2025
-        $endDate = now()->endOfMonth()->format('d-m-Y'); // example 31-07-2025
+        $startDate = now()->startOfMonth()->format('d-m-Y');
+        $endDate = now()->endOfMonth()->format('d-m-Y');
 
         return HealthSafetyCrossCriteria::with('crossCriteria')
             ->whereHas('dailyShiftEntry', function ($query) use ($currentMonth, $currentYear) {
@@ -243,6 +243,24 @@ class BoardService
             'status' => 'success',
             'message' => 'Site Communication saved successfully',
             'step' => 7
+        ]);
+    }
+
+    public function resetSafetyCalendar($request)
+    {
+        $currentMonth = now()->format('m');
+        $currentYear = now()->format('Y');
+
+        // Reset the safety calendar for the current month
+        HealthSafetyCrossCriteria::whereHas('dailyShiftEntry', function ($query) use ($currentMonth, $currentYear) {
+            $query->whereMonth('date', $currentMonth)
+                ->whereYear('date', $currentYear);
+        })->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Safety Calendar reset successfully',
+            'step' => 3,
         ]);
     }
 }

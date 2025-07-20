@@ -111,6 +111,11 @@ class BoardController extends Controller
     {
         return $this->boardService->storeSiteCommunication($request);
     }
+
+    public function resetSafetyCalendar(Request $request)
+    {
+        return $this->boardService->resetSafetyCalendar($request);
+    }
 }
 
 

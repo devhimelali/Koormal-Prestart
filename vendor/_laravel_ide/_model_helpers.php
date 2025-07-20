@@ -2511,7 +2511,17 @@ namespace App\Models {
     /**
      * App\Models\SiteCommunication
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $note
+     * @property int $daily_shift_entry_id
+     * @property int $id
      * @property-read \App\Models\DailyShiftEntry $dailyShiftEntry
+     * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication whereDailyShiftEntryId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication whereNote($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<SiteCommunication>|SiteCommunication query()
