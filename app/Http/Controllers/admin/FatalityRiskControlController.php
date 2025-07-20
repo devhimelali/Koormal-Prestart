@@ -5,7 +5,9 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Models\FatalityRiskControl;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\FatalityRiskControlRequest;
 
 class FatalityRiskControlController extends Controller
 {
@@ -34,5 +36,70 @@ class FatalityRiskControlController extends Controller
                 ->make(true);
         }
         return view('admin.fatality-risk-controls.index');
+    }
+
+    public function store(FatalityRiskControlRequest $request)
+    {
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('images/fatality-risk-controls', 'public');
+        }
+
+        FatalityRiskControl::create($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fatality Risk Control created successfully.',
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $fatalityRiskControl = FatalityRiskControl::findOrFail($id);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $fatalityRiskControl,
+        ]);
+    }
+
+    public function update(FatalityRiskControlRequest $request, $id)
+    {
+        $fatalityRiskControl = FatalityRiskControl::findOrFail($id);
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            if ($fatalityRiskControl->image && Storage::disk('public')->exists($fatalityRiskControl->image)) {
+                Storage::disk('public')->delete($fatalityRiskControl->image);
+            }
+
+            $validated['image'] = $request->file('image')->store('images/fatality-risk-controls', 'public');
+        } else {
+            unset($validated['image']);
+        }
+
+        $fatalityRiskControl->update($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fatality Risk Control updated successfully.',
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $fatalityRiskControl = FatalityRiskControl::findOrFail($id);
+
+        if ($fatalityRiskControl->image && Storage::disk('public')->exists($fatalityRiskControl->image)) {
+            Storage::disk('public')->delete($fatalityRiskControl->image);
+        }
+
+        $fatalityRiskControl->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fatality Risk Control deleted successfully.',
+        ]);
     }
 }
