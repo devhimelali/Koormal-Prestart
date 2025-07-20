@@ -56,3 +56,25 @@
         background-color: #f0f0f0 !important;
     }
 </style>
+
+<script>
+    // ✅ Reset everything when modal is closed
+    $('#safetyCalendarModal').on('hidden.bs.modal', function() {
+        $('.criteria-option').each(function() {
+            let $item = $(this);
+            let color = $item.data('color');
+            let bg = $item.data('bg');
+
+            // Restore original styles
+            $item.find('.option')
+                .removeClass('selected')
+                .css({
+                    border: `${color} 2px solid`,
+                    backgroundColor: bg
+                });
+        });
+
+        // Clear hidden input
+        $('#safetyCalendarModal #safetyCalendarCriteriaId').val('');
+    });
+</script>

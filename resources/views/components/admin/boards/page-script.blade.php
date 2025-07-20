@@ -131,44 +131,78 @@
                 $('#safetyCalendarModal').modal('show');
             })
 
+            // $(document).on('click', '.criteria-option', function() {
+            //     let $clicked = $(this);
+            //     let $option = $clicked.find('.option');
+            //     let criteriaId = $clicked.data('id');
+            //     $('#safetyCalendarModal #safetyCalendarCriteriaId').val(criteriaId);
+
+            //     // Restore all others to original style
+            //     $('.criteria-option').each(function() {
+            //         let $item = $(this);
+            //         if ($item[0] !== $clicked[0]) {
+            //             let color = $item.data('color');
+            //             let bg = $item.data('bg');
+            //             $item.find('.option')
+            //                 .removeClass('selected')
+            //                 .css({
+            //                     border: `${color} 2px solid`,
+            //                     backgroundColor: bg
+            //                 });
+            //         }
+            //     });
+
+            //     // Toggle selected state on clicked
+            //     if ($option.hasClass('selected')) {
+            //         // If already selected, unselect and restore original style
+            //         let color = $clicked.data('color');
+            //         let bg = $clicked.data('bg');
+            //         $option.removeClass('selected').css({
+            //             border: `${color} 2px solid`,
+            //             backgroundColor: bg
+            //         });
+            //     } else {
+            //         // Select and apply selected style
+            //         $option.addClass('selected').css({
+            //             border: '2px solid #000', // or any selected style
+            //             backgroundColor: '#f0f0f0' // selected background
+            //         });
+            //     }
+            // });
+
+            // // when modal is closed, reset the form
             $(document).on('click', '.criteria-option', function() {
                 let $clicked = $(this);
                 let $option = $clicked.find('.option');
                 let criteriaId = $clicked.data('id');
+
+                // Set hidden input value
                 $('#safetyCalendarModal #safetyCalendarCriteriaId').val(criteriaId);
 
-                // Restore all others to original style
+                // Deselect all other options
                 $('.criteria-option').each(function() {
                     let $item = $(this);
-                    if ($item[0] !== $clicked[0]) {
-                        let color = $item.data('color');
-                        let bg = $item.data('bg');
-                        $item.find('.option')
-                            .removeClass('selected')
-                            .css({
-                                border: `${color} 2px solid`,
-                                backgroundColor: bg
-                            });
-                    }
+                    let color = $item.data('color');
+                    let bg = $item.data('bg');
+                    $item.find('.option')
+                        .removeClass('selected')
+                        .css({
+                            border: `${color} 2px solid`,
+                            backgroundColor: bg
+                        });
                 });
 
-                // Toggle selected state on clicked
-                if ($option.hasClass('selected')) {
-                    // If already selected, unselect and restore original style
-                    let color = $clicked.data('color');
-                    let bg = $clicked.data('bg');
-                    $option.removeClass('selected').css({
-                        border: `${color} 2px solid`,
-                        backgroundColor: bg
-                    });
-                } else {
-                    // Select and apply selected style
-                    $option.addClass('selected').css({
-                        border: '2px solid #000', // or any selected style
-                        backgroundColor: '#f0f0f0' // selected background
-                    });
-                }
+                // Select the clicked one
+                $option.addClass('selected').css({
+                    border: '2px solid #000',
+                    backgroundColor: '#f0f0f0'
+                });
             });
+
+
+
+
+
 
             $(document).on('submit', '#safetyCalendarForm', function(e) {
                 e.preventDefault();
