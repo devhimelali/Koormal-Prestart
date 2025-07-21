@@ -4,7 +4,8 @@
     $inputId = Str::uuid();
 @endphp
 
-<div class="dropzone border border-secondary rounded p-3 text-center bg-light" id="dropzone-{{ $inputId }}">
+<div class="dropzone border border-secondary rounded p-3 text-center bg-light" id="dropzone-{{ $inputId }}"
+    data-input-id="{{ $inputId }}">
     <p class="text-muted mb-0 drop-zone-title">Drag & drop or click to upload {{ $multiple ? 'images' : 'an image' }}</p>
     <input type="file" name="{{ $multiple ? $name . '[]' : $name }}" id="file-input-{{ $inputId }}" class="d-none"
         accept="image/*" {{ $multiple ? 'multiple' : '' }}>

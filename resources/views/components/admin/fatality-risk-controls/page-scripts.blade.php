@@ -47,12 +47,18 @@
                             '#addFatalityRiskControlSubmitBtn');
                     },
                     success: function(response) {
-                        $('#addFatalityRiskControlModal').modal('hide');
                         table.ajax.reload();
                         notify('success', response.message);
                         $('#addFatalityRiskControlForm')[0].reset();
                         resetCkEditors();
                         $('#old-image-preview').addClass('d-none');
+                        document.querySelectorAll('.dropzone[data-input-id]').forEach(
+                            dropzone => {
+                                const id = dropzone.dataset.inputId;
+                                const preview = document.getElementById(`preview-${id}`);
+                                if (preview) preview.innerHTML = '';
+                            });
+                        $('#addFatalityRiskControlModal').modal('hide');
                     },
                     error: handleAjaxErrors,
                     complete: function() {

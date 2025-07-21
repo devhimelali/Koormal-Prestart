@@ -14,26 +14,29 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <x-table id="fatalityRiskControlsTable" :thead="[
-                        [
-                            'label' => '#',
-                            'class' => 'th-sn',
-                        ],
-                        [
-                            'label' => 'Image',
-                            'class' => 'th-image',
-                        ],
-                        [
-                            'label' => 'Name',
-                        ],
-                        [
-                            'label' => 'Description',
-                        ],
-                        [
-                            'label' => 'Actions',
-                            'class' => 'th-actions',
-                        ],
-                    ]" />
+                    <x-table id="fatalityRiskControlsTable"
+                        tableVariant="table-sm table-hover table-striped align-middle mb-0" :thead="[
+                            [
+                                'label' => '#',
+                                'class' => 'th-sn',
+                            ],
+                            [
+                                'label' => 'Image',
+                                'class' => 'th-image',
+                            ],
+                            [
+                                'label' => 'Name',
+                                'class' => 'th-name',
+                            ],
+                            [
+                                'label' => 'Description',
+                                'class' => 'th-description',
+                            ],
+                            [
+                                'label' => 'Actions',
+                                'class' => 'th-actions',
+                            ],
+                        ]" />
 
                 </div>
             </div>

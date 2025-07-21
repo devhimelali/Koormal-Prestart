@@ -4,6 +4,14 @@
             max-width: 120px;
         }
 
+        .th-name {
+            max-width: 150px;
+        }
+
+        .th-description {
+            max-width: 300px;
+        }
+
         .th-actions {
             max-width: 100px;
         }
