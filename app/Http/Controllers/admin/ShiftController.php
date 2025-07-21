@@ -84,6 +84,6 @@ class ShiftController extends Controller
     public function getShiftList()
     {
         $shifts = Shift::get();
-        return view('components.admin.shifts.linked-shift-option', compact('shifts'));
+        return response()->json(['status' => 'success', 'data' => $shifts->toArray()], 200);
     }
 }

@@ -7,6 +7,9 @@
                 id="name" required />
             <x-form.error :name="'name'" />
         </div>
+        <x-form.color-picker name="bg_color" label="Background Color" value="#ffcc00" />
+
+        <x-form.select name="status" label="Status" :options="['active' => 'Active', 'inactive' => 'Inactive']" />
 
         <div class="mb-2">
             <x-form.label for="description" text="Description" />
@@ -19,7 +22,7 @@
             <x-form.image-dropzone name="photo" />
         </div>
         <x-slot name="buttons">
-            <button type="submit" form="addFatalityRiskControlSubmitBtn" class="btn btn-secondary">Save</button>
+            <button type="submit" id="addFatalityRiskControlSubmitBtn" class="btn btn-secondary">Save</button>
             <button type="button" class="btn btn-subtle-danger" data-bs-dismiss="modal">Cancel</button>
         </x-slot>
     </x-form>

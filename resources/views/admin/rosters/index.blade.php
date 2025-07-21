@@ -13,49 +13,54 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-centered align-middle mb-0 table-hover" id="scheduleTable">
-                            <thead class="table-active">
-                                <tr>
-                                    <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
-                                    <th scope="col" class="th-range">Start Date - End Date</th>
-                                    <th scope="col">Shift</th>
-                                    <th scope="col">Crew</th>
-                                    <th scope="col" style="min-width: 120px; width: 120px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody style="vertical-align: middle">
-                                @foreach ($blocks as $day)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            {{ $day['start_date'] }} - {{ $day['end_date'] }}</td>
-                                        <td>Day</td>
-                                        <td>{{ $day['day_shift'] }}</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-secondary viewBoard"
-                                                data-start_date="{{ $day['start_date'] }}"
-                                                data-end_date="{{ $day['end_date'] }}" data-crew="{{ $day['day_shift'] }}"
-                                                data-shift="day">View Board</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            {{ $day['start_date'] }} - {{ $day['end_date'] }}</td>
-                                        <td>Night</td>
-                                        <td>{{ $day['night_shift'] }}</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-secondary viewBoard"
-                                                data-start_date="{{ $day['start_date'] }}"
-                                                data-end_date="{{ $day['end_date'] }}"
-                                                data-crew="{{ $day['night_shift'] }}" data-shift="night">View Board</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                    <x-table id="scheduleTable" :thead="[
+                        [
+                            'label' => '#',
+                            'class' => 'th-sn',
+                        ],
+                        [
+                            'label' => 'Start Date - End Date',
+                            'class' => 'th-range',
+                        ],
+                        [
+                            'label' => 'Shift',
+                        ],
+                        [
+                            'label' => 'Crew',
+                        ],
+                        [
+                            'label' => 'Actions',
+                            'class' => 'th-actions',
+                        ],
+                    ]">
+                        @foreach ($blocks as $day)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ $day['start_date'] }} - {{ $day['end_date'] }}</td>
+                                <td>Day</td>
+                                <td>{{ $day['day_shift'] }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-secondary viewBoard"
+                                        data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
+                                        data-crew="{{ $day['day_shift'] }}" data-shift="day">View Board</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ $day['start_date'] }} - {{ $day['end_date'] }}</td>
+                                <td>Night</td>
+                                <td>{{ $day['night_shift'] }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-secondary viewBoard"
+                                        data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
+                                        data-crew="{{ $day['night_shift'] }}" data-shift="night">View
+                                        Board</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </x-table>
                 </div>
             </div>
         </div>
@@ -133,6 +138,11 @@
 @endsection
 @section('page-css')
     <style>
+        .th-actions {
+            min-width: 120px;
+            width: 120px;
+        }
+
         @media only screen and (max-width: 480px) {
             .card-header {
                 flex-direction: column;

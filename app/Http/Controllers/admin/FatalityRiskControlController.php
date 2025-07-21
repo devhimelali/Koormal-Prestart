@@ -28,7 +28,7 @@ class FatalityRiskControlController extends Controller
                 })
                 ->addColumn('actions', function ($row) {
                     return '<div class="btn-group">
-                                <button class="btn btn-warning btn-sm edit-btn d-flex align-items-center gap-1" data-id="' . $row->id . '">
+                                <button class="btn btn-secondary btn-sm edit-btn d-flex align-items-center gap-1" data-id="' . $row->id . '">
                                 <i class="bi bi-pencil"></i>
                                 Edit
                                 </button>

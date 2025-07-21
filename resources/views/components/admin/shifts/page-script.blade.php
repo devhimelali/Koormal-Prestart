@@ -32,24 +32,8 @@
             });
 
             $('#addShiftBtn').on('click', function() {
-                openDynamicFormModal({
-                    modalId: 'addOrEditShiftModal',
-                    formId: 'shiftAddForm',
-                    title: 'Add a new shift',
-                    action: "{{ route('shifts.store') }}",
-                    method: 'POST',
-                    fields: [{
-                        name: 'name',
-                        type: 'text',
-                        placeholder: 'Enter shift name',
-                        required: true,
-                        label: 'Name'
-                    }]
-                });
-                // Load linked shifts HTML separately and inject
-                getAllShifts().then(response => {
-                    $('.dynamic-wrapper').html(response);
-                });
+                getAllShifts();
+                $('#addOrEditShiftModal').modal('show');
             });
 
             $('#shiftAddForm').on('submit', function(e) {
@@ -101,27 +85,13 @@
 
                 $.get(editUrl, function(data) {
                     $('#loader').hide();
-
-                    openDynamicFormModal({
-                        modalId: 'addOrEditShiftModal',
-                        formId: 'shiftAddForm',
-                        title: 'Edit Shift',
-                        action: "{{ route('shifts.update', ':id') }}".replace(':id', id),
-                        method: 'PUT',
-                        fields: [{
-                            label: 'Name',
-                            name: 'name',
-                            type: 'text',
-                            required: true,
-                            value: data.data.name
-                        }]
-                    });
-
-                    // Load linked shifts HTML and set selected value
-                    getAllShifts().then(response => {
-                        $('.dynamic-wrapper').html(response);
-                        $('#linked_shift_id').val(data.data.linked_shift_id);
-                    });
+                    $('#name').val(data.data.name);
+                    getAllShifts(data.data.linked_shift_id);
+                    $('#addOrEditShiftModal').modal('show');
+                    $('#addOrEditShiftModalLabel').text('Edit shift');
+                    $('#method').val('PUT');
+                    $('#shiftAddForm').attr('action', "{{ route('shifts.update', ':id') }}"
+                        .replace(':id', id));
                 }).fail(function() {
                     $('#loader').hide();
                     notify('error', 'Something went wrong. Please try again.');
@@ -160,12 +130,21 @@
                 });
             });
 
-            function getAllShifts() {
+            function getAllShifts(preselectedId = null) {
                 return $.ajax({
                     url: "{{ route('shifts.get-shift-List') }}",
                     type: 'GET',
                     success: function(response) {
-                        return response;
+                        const $select = $('#linked_shift_id');
+                        $select.empty();
+                        $select.append(`<option value="">Select a shift</option>`);
+
+                        response.data.forEach(function(shift) {
+                            const selected = shift.id == preselectedId ? 'selected' : '';
+                            $select.append(
+                                `<option value="${shift.id}" ${selected}>${shift.name}</option>`
+                            );
+                        });
                     },
                     error: function(xhr) {
                         console.error(xhr);

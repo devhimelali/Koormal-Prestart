@@ -948,6 +948,18 @@ namespace App\Models {
     /**
      * App\Models\FatalityRiskControl
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $image
+     * @property string|null $description
+     * @property string $name
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereImage($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl query()

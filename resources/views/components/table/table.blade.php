@@ -2,6 +2,7 @@
     'id' => 'dataTable',
     'tableVariant' => 'table-sm table-hover table-striped align-middle table-nowrap mb-0',
     'thead' => null,
+    'tbody' => null,
     'tfoot' => null,
 ])
 

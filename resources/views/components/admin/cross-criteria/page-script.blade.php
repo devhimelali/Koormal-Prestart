@@ -1,7 +1,5 @@
 @section('page-script')
     <script>
-        let ckeditorInstance;
-
         $(document).ready(function() {
             let table = $('#dataTable').DataTable({
                 processing: true,
@@ -37,22 +35,12 @@
                 ]
             });
 
-            // Initialize CKEditor 5
-            ClassicEditor
-                .create(document.querySelector('#description'))
-                .then(editor => {
-                    ckeditorInstance = editor;
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-
 
             // Form submit handler
             $('#addOrEditForm').submit(function(e) {
                 e.preventDefault();
                 // Get CKEditor data and sync it to the textarea
-                $('#description').val(ckeditorInstance.getData());
+                // $('#description').val(ckeditorInstance.getData());
                 const formData = $(this).serialize();
 
                 $.ajax({
@@ -66,6 +54,8 @@
                         $('#addOrEditModal').modal('hide');
                         table.ajax.reload();
                         notify('success', response.message);
+                        $('#addOrEditForm')[0].reset();
+                        resetCkEditors();
                     },
                     error: handleAjaxErrors,
                     complete: function() {
@@ -81,9 +71,7 @@
                 $('#addOrEditModal .modal-title').text('Add a new cross criteria');
                 $('.invalid-feedback').text('').removeClass('d-block');
                 $('#addOrEditForm')[0].reset();
-                if (ckeditorInstance) {
-                    ckeditorInstance.setData('');
-                }
+                resetCkEditors();
             });
 
             $(document).on('click', '.edit', function() {
@@ -99,8 +87,8 @@
                     $('#addOrEditForm #name').val(response.data.name);
                     $('#addOrEditForm #color').val(response.data.color);
                     //show description in CKEditor
-                    if (ckeditorInstance) {
-                        ckeditorInstance.setData(response.data.description);
+                    if (window.editors && window.editors['description']) {
+                        window.editors['description'].setData(response.data.description || '');
                     }
                     $('#addOrEditModal').modal('show');
                 });

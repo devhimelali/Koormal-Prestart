@@ -192,6 +192,14 @@
             }
         }
 
+        function resetCkEditors() {
+            if (window.editors) {
+                Object.values(window.editors).forEach(editor => {
+                    editor.setData('');
+                });
+            }
+        }
+
         function ajaxBeforeSend(formSelector, buttonSelector) {
             $(formSelector).find('.is-invalid').removeClass('is-invalid');
             $(buttonSelector).prop('disabled', true);

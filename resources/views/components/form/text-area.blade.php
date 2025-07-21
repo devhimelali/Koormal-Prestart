@@ -67,6 +67,10 @@
                     .create(document.querySelector('#{{ $id }}'), {
                         extraPlugins: [LaravelUploadAdapterPlugin],
                     })
+                    .then(editor => {
+                        window.editors = window.editors || {};
+                        window.editors['{{ $id }}'] = editor;
+                    })
                     .catch(error => console.error(error));
             });
         </script>

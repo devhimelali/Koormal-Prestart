@@ -1,39 +1,28 @@
-<div id="addOrEditModal" data-bs-backdrop="static" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel"
-    aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-light py-2">
-                <h5 class="modal-title" id="myModalLabel">Create a new cross criteria</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+<x-modal id="addOrEditModal" title="Create a new cross criteria" :staticBackdrop="true" size="modal-lg">
+    <x-form action="{{ route('cross-criteria.store') }}" id="addOrEditForm">
+        <x-form.input type="hidden" name="_method" id="method" value="POST" />
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <x-form.label for="name" text="Title" required="true" />
+                <x-form.input type="text" name="name" id="name" placeholder="Enter cross criteria title"
+                    :required="true" />
+                <x-form.error :name="'name'" />
             </div>
-            <form action="{{ route('cross-criteria.store') }}" method="POST" id="addOrEditForm">
-                @csrf
-                <input type="hidden" name="_method" id="method" value="POST">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <label for="name" class="form-label">Title</label>
-                            <input type="text" name="name" class="form-control" id="name"
-                                placeholder="Enter cross criteria title">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label for="color" class="form-label">Color Code</label>
-                            <input type="color" name="color" class="form-control" id="color">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-secondary" id="addOrEditSubmitBtn">Save</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+            <div class="col-md-6 mb-2">
+                <x-form.label for="color" text="Color Code" required="true" />
+                <x-form.color-picker name="color" id="color" :required="true" />
+                <x-form.error :name="'color'" />
+            </div>
+            <div class="col-md-12 mb-2">
+                <x-form.label for="description" text="Description" />
+                <x-form.text-area name="description" id="description"
+                    placeholder="Write a short description about the cross criteria..." :useCkeditor="true" />
+                <x-form.error :name="'description'" />
+            </div>
+        </div>
+        <x-slot name="buttons">
+            <button type="submit" id="addOrEditSubmitBtn" class="btn btn-secondary">Save</button>
+            <button type="button" class="btn btn-subtle-danger" data-bs-dismiss="modal">Cancel</button>
+        </x-slot>
+    </x-form>
+</x-modal>

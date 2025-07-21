@@ -14,34 +14,55 @@
                             Add
                         </button>
                     </div>
-
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped align-middle mb-0" id="dataTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
-                                    <th scope="col" class="th-name">Name</th>
-                                    <th scope="col" class="th-color-code">Color Code</th>
-                                    <th scope="col" class="th-description">Description</th>
-                                    <th scope="col" style="max-width: 120px; width: 120px;">Actions</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+                    <x-table id="dataTable" tableVariant="table-sm table-hover table-striped align-middle mb-0"
+                        :thead="[
+                            [
+                                'label' => '#',
+                                'class' => 'th-sn',
+                            ],
+                            [
+                                'label' => 'name',
+                                'class' => 'th-name',
+                            ],
+                            [
+                                'label' => 'Color Code',
+                                'class' => 'th-color-code',
+                            ],
+                            [
+                                'label' => 'Description',
+                                'class' => 'th-description',
+                            ],
+                            [
+                                'label' => 'Actions',
+                                'class' => 'th-actions',
+                            ],
+                        ]" />
                 </div>
             </div>
         </div>
     </div>
     <style>
+        .th-sn {
+            max-width: 50px;
+            width: 50px;
+        }
+
         .th-color-code {
+            max-width: 120px;
+            width: 120px;
+        }
+
+        .th-actions {
             min-width: 100px;
+            width: 100px;
         }
 
         @media only screen and (max-width: 480px) {
             .th-name {
                 min-width: 150px;
+                width: 150px;
             }
 
             .th-color-code {
@@ -50,6 +71,12 @@
 
             .th-description {
                 min-width: 250px;
+                width: 250px;
+            }
+
+            .th-actions {
+                min-width: 100px;
+                width: 100px;
             }
         }
     </style>

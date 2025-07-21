@@ -14,25 +14,37 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-centered align-middle mb-0" id="dataTable">
-                            <thead class="table-active">
-                                <tr>
-                                    <th scope="col" style="max-width: 50px; width: 50px;">S.No</th>
-                                    <th scope="col" class="th-name">Name</th>
-                                    <th scope="col" class="th-linked-shift">Linked Shift</th>
-                                    <th scope="col" style="max-width: 180px; width: 180px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody style="vertical-align: middle">
-                            </tbody>
-                        </table>
-                    </div>
+                    <x-table id="dataTable" :thead="[
+                        [
+                            'label' => '#',
+                            'class' => 'th-sn',
+                        ],
+                        [
+                            'label' => 'Name',
+                        ],
+                        [
+                            'label' => 'Linked Shift',
+                        ],
+                        [
+                            'label' => 'Actions',
+                            'class' => 'th-actions',
+                        ],
+                    ]" />
                 </div>
             </div>
         </div>
     </div>
     <style>
+        .th-sn {
+            max-width: 50px;
+            width: 50px;
+        }
+
+        .th-actions {
+            max-width: 130px;
+            width: 130px;
+        }
+
         @media only screen and (max-width: 767px) {
 
             .th-name,
@@ -41,8 +53,9 @@
             }
         }
     </style>
-    <x-common.dynamic-form-modal id="addOrEditShiftModal" form-id="shiftAddForm" title="Add a new shift"
-        submit-text="Save" />
+    {{-- <x-common.dynamic-form-modal id="addOrEditShiftModal" form-id="shiftAddForm" title="Add a new shift"
+        submit-text="Save" /> --}}
+    @include('components.admin.shifts.modal.add-or-edit')
     <x-common.delete-modal id="deleteShiftModal" title="Delete Shift"
         message="Are you sure you want to delete this shift?" />
 @endsection
