@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RedirectController;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CKEditorController;
+use App\Http\Controllers\RedirectController;
 
 Route::get('/redirect', [RedirectController::class, 'redirect'])->name('redirect')->middleware('auth');
 Route::get('{role}/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -11,6 +12,9 @@ Route::get('{role}/profile', [ProfileController::class, 'show'])->name('profile.
 Route::get('/', function () {
     return view('auth.login');
 })->middleware('auth.redirect')->name('login');
+
+Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload')->middleware('auth');
+
 
 Route::get('clear-cache', function () {
     Artisan::call('optimize:clear');

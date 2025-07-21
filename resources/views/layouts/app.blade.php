@@ -150,6 +150,7 @@
             </script>
         @endforeach
     @endif
+    @stack('scripts')
     <script>
         @if (Session::has('success'))
             notify('success', "{{ session('success') }}");
