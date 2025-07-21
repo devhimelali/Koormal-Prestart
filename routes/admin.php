@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\admin\BoardController;
-use App\Http\Controllers\admin\CrossCriteriaController;
-use App\Http\Controllers\admin\HealthSafetyReviewController;
-use App\Http\Controllers\admin\RosterController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\BoardController;
 use App\Http\Controllers\admin\ShiftController;
+use App\Http\Controllers\admin\RosterController;
+use App\Http\Controllers\admin\CrossCriteriaController;
 use App\Http\Controllers\admin\ShiftRotationController;
+use App\Http\Controllers\admin\HealthSafetyReviewController;
+use App\Http\Controllers\admin\FatalityRiskControlController;
 
 Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -40,4 +41,5 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('store-productive-question', [BoardController::class, 'storeProductiveQuestion'])->name('boards.store.productive-question');
     Route::post('store-celebrate-success', [BoardController::class, 'storeCelebrateSuccess'])->name('boards.store.celebrate-success');
     Route::post('store-site-communication', [BoardController::class, 'storeSiteCommunication'])->name('boards.store.site-communication');
+    Route::resource('fatality-risk-controls', FatalityRiskControlController::class);
 });

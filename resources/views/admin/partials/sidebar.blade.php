@@ -59,7 +59,7 @@
                     <a href="{{ route('rosters.index') }}"
                         class="nav-link menu-link @if (Route::current()->getName() == 'rosters.index') active @endif"
                         aria-expanded="false">
-                        <i class="ph ph-arrows-clockwise"></i>
+                        <i class="ph ph-clipboard-text"></i>
                         <span data-key="t-roster-list">Roster List</span>
                     </a>
                 </li>
@@ -67,8 +67,16 @@
                     <a href="{{ route('cross-criteria.index') }}"
                         class="nav-link menu-link @if (Route::current()->getName() == 'cross-criteria.index') active @endif"
                         aria-expanded="false">
-                        <i class="ph ph-arrows-clockwise"></i>
+                        <i class="ph ph-x"></i>
                         <span data-key="t-cross-criteria">Cross Criteria</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('fatality-risk-controls.index') }}"
+                        class="nav-link menu-link @if (Route::current()->getName() == 'fatality-risk-controls.index') active @endif"
+                        aria-expanded="false">
+                        <i class="ph ph-warning"></i>
+                        <span data-key="t-fatality-risk-controls">Fatality Risk Controls</span>
                     </a>
                 </li>
             </ul>

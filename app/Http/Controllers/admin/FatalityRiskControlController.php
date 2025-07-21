@@ -28,8 +28,14 @@ class FatalityRiskControlController extends Controller
                 })
                 ->addColumn('actions', function ($row) {
                     return '<div class="btn-group">
-                                <button class="btn btn-primary btn-sm edit-btn" data-id="' . $row->id . '">Edit</button>
-                                <button class="btn btn-danger btn-sm delete-btn" data-id="' . $row->id . '">Delete</button>
+                                <button class="btn btn-warning btn-sm edit-btn d-flex align-items-center gap-1" data-id="' . $row->id . '">
+                                <i class="bi bi-pencil"></i>
+                                Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-btn d-flex align-items-center gap-1" data-id="' . $row->id . '">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                                </button>
                             </div>';
                 })
                 ->rawColumns(['image', 'actions'])
