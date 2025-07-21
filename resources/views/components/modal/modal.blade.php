@@ -6,6 +6,7 @@
     'keyboard' => true,
     'fade' => true,
     'showCloseButton' => true,
+    'scrollable' => false,
 ])
 
 @php
@@ -14,12 +15,13 @@
         $modalClasses .= ' fade';
     }
     $backdrop = $staticBackdrop ? 'static' : true;
+    $scrollable = $scrollable ? ' modal-dialog-scrollable' : '';
 @endphp
 
 
 <div class="{{ $modalClasses }}" id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label"
     aria-hidden="true" data-bs-backdrop="{{ $backdrop }}" data-bs-keyboard="{{ $keyboard ? 'true' : 'false' }}">
-    <div class="modal-dialog {{ $size }}">
+    <div class="modal-dialog {{ $size }} {{ $scrollable }}">
         <div class="modal-content">
 
             <!-- Modal Header -->
