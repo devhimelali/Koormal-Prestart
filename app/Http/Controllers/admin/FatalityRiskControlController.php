@@ -21,24 +21,24 @@ class FatalityRiskControlController extends Controller
                     return $row->name ? $row->name : 'N/A';
                 })
                 ->editColumn('description', function ($row) {
-                    return $row->description ? substr($row->description, 0, 50) . '...' : 'N/A';
+                    return $row->description ? $row->description : 'N/A';
                 })
                 ->editColumn('image', function ($row) {
-                    return $row->image ? '<img src="' . asset($row->image) . '" width="50" height="50">' : 'N/A';
+                    return $row->image ? '<img src="' . asset('storage/' . $row->image) . '" width="50" height="50">' : '<img src="' . asset('assets/images/no-image.png') . '" width="50" height="50">';
                 })
                 ->addColumn('actions', function ($row) {
                     return '<div class="btn-group">
-                                <button class="btn btn-secondary btn-sm edit-btn d-flex align-items-center gap-1" data-id="' . $row->id . '">
+                                <button class="btn btn-secondary btn-sm edit d-flex align-items-center gap-1" data-id="' . $row->id . '">
                                 <i class="bi bi-pencil"></i>
                                 Edit
                                 </button>
-                                <button class="btn btn-danger btn-sm delete-btn d-flex align-items-center gap-1" data-id="' . $row->id . '">
+                                <button class="btn btn-danger btn-sm delete d-flex align-items-center gap-1" data-id="' . $row->id . '">
                                 <i class="bi bi-trash"></i>
                                 Delete
                                 </button>
                             </div>';
                 })
-                ->rawColumns(['image', 'actions'])
+                ->rawColumns(['image', 'description', 'actions'])
                 ->make(true);
         }
         return view('admin.fatality-risk-controls.index');

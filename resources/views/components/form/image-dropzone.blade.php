@@ -75,6 +75,7 @@
                 const files = Array.from(input.files);
                 if (allowPreview) {
                     showPreviews(files);
+                    $('#old-image-preview').html('');
                 }
             });
 
@@ -99,7 +100,11 @@
                             'btn btn-sm btn-danger position-absolute top-0 end-0 remove-preview';
                         removeBtn.type = 'button';
                         removeBtn.innerHTML = '&times;';
-                        removeBtn.onclick = () => wrapper.remove();
+                        removeBtn.onclick = () => {
+                            wrapper.remove();
+                            // Also clear file input when removing preview if single file mode
+                            if (!allowMultiple) input.value = null;
+                        };
 
                         wrapper.appendChild(img);
                         wrapper.appendChild(removeBtn);

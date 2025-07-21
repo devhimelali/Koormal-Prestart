@@ -40,6 +40,9 @@
         </div>
     </div>
     @include('components.admin.fatality-risk-controls.modals.add-or-edit')
+    <!-- Delete Modal -->
+    <x-common.delete-modal id="deleteFatalityRiskControlModal" title="Delete Fatality Risk Control"
+        message="Are you sure you want to delete this fatality risk control?" />
 @endsection
 @include('components.admin.fatality-risk-controls.vendor-css')
 @include('components.admin.fatality-risk-controls.vendor-script')
