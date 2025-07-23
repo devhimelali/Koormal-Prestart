@@ -114,14 +114,12 @@
 
             $(document).on('click', '#addProductivityQuestionOneBtn', function() {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
-                let answer = $('.productivity-question-one').text().trim();
-                addBlankProductiveQuestion('question_one', daily_shift_entry_id, answer);
+                addBlankProductiveQuestion('question_one', daily_shift_entry_id);
             });
 
             $(document).on('click', '#addProductivityQuestionTwoBtn', function() {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
-                let answer = $('.productivity-question-two').text().trim();
-                addBlankProductiveQuestion('question_two', daily_shift_entry_id, answer);
+                addBlankProductiveQuestion('question_two', daily_shift_entry_id);
             });
 
             $(document).on('blur', '.productivity-question-one', function() {
@@ -163,8 +161,7 @@
             }
 
             $(document).on('click', '#addSuccessNoteBtn', function() {
-                let note = $('.success-note').text().trim();
-                addBlankSuccessNote(note);
+                addBlankSuccessNote();
             });
 
             $(document).on('blur', '.success-note', function() {
@@ -200,8 +197,7 @@
             }
 
             $(document).on('click', '#addSiteCommunicationBtn', function() {
-                let note = $('.site-communication-note').text().trim();
-                addBlankSiteCommunication(note);
+                addBlankSiteCommunication();
             });
 
             $(document).on('blur', '.site-communication-note', function() {

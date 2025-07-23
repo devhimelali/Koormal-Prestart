@@ -29,6 +29,12 @@
                     <tbody>
                         @forelse ($siteCommunications as $siteCommunication)
                             <tr class="align-middle">
+                                <td class="bg-light td-date">
+                                    <span>
+                                        {{ $siteCommunication->dailyShiftEntry->date }}
+                                        ({{ \Carbon\Carbon::parse($siteCommunication->dailyShiftEntry->date)->format('l') }})
+                                    </span>
+                                </td>
                                 <td class="p-1 align-top w-auto">
                                     <div contenteditable="true" class="site-communication-note" data-date=""
                                         style="

@@ -32,6 +32,12 @@
                     <tbody>
                         @forelse ($productiveQuestionTwo as $productive)
                             <tr class="align-middle">
+                                <td class="bg-light td-date">
+                                    <span>
+                                        {{ $productive->dailyShiftEntry->date }}
+                                        ({{ \Carbon\Carbon::parse($productive->dailyShiftEntry->date)->format('l') }})
+                                    </span>
+                                </td>
                                 <td class="p-1 align-top w-auto">
                                     <div contenteditable="true" class="productivity-question-two" data-date=""
                                         style="

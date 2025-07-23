@@ -29,6 +29,12 @@
                     <tbody>
                         @forelse ($celebrateSuccesses as $celebrateSuccess)
                             <tr class="align-middle">
+                                <td class="bg-light td-date">
+                                    <span>
+                                        {{ $celebrateSuccess->dailyShiftEntry->date }}
+                                        ({{ \Carbon\Carbon::parse($celebrateSuccess->dailyShiftEntry->date)->format('l') }})
+                                    </span>
+                                </td>
                                 <td class="p-1 align-top w-auto">
                                     <div contenteditable="true" class="success-note" data-date=""
                                         style="
