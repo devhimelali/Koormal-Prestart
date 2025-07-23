@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('shift_id')->constrained('shifts')->cascadeOnDelete();
             $table->foreignId('shift_rotation_id')->constrained('shift_rotations')->cascadeOnDelete();
+            $table->date('start_date');
+            $table->date('end_date');
             $table->enum('shift_type', ['day', 'night']);
             $table->date('date');
             $table->string('supervisor_name')->nullable();

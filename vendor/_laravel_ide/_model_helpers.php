@@ -632,6 +632,8 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $supervisor_name
      * @property mixed $shift_type
+     * @property string|null $end_date
+     * @property string|null $start_date
      * @property int $shift_rotation_id
      * @property int $shift_id
      * @property int $id
@@ -645,6 +647,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereShiftId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereShiftRotationId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereStartDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereEndDate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereShiftType($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereSupervisorName($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DailyShiftEntry>|DailyShiftEntry whereCreatedAt($value)

@@ -13,6 +13,8 @@ class DailyShiftEntry extends Model
     protected $fillable = [
         'shift_id',
         'shift_rotation_id',
+        'start_date',
+        'end_date',
         'shift_type',
         'date',
         'supervisor_name',
@@ -25,6 +27,32 @@ class DailyShiftEntry extends Model
      * @return Attribute
      */
     protected function date(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => Carbon::parse($value)->format('d-m-Y')
+        );
+    }
+
+    /**
+     * An accessor and mutator for the start_date field that formats the date
+     * as 'd-m-Y' for display, and as 'Y-m-d' when saving to the database.
+     *
+     * @return Attribute
+     */
+    protected function start_date(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => Carbon::parse($value)->format('d-m-Y')
+        );
+    }
+
+    /**
+     * An accessor and mutator for the end_date field that formats the date
+     * as 'd-m-Y' for display, and as 'Y-m-d' when saving to the database.
+     *
+     * @return Attribute
+     */
+    protected function end_date(): Attribute
     {
         return Attribute::make(
             get: fn($value) => Carbon::parse($value)->format('d-m-Y')

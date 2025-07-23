@@ -51,3 +51,31 @@
         </div>
     </div>
 </div>
+
+
+<style>
+    /* WebKit (Chrome, Edge, Safari) scrollbar styling */
+    .modal-body::-webkit-scrollbar {
+        width: 2px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Firefox scrollbar styling */
+    .modal-body {
+        scrollbar-width: thin;
+        scrollbar-color: #888 #f1f1f1;
+    }
+</style>

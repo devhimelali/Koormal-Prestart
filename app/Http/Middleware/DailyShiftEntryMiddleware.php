@@ -36,6 +36,8 @@ class DailyShiftEntryMiddleware
             $dailyShiftEntry = DailyShiftEntry::firstOrCreate([
                 'shift_id' => $shift,
                 'shift_rotation_id' => $rotation,
+                'start_date' => $startDate,
+                'end_date' => $endDate,
                 'shift_type' => $shiftType,
                 'date' => $date,
             ]);
