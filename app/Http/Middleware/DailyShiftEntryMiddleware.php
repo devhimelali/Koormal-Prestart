@@ -3,11 +3,12 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Carbon\Carbon;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use App\Models\ShiftRotation;
 use App\Models\DailyShiftEntry;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 
 class DailyShiftEntryMiddleware
@@ -19,11 +20,16 @@ class DailyShiftEntryMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Use configured timezone
+        $timezone = Config::get('app.timezone', 'Australia/Perth');
+        $now = Carbon::now($timezone);
+        $date = $now->format('Y-m-d');
+
         $shiftType = $request->query('shift');
         $crewName = $request->query('crew');
-        $date = today()->format('Y-m-d');
-        $startDate = Carbon::createFromFormat('d-m-Y', $request->query('start_date'))->format('Y-m-d');
-        $endDate = Carbon::createFromFormat('d-m-Y', $request->query('end_date'))->format('Y-m-d');
+
+        $startDate = Carbon::createFromFormat('d-m-Y', $request->query('start_date'), $timezone)->format('Y-m-d');
+        $endDate = Carbon::createFromFormat('d-m-Y', $request->query('end_date'), $timezone)->format('Y-m-d');
 
         $shift = Shift::where('name', $crewName)->value('id');
         $rotation = ShiftRotation::where('is_active', true)->value('id');
