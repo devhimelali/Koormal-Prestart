@@ -1,4 +1,6 @@
 @section('page-css')
+    <!-- GLightbox Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
     <style>
         .supervisor-name {
             border: 1px solid #ccc;

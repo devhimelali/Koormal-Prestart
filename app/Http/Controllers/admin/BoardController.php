@@ -85,6 +85,11 @@ class BoardController extends Controller
             $shift = $dailyShiftEntry->shift_type;
             $date = Carbon::parse($dailyShiftEntry->date)->format('d-m-Y');
             $shiftLogs = $this->boardService->getShiftLog($shift, $date);
+//            $frc = [];
+//            foreach ($shiftLogs as $shiftLog) {
+//                $frc[] = $shiftLog->fatality_risk_controls;
+//            }
+//            dd($frc);
             return view('admin.boards.fatality-risk-management', [
                 'shiftLogs' => $shiftLogs,
                 'shift' => $shift

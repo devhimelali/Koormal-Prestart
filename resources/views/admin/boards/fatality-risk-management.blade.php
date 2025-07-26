@@ -43,7 +43,7 @@
                                 'class' => 'th-completed',
                             ],
                             [
-                                'label' => 'FRM',
+                                'label' => 'Fatality Risk Controls',
                                 'class' => 'th-frm',
                             ],
                             [
@@ -56,7 +56,7 @@
                 <td>
                     {{ $loop->iteration }}
                 </td>
-                <td>
+                <td class="text-center">
                     {{ $shiftLog->wo_number }}
                 </td>
                 <td>
@@ -68,17 +68,44 @@
                 <td>
                     {{ $shiftLog->labour }}
                 </td>
-                <td>
+                <td class="text-center">
                     {{ ucfirst($shiftLog->scheduled) }}
                 </td>
-                <td>
+                <td class="text-center">
                     {{ $shiftLog->progress }}
                 </td>
                 <td>
-
+                    <div class="d-flex align-items-center justify-content-center flex-wrap gap-1">
+                        @forelse($shiftLog->fatality_risk_controls as $fatality_risk_control)
+                            <div>
+                                @php
+                                    $url = asset('storage/'.$fatality_risk_control->image);
+                                @endphp
+                                <a href="{{ $url }}" class="glightbox" data-gallery="media-gallery">
+                                    <img src="{{ $url }}" width="45" height="45"
+                                         alt="{{$fatality_risk_control->name}}" loading="lazy">
+                                </a>
+                            </div>
+                        @empty
+                            N/A
+                        @endforelse
+                    </div>
                 </td>
                 <td>
-
+                    <div class="btn-group">
+                        @if($shiftLog->fatality_risk_controls->count() > 0)
+                            <button class="btn btn-sm btn-warning" data-shift-log-id="{{ $shiftLog->id }}"
+                                    data-fatality-risk-control-ids="{{ implode(',', $shiftLog->fatality_risk_controls->pluck('id')->toArray()) }}">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </button>
+                        @else
+                            <button class="btn btn-sm btn-secondary" data-shift-log-id="{{ $shiftLog->id }}">
+                                <i class="bi bi-plus"></i>
+                                Add
+                            </button>
+                        @endif
+                    </div>
                 </td>
             </tr>
         @empty
@@ -97,6 +124,39 @@
         </button>
     </div>
 </div>
+<style>
+    th.th-sn {
+        min-width: 40px;
+    }
+
+    th.th-wo-number {
+        min-width: 100px;
+    }
+
+    th.th-asset-number {
+        min-width: 115px;
+    }
+
+    th.th-wo-description {
+        min-width: 250px;
+    }
+
+    th.th-labour {
+        min-width: 80px;
+    }
+
+    th.th-completed {
+        min-width: 110px;
+    }
+
+    th.th-frm {
+        min-width: 175px;
+    }
+
+    th.th-actions {
+        min-width: 80px;
+    }
+</style>
 
 <script>
     $('#previousStepBtn').on('click', function () {

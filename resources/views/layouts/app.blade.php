@@ -152,6 +152,21 @@
     @endif
     @stack('scripts')
     <script>
+
+        let lightboxInstance;
+
+        function initGlightbox() {
+            if (lightboxInstance && typeof lightboxInstance.destroy === 'function') {
+                lightboxInstance.destroy();
+            }
+
+            lightboxInstance = GLightbox({
+                selector: '.glightbox'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initGlightbox);
+
         @if (Session::has('success'))
             notify('success', "{{ session('success') }}");
         @elseif (Session::has('error'))

@@ -1,5 +1,7 @@
 @section('page-script')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- GLightbox Script -->
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
     <script>
         function getSupervisorAndLabour() {
             $.ajax({
@@ -13,7 +15,7 @@
         }
 
         function updateBoard(step, heading = "Our Health & Safety", $shift_id = {{ $dailyShiftEntry->shift_id }},
-            $rotation_id = {{ $dailyShiftEntry->shift_rotation_id }}, $shift_type = "{{ $dailyShiftEntry->shift_type }}"
+                             $rotation_id = {{ $dailyShiftEntry->shift_rotation_id }}, $shift_type = "{{ $dailyShiftEntry->shift_type }}"
         ) {
             $('#board-title').text(heading);
             $.ajax({
@@ -27,14 +29,17 @@
                     shift_type: $shift_type,
                     _token: '{{ csrf_token() }}'
                 },
-                beforeSend: function() {
+                beforeSend: function () {
                     $('#loader').show();
                 },
-                success: function(response) {
+                success: function (response) {
                     $('#board-container').html(response);
+                    if (step == 8) {
+                        initGlightbox();
+                    }
                 },
                 error: handleAjaxErrors,
-                complete: function() {
+                complete: function () {
                     $('#loader').hide();
                 }
             })
@@ -45,8 +50,8 @@
         let currentIcon = null;
         let currentWrapper = null;
 
-        $(document).ready(function() {
-            $(document).on('blur', '.supervisor-name', function() {
+        $(document).ready(function () {
+            $(document).on('blur', '.supervisor-name', function () {
                 supervisorName = $(this).text().trim();
                 $.ajax({
                     url: "{{ route('boards.updateSupervisorName') }}",
@@ -56,16 +61,16 @@
                         daily_shift_entry_id: {{ $dailyShiftEntry->id }},
                         _token: '{{ csrf_token() }}'
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#loader').show();
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status == 'success') {
                             notify('success', response.message);
                         }
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         $('#loader').hide();
                     }
                 })
@@ -76,28 +81,28 @@
             updateBoard(currentStep);
 
 
-            $(document).on('click', '#addQuestionOneBtn', function() {
+            $(document).on('click', '#addQuestionOneBtn', function () {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
                 addBlankQuestion('question_one', daily_shift_entry_id);
             });
 
-            $(document).on('click', '#addQuestionTwoBtn', function() {
+            $(document).on('click', '#addQuestionTwoBtn', function () {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
                 addBlankQuestion('question_two', daily_shift_entry_id);
             });
 
-            $(document).on('blur', '.question-one', function() {
+            $(document).on('blur', '.question-one', function () {
                 let answer = $(this).text().trim();
                 addBlankQuestion('question_one', {{ $dailyShiftEntry->id }}, answer);
             });
 
-            $(document).on('blur', '.question-two', function() {
+            $(document).on('blur', '.question-two', function () {
                 let answer = $(this).text().trim();
                 addBlankQuestion('question_two', {{ $dailyShiftEntry->id }}, answer);
             });
 
             function addBlankQuestion(question_number, daily_shift_entry_id = {{ $dailyShiftEntry->id }}, answer =
-                null) {
+            null) {
                 $.ajax({
                     url: "{{ route('boards.store.health-safety-review') }}",
                     method: 'POST',
@@ -107,45 +112,45 @@
                         answer: answer,
                         _token: '{{ csrf_token() }}'
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#loader').show();
                     },
-                    success: function(response) {
+                    success: function (response) {
                         notify('success', response.message);
                         setTimeout(() => {
                             updateBoard(response.step);
                         }, 500);
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         $('#loader').hide();
                     }
                 });
             }
 
-            $(document).on('click', '#addProductivityQuestionOneBtn', function() {
+            $(document).on('click', '#addProductivityQuestionOneBtn', function () {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
                 addBlankProductiveQuestion('question_one', daily_shift_entry_id);
             });
 
-            $(document).on('click', '#addProductivityQuestionTwoBtn', function() {
+            $(document).on('click', '#addProductivityQuestionTwoBtn', function () {
                 let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
                 addBlankProductiveQuestion('question_two', daily_shift_entry_id);
             });
 
-            $(document).on('blur', '.productivity-question-one', function() {
+            $(document).on('blur', '.productivity-question-one', function () {
                 let answer = $(this).text().trim();
                 addBlankProductiveQuestion('question_one', {{ $dailyShiftEntry->id }}, answer);
             });
 
-            $(document).on('blur', '.productivity-question-two', function() {
+            $(document).on('blur', '.productivity-question-two', function () {
                 let answer = $(this).text().trim();
                 addBlankProductiveQuestion('question_two', {{ $dailyShiftEntry->id }}, answer);
             });
 
             function addBlankProductiveQuestion(question_number, daily_shift_entry_id = {{ $dailyShiftEntry->id }},
-                answer =
-                null) {
+                                                answer =
+                                                null) {
                 $.ajax({
                     url: "{{ route('boards.store.productive-question') }}",
                     method: 'POST',
@@ -155,33 +160,33 @@
                         answer: answer,
                         _token: '{{ csrf_token() }}'
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#loader').show();
                     },
-                    success: function(response) {
+                    success: function (response) {
                         notify('success', response.message);
                         setTimeout(() => {
                             updateBoard(response.step);
                         }, 500);
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         $('#loader').hide();
                     }
                 });
             }
 
-            $(document).on('click', '#addSuccessNoteBtn', function() {
+            $(document).on('click', '#addSuccessNoteBtn', function () {
                 addBlankSuccessNote();
             });
 
-            $(document).on('blur', '.success-note', function() {
+            $(document).on('blur', '.success-note', function () {
                 let note = $(this).text().trim();
                 addBlankSuccessNote(note);
             });
 
             function addBlankSuccessNote(note =
-                null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
+                                         null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
             ) {
                 $.ajax({
                     url: "{{ route('boards.store.celebrate-success') }}",
@@ -191,33 +196,33 @@
                         note: note,
                         _token: '{{ csrf_token() }}'
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#loader').show();
                     },
-                    success: function(response) {
+                    success: function (response) {
                         notify('success', response.message);
                         setTimeout(() => {
                             updateBoard(response.step);
                         }, 500);
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         $('#loader').hide();
                     }
                 });
             }
 
-            $(document).on('click', '#addSiteCommunicationBtn', function() {
+            $(document).on('click', '#addSiteCommunicationBtn', function () {
                 addBlankSiteCommunication();
             });
 
-            $(document).on('blur', '.site-communication-note', function() {
+            $(document).on('blur', '.site-communication-note', function () {
                 let note = $(this).text().trim();
                 addBlankSiteCommunication(note);
             });
 
             function addBlankSiteCommunication(note =
-                null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
+                                               null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
             ) {
                 $.ajax({
                     url: "{{ route('boards.store.site-communication') }}",
@@ -227,23 +232,23 @@
                         note: note,
                         _token: '{{ csrf_token() }}'
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#loader').show();
                     },
-                    success: function(response) {
+                    success: function (response) {
                         notify('success', response.message);
                         setTimeout(() => {
                             updateBoard(response.step);
                         }, 500);
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         $('#loader').hide();
                     }
                 });
             }
 
-            $(document).on('click', '.legend-item', function() {
+            $(document).on('click', '.legend-item', function () {
                 let name = $(this).data('name');
                 let color = $(this).data('color');
                 let bg_color = $(this).data('bg-color');
@@ -257,14 +262,14 @@
                 $('#crossCriteriaViewModal').modal('show');
             });
 
-            $(document).on('click', '.calendar-cell', function() {
+            $(document).on('click', '.calendar-cell', function () {
                 let cell = $(this).data('cell');
                 $('#safetyCalendarModal #safetyCalendarCell').val(cell);
                 $('#safetyCalendarModal').modal('show');
             });
 
 
-            $(document).on('click', '.criteria-option', function() {
+            $(document).on('click', '.criteria-option', function () {
                 let $clicked = $(this);
                 let $option = $clicked.find('.option');
                 let criteriaId = $clicked.data('id');
@@ -273,7 +278,7 @@
                 $('#safetyCalendarModal #safetyCalendarCriteriaId').val(criteriaId);
 
                 // Deselect all other options
-                $('.criteria-option').each(function() {
+                $('.criteria-option').each(function () {
                     let $item = $(this);
                     let color = $item.data('color');
                     let bg = $item.data('bg');
@@ -292,17 +297,17 @@
                 });
             });
 
-            $(document).on('submit', '#safetyCalendarForm', function(e) {
+            $(document).on('submit', '#safetyCalendarForm', function (e) {
                 e.preventDefault();
                 let formData = $(this).serialize();
                 $.ajax({
                     url: $(this).attr('action'),
                     method: 'POST',
                     data: formData,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         ajaxBeforeSend('#safetyCalendarForm', '#safetyCalendarSubmitBtn')
                     },
-                    success: function(response) {
+                    success: function (response) {
                         notify('success', response.message);
                         $('#safetyCalendarModal').modal('hide');
                         setTimeout(() => {
@@ -310,13 +315,13 @@
                         }, 500);
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         ajaxComplete('#safetyCalendarSubmitBtn');
                     }
                 });
             });
 
-            $(document).on('click', '#resetLegendBtn', function() {
+            $(document).on('click', '#resetLegendBtn', function () {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "This will reset the safety calendar to its default state.",
@@ -333,17 +338,17 @@
                                 daily_shift_entry_id: {{ $dailyShiftEntry->id }},
                                 _token: '{{ csrf_token() }}'
                             },
-                            beforeSend: function() {
+                            beforeSend: function () {
                                 $('#loader').show();
                             },
-                            success: function(response) {
+                            success: function (response) {
                                 notify('success', response.message);
                                 setTimeout(() => {
                                     updateBoard(response.step);
                                 }, 500);
                             },
                             error: handleAjaxErrors,
-                            complete: function() {
+                            complete: function () {
                                 $('#loader').hide();
                             }
                         });
