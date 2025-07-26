@@ -94,13 +94,13 @@
                 <td>
                     <div class="btn-group">
                         @if($shiftLog->fatality_risk_controls->count() > 0)
-                            <button class="btn btn-sm btn-warning" data-shift-log-id="{{ $shiftLog->id }}"
+                            <button class="btn btn-sm btn-warning editFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}"
                                     data-fatality-risk-control-ids="{{ implode(',', $shiftLog->fatality_risk_controls->pluck('id')->toArray()) }}">
                                 <i class="bi bi-pencil-square"></i>
                                 Edit
                             </button>
                         @else
-                            <button class="btn btn-sm btn-secondary" data-shift-log-id="{{ $shiftLog->id }}">
+                            <button class="btn btn-sm btn-secondary addFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}">
                                 <i class="bi bi-plus"></i>
                                 Add
                             </button>
@@ -123,6 +123,8 @@
             Previous
         </button>
     </div>
+
+    @include('components.admin.boards.modal.add-or-edit-fatality-risk-management')
 </div>
 <style>
     th.th-sn {
@@ -156,6 +158,14 @@
     th.th-actions {
         min-width: 80px;
     }
+    label {
+        display: block;
+    }
+
+    span.select2.select2-container {
+        width: 100% !important;
+    }
+
 </style>
 
 <script>
@@ -166,4 +176,29 @@
         $('#board-info').addClass('d-none');
         updateBoard(currentStep, "Our Productivity");
     });
+
+    $(".addFatalityRiskControlBtn").on('click', function () {
+        let shiftLogId = $(this).data('shift-log-id');
+        $('#fatalityRiskControlModal').modal('show');
+
+    });
+
+    $('#fatality_risk_control').select2({
+        templateResult: formatOptionWithImage,
+        templateSelection: formatOptionWithImage,
+    });
+
+    function formatOptionWithImage(option) {
+        if (!option.id) return option.text;
+
+        const imageUrl = $(option.element).data('image');
+        const optionText = option.text;
+
+        return $(`
+                <span class="d-flex align-items-center">
+                    <img src="${imageUrl}" class="me-2 rounded" width="30" height="30" />
+                    <span>${optionText}</span>
+                </span>
+            `);
+    }
 </script>

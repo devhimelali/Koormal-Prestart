@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DailyShiftEntry;
+use App\Models\FatalityRiskControl;
 use App\Services\BoardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -85,14 +86,11 @@ class BoardController extends Controller
             $shift = $dailyShiftEntry->shift_type;
             $date = Carbon::parse($dailyShiftEntry->date)->format('d-m-Y');
             $shiftLogs = $this->boardService->getShiftLog($shift, $date);
-//            $frc = [];
-//            foreach ($shiftLogs as $shiftLog) {
-//                $frc[] = $shiftLog->fatality_risk_controls;
-//            }
-//            dd($frc);
+            $fatalityRisks = FatalityRiskControl::orderBy('name', 'asc')->get();
             return view('admin.boards.fatality-risk-management', [
                 'shiftLogs' => $shiftLogs,
-                'shift' => $shift
+                'shift' => $shift,
+                'fatalityRisks' => $fatalityRisks
             ])->render();
         }
     }
