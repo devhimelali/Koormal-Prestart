@@ -66,9 +66,13 @@
 
     <!-- Navigation Buttons -->
     <div class="d-flex align-items-center justify-content-between">
-        <button type="button" class="btn btn-danger d-flex align-items-center gap-1" id="previousStepBtn">
+        <button type="button" class="btn btn-sm btn-danger d-flex align-items-center gap-1" id="previousStepBtn">
             <i class="bi bi-caret-left-fill"></i>
             Previous
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1" id="nextStepBtn">
+            Next
+            <i class="bi bi-caret-right-fill"></i>
         </button>
     </div>
 </div>
@@ -77,5 +81,14 @@
     $('#previousStepBtn').on('click', function() {
         currentStep = 6;
         updateBoard(currentStep, "Our Productivity");
-    })
+    });
+
+    $('#nextStepBtn').on('click', function() {
+        currentStep = 8;
+        $('#board-header').removeClass('mb-3');
+        $('#board-header').addClass('mb-1');
+        $('#board-info').removeClass('d-none');
+        updateBoard(currentStep, "Fatality Risk Management (FRM) Job Risk Control Board");
+        getSupervisorAndLabour();
+    });
 </script>

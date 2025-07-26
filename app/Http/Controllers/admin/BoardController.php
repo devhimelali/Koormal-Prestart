@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\DailyShiftEntry;
 use App\Services\BoardService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BoardController extends Controller
@@ -79,6 +80,11 @@ class BoardController extends Controller
             return view('admin.boards.site_communication', [
                 'siteCommunications' => $siteCommunications
             ])->render();
+        }elseif ($step == 8) {
+//            $safetyCalendar = $this->boardService->getSafetyCalendarData();
+            return view('admin.boards.fatality-risk-management', [
+                'shift' => $request->shift_type
+            ])->render();
         }
     }
 
@@ -115,6 +121,16 @@ class BoardController extends Controller
     public function resetSafetyCalendar(Request $request)
     {
         return $this->boardService->resetSafetyCalendar($request);
+    }
+
+    public function getSupervisorAndLabourList($daily_shift_entry_id)
+    {
+        $dailyShiftEntry = DailyShiftEntry::findOrFail($daily_shift_entry_id);
+        $shift = $dailyShiftEntry->shift_type;
+        $date = Carbon::parse($dailyShiftEntry->date)->format('d-m-Y');
+        $supervisor = $this->boardService->getSupervisorName($shift, $date);
+        $labor = $this->boardService->getLaborName($shift, $date);
+        return view('components.admin.boards.supervisor-labour-name', compact('supervisor', 'labor'));
     }
 }
 

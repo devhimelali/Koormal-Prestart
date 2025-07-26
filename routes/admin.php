@@ -42,4 +42,5 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('store-celebrate-success', [BoardController::class, 'storeCelebrateSuccess'])->name('boards.store.celebrate-success');
     Route::post('store-site-communication', [BoardController::class, 'storeSiteCommunication'])->name('boards.store.site-communication');
     Route::resource('fatality-risk-controls', FatalityRiskControlController::class);
+    Route::get('get-supervisor-and-labour-list/{daily_shift_entry_id}', [BoardController::class, 'getSupervisorAndLabourList'])->name('boards.get-supervisor-and-labour-list');
 });

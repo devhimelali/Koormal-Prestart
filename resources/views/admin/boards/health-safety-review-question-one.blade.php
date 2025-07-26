@@ -73,7 +73,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-secondary d-flex align-items-center gap-1" id="nextStepBtn">
+        <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1" id="nextStepBtn">
             Next
             <i class="bi bi-caret-right-fill"></i>
         </button>

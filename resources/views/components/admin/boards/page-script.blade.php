@@ -1,6 +1,17 @@
 @section('page-script')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function getSupervisorAndLabour() {
+            $.ajax({
+                url: "{{route('boards.get-supervisor-and-labour-list', $dailyShiftEntry->id)}}",
+                method: 'GET',
+                success: function (response) {
+                    $('#board-info').html(response);
+                },
+                error: handleAjaxErrors,
+            });
+        }
+
         function updateBoard(step, heading = "Our Health & Safety", $shift_id = {{ $dailyShiftEntry->shift_id }},
             $rotation_id = {{ $dailyShiftEntry->shift_rotation_id }}, $shift_type = "{{ $dailyShiftEntry->shift_type }}"
         ) {

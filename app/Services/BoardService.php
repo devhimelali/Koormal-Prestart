@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\LabourShift;
+use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use App\Models\CrossCriteria;
 use App\Models\DailyShiftEntry;
@@ -265,5 +267,15 @@ class BoardService
             'message' => 'Safety Calendar reset successfully',
             'step' => 3,
         ]);
+    }
+
+    public function getSupervisorName($shift, $date)
+    {
+        return Supervisor::where('date', $date)->where('shift', $shift)->first();
+    }
+
+    public function getLaborName($shift, $date)
+    {
+        return LabourShift::where('date', $date)->where('shift', $shift)->first();
     }
 }

@@ -203,11 +203,11 @@
         </div>
     </div>
     <div class="d-flex align-items-center justify-content-between">
-        <button type="button" class="btn btn-danger d-flex align-items-center gap-1" id="previousStepBtn">
+        <button type="button" class="btn btn-sm btn-danger d-flex align-items-center gap-1" id="previousStepBtn">
             <i class="bi bi-caret-left-fill"></i>
             Previous
         </button>
-        <button type="button" class="btn btn-secondary d-flex align-items-center gap-1" id="nextStepBtn">
+        <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1" id="nextStepBtn">
             Next
             <i class="bi bi-caret-right-fill"></i>
         </button>

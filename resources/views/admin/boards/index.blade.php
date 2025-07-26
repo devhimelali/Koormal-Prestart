@@ -3,7 +3,7 @@
 @section('content')
     <x-common.breadcrumb :title="'Boards'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Boards']]" />
     <div class="row">
-        <div class="col-12 mx-auto bg-white p-3 mb-4 border rounded shadow-sm text-center">
+        <div class="col-12 mx-auto bg-white p-3 border mb-3 rounded shadow-sm text-center" id="board-header">
             <h4 class="mb-1 d-flex align-items-center justify-content-center gap-2">
                 <span class="supervisor-name-title">Supervisor Name:</span>
                 <span contenteditable="true" class="d-inline-block supervisor-name">
@@ -18,6 +18,9 @@
             </p>
             <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Crew: </strong>{{ ucfirst($crewName) }}
             </p>
+        </div>
+        <div class="d-flex justify-content-between align-items-center  bg-white p-3 rounded shadow-sm mb-4 d-none" id="board-info">
+
         </div>
     </div>
 
