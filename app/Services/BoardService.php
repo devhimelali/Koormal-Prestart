@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\LabourShift;
+use App\Models\ShiftLog;
 use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use App\Models\CrossCriteria;
@@ -277,5 +278,10 @@ class BoardService
     public function getLaborName($shift, $date)
     {
         return LabourShift::where('date', $date)->where('shift', $shift)->first();
+    }
+
+    public function getShiftLog($shift, $date)
+    {
+        return ShiftLog::where('log_date', $date)->where('shift_name', $shift)->get();
     }
 }

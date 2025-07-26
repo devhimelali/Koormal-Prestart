@@ -81,9 +81,13 @@ class BoardController extends Controller
                 'siteCommunications' => $siteCommunications
             ])->render();
         }elseif ($step == 8) {
-//            $safetyCalendar = $this->boardService->getSafetyCalendarData();
+            $dailyShiftEntry = DailyShiftEntry::findOrFail($dailyShiftEntryId);
+            $shift = $dailyShiftEntry->shift_type;
+            $date = Carbon::parse($dailyShiftEntry->date)->format('d-m-Y');
+            $shiftLogs = $this->boardService->getShiftLog($shift, $date);
             return view('admin.boards.fatality-risk-management', [
-                'shift' => $request->shift_type
+                'shiftLogs' => $shiftLogs,
+                'shift' => $shift
             ])->render();
         }
     }
