@@ -19,12 +19,12 @@ Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ck
 Route::get('clear-cache', function () {
     Artisan::call('optimize:clear');
     $output = Artisan::output();
-    return redirect()->back()->with('status', 'Cache cleared successfully! Output: ' . $output);
+    return redirect()->back()->with('status', 'Cache cleared successfully! Output: '.$output);
 })->name('clear.cache');
 
 
 Route::get('storage-link', function () {
     Artisan::call('storage:link');
     $output = Artisan::output();
-    return redirect()->back()->with('status', 'Storage linked successfully! Output: ' . $output);
+    return redirect()->back()->with('status', 'Storage linked successfully! Output: '.$output);
 });

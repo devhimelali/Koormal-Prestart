@@ -26,23 +26,35 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('check-shift', [ShiftRotationController::class, 'checkResult'])->name('rotation.check.result');
     Route::get('rosters', [RosterController::class, 'showNextMonthSchedule'])->name('rosters.index');
     Route::get('roster-fetch', [ShiftRotationController::class, 'applyDataRangeFilter'])->name('roster.fetch');
-    Route::get('health-safety-review', [HealthSafetyReviewController::class, 'index'])->name('health-safety-review.index')->middleware('daily.shift.entry');
-    Route::post('health-safety-review', [HealthSafetyReviewController::class, 'store'])->name('health-safety-review.store');
+    Route::get('health-safety-review', [
+        HealthSafetyReviewController::class, 'index'
+    ])->name('health-safety-review.index')->middleware('daily.shift.entry');
+    Route::post('health-safety-review',
+        [HealthSafetyReviewController::class, 'store'])->name('health-safety-review.store');
     Route::resource('cross-criteria', CrossCriteriaController::class);
 
 
-
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index')->middleware('daily.shift.entry');
-    Route::post('update-supervisor-name', [BoardController::class, 'updateSupervisorName'])->name('boards.updateSupervisorName');
+    Route::post('update-supervisor-name',
+        [BoardController::class, 'updateSupervisorName'])->name('boards.updateSupervisorName');
     Route::post('show-board', [BoardController::class, 'show'])->name('boards.show.board');
-    Route::post('store-health-safety-review', [BoardController::class, 'storeHealthSafetyReview'])->name('boards.store.health-safety-review');
-    Route::post('store-health-safety-cross-criteria', [BoardController::class, 'storeHealthSafetyCrossCriteria'])->name('boards.store.health-safety-cross-criteria');
-    Route::post('reset-safety-calendar', [BoardController::class, 'resetSafetyCalendar'])->name('boards.reset.safety-calendar');
-    Route::post('store-productive-question', [BoardController::class, 'storeProductiveQuestion'])->name('boards.store.productive-question');
-    Route::post('store-celebrate-success', [BoardController::class, 'storeCelebrateSuccess'])->name('boards.store.celebrate-success');
-    Route::post('store-site-communication', [BoardController::class, 'storeSiteCommunication'])->name('boards.store.site-communication');
+    Route::post('store-health-safety-review',
+        [BoardController::class, 'storeHealthSafetyReview'])->name('boards.store.health-safety-review');
+    Route::post('store-health-safety-cross-criteria',
+        [BoardController::class, 'storeHealthSafetyCrossCriteria'])->name('boards.store.health-safety-cross-criteria');
+    Route::post('reset-safety-calendar',
+        [BoardController::class, 'resetSafetyCalendar'])->name('boards.reset.safety-calendar');
+    Route::post('store-productive-question',
+        [BoardController::class, 'storeProductiveQuestion'])->name('boards.store.productive-question');
+    Route::post('store-celebrate-success',
+        [BoardController::class, 'storeCelebrateSuccess'])->name('boards.store.celebrate-success');
+    Route::post('store-site-communication',
+        [BoardController::class, 'storeSiteCommunication'])->name('boards.store.site-communication');
     Route::resource('fatality-risk-controls', FatalityRiskControlController::class);
-    Route::get('get-supervisor-and-labour-list/{daily_shift_entry_id}', [BoardController::class, 'getSupervisorAndLabourList'])->name('boards.get-supervisor-and-labour-list');
-    Route::post('assign-fatality-risk-control', [BoardController::class, 'assignFatalityRiskControl'])->name('fatality-risk-controls.assign');
-    Route::post('delete-fatality-risk-control-image', [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
+    Route::get('get-supervisor-and-labour-list/{daily_shift_entry_id}',
+        [BoardController::class, 'getSupervisorAndLabourList'])->name('boards.get-supervisor-and-labour-list');
+    Route::post('assign-fatality-risk-control',
+        [BoardController::class, 'assignFatalityRiskControl'])->name('fatality-risk-controls.assign');
+    Route::post('delete-fatality-risk-control-image',
+        [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
 });
