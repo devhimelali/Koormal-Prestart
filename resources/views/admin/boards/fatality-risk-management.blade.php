@@ -158,7 +158,7 @@
     }
 
     th.th-frm {
-        min-width: 175px;
+        min-width: 215px;
     }
 
     th.th-actions {
