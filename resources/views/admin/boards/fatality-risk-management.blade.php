@@ -94,13 +94,17 @@
                 <td>
                     <div class="btn-group">
                         @if($shiftLog->fatality_risk_controls->count() > 0)
-                            <button class="btn btn-sm btn-warning editFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}" data-asset-no="{{ $shiftLog->asset_no }}"
+                            <button class="btn btn-sm btn-warning editFatalityRiskControlBtn"
+                                    data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}"
+                                    data-asset-no="{{ $shiftLog->asset_no }}"
                                     data-fatality-risk-control-ids="{{ implode(',', $shiftLog->fatality_risk_controls->pluck('id')->toArray()) }}">
                                 <i class="bi bi-pencil-square"></i>
                                 Edit
                             </button>
                         @else
-                            <button class="btn btn-sm btn-secondary addFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}" data-asset-no="{{ $shiftLog->asset_no }}">
+                            <button class="btn btn-sm btn-secondary addFatalityRiskControlBtn"
+                                    data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}"
+                                    data-asset-no="{{ $shiftLog->asset_no }}">
                                 <i class="bi bi-plus"></i>
                                 Add
                             </button>
@@ -160,6 +164,7 @@
     th.th-actions {
         min-width: 80px;
     }
+
     label {
         display: block;
     }
@@ -191,8 +196,9 @@
         let shiftLogId = $(this).data('shift-log-id');
         let woNumber = $(this).data('wo-number');
         let assetNo = $(this).data('asset-no');
-       $('#shift_log_id').val(shiftLogId);
-       $('.log-details').html(`
+        $('#inputType').val('add');
+        $('#shift_log_id').val(shiftLogId);
+        $('.log-details').html(`
             <p class="mb-1">WO Number: <span class="fw-bold">${woNumber}</span></p>
             <p class="mb-1">Asset Number: <span class="fw-bold">${assetNo}</span></p>
         `);
@@ -220,8 +226,29 @@
     }
 
     $('.editFatalityRiskControlBtn').on('click', function () {
-        alert('Not implemented yet. Will be available soon.');
-    })
+        let shiftLogId = $(this).data('shift-log-id');
+        let woNumber = $(this).data('wo-number');
+        let assetNo = $(this).data('asset-no');
+        let fatalityRiskControlIds = $(this).data('fatality-risk-control-ids').toString().split(',');
+        $('#inputType').val('edit');
+        // Set hidden field
+        $('#shift_log_id').val(shiftLogId);
+
+        // Set WO and Asset info
+        $('.log-details').html(`
+        <p class="mb-1">WO Number: <span class="fw-bold">${woNumber}</span></p>
+        <p class="mb-1">Asset Number: <span class="fw-bold">${assetNo}</span></p>
+    `);
+
+        // Clear existing selections
+        $('#fatality_risk_control').val(null).trigger('change');
+
+        // Preselect existing risk control IDs
+        $('#fatality_risk_control').val(fatalityRiskControlIds).trigger('change');
+
+        // Show modal
+        $('#fatalityRiskControlModal').modal('show');
+    });
 
 
 </script>

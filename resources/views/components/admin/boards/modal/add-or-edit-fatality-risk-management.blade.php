@@ -3,13 +3,14 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-light">
+            <div class="modal-header bg-light py-2">
                 <h1 class="modal-title fs-5" id="fatalityRiskControlModalLabel">Fatality Risk Control</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{route('fatality-risk-controls.assign')}}" method="post" id="fatalityRiskControlForm">
                 @csrf
                 <input type="hidden" name="shift_log_id" id="shift_log_id">
+                <input type="hidden" name="type" id="inputType" value="add">
                 <div class="modal-body">
                     <div class="mb-2 log-details"></div>
                     <div class="mb-2">

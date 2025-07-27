@@ -292,15 +292,15 @@ class BoardService
         $validated = $request->validate([
             'fatality_risk_control' => 'required|array|min:1',
             'fatality_risk_control.*' => 'integer|exists:fatality_risk_controls,id',
+            'type' => 'required|string|in:add,edit',
+            'shift_log_id' => 'required',
         ]);
 
-        foreach ($validated['fatality_risk_control'] as $fatalityRiskControlId) {
-            DB::table('shift_log_fatality_risk_control')->insert([
-                'shift_log_id' => $request->shift_log_id,
-                'fatality_risk_control_id' => $fatalityRiskControlId,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        if($validated['type'] == 'add') {
+            $this->storeFatalityRiskControlToShiftLog($validated);
+        }elseif ($validated['type'] == 'edit') {
+            DB::table('shift_log_fatality_risk_control')->where('shift_log_id', $validated['shift_log_id'])->delete();
+            $this->storeFatalityRiskControlToShiftLog($validated);
         }
 
         return response()->json([
@@ -308,5 +308,17 @@ class BoardService
             'message' => 'Fatality Risk Control assigned successfully',
             'step' => 8
         ]);
+    }
+
+    private function storeFatalityRiskControlToShiftLog($validated)
+    {
+        foreach ($validated['fatality_risk_control'] as $fatalityRiskControlId) {
+            DB::table('shift_log_fatality_risk_control')->insert([
+                'shift_log_id' => $validated['shift_log_id'],
+                'fatality_risk_control_id' => $fatalityRiskControlId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }
