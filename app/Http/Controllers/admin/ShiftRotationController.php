@@ -63,8 +63,6 @@ class ShiftRotationController extends Controller
     }
 
 
-
-
     public function applyDataRangeFilter(Request $request)
     {
 

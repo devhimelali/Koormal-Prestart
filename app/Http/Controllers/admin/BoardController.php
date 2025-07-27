@@ -16,6 +16,7 @@ class BoardController extends Controller
     {
         //code here
     }
+
     public function index(Request $request)
     {
         return view('admin.boards.index', [
@@ -82,7 +83,7 @@ class BoardController extends Controller
             return view('admin.boards.site_communication', [
                 'siteCommunications' => $siteCommunications
             ])->render();
-        }elseif ($step == 8) {
+        } elseif ($step == 8) {
             $dailyShiftEntry = DailyShiftEntry::findOrFail($dailyShiftEntryId);
             $shift = $dailyShiftEntry->shift_type;
             $date = Carbon::parse($dailyShiftEntry->date)->format('d-m-Y');
@@ -121,6 +122,7 @@ class BoardController extends Controller
     {
         return $this->boardService->storeCelebrateSuccess($request);
     }
+
     public function storeSiteCommunication(Request $request)
     {
         return $this->boardService->storeSiteCommunication($request);
@@ -148,7 +150,8 @@ class BoardController extends Controller
 
     public function deleteFatalityRiskControlImage(Request $request)
     {
-        DB::table('shift_log_fatality_risk_control')->where('shift_log_id', $request->shift_log_id)->where('fatality_risk_control_id', $request->fatality_risk_control_id)->delete();
+        DB::table('shift_log_fatality_risk_control')->where('shift_log_id',
+            $request->shift_log_id)->where('fatality_risk_control_id', $request->fatality_risk_control_id)->delete();
 
         return response()->json([
             'status' => 'success',

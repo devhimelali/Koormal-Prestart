@@ -296,9 +296,9 @@ class BoardService
             'shift_log_id' => 'required',
         ]);
 
-        if($validated['type'] == 'add') {
+        if ($validated['type'] == 'add') {
             $this->storeFatalityRiskControlToShiftLog($validated);
-        }elseif ($validated['type'] == 'edit') {
+        } elseif ($validated['type'] == 'edit') {
             DB::table('shift_log_fatality_risk_control')->where('shift_log_id', $validated['shift_log_id'])->delete();
             $this->storeFatalityRiskControlToShiftLog($validated);
         }

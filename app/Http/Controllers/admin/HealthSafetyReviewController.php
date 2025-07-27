@@ -52,7 +52,8 @@ class HealthSafetyReviewController extends Controller
 
         // Find shift and rotation
         $shift = Shift::select('id')->where('name', $crewName)->first();
-        $rotation = ShiftRotation::select('id')->where('start_date', '<=', $startDate)->orderByDesc('start_date')->first();
+        $rotation = ShiftRotation::select('id')->where('start_date', '<=',
+            $startDate)->orderByDesc('start_date')->first();
 
         if (!$shift || !$rotation) {
             return response()->json([

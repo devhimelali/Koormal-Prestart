@@ -13,7 +13,7 @@ class CKEditorController extends Controller
             $path = $file->store('uploads/ckeditor', 'public');
 
             return response()->json([
-                'url' => asset('storage/' . $path),
+                'url' => asset('storage/'.$path),
             ]);
         }
 

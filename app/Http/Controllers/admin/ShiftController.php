@@ -22,11 +22,11 @@ class ShiftController extends Controller
                 })
                 ->addColumn('actions', function ($row) {
                     $btn = '<div class="btn-group">';
-                    $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-secondary btn-sm d-flex align-items-center">
+                    $btn .= ' <a href="javascript:void(0)" data-id="'.$row->id.'" class="edit btn btn-secondary btn-sm d-flex align-items-center">
                                     <i class="ph ph-pencil me-1"></i>
                                     Edit
                               </a>';
-                    $btn .= ' <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm d-flex align-items-center">
+                    $btn .= ' <a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm d-flex align-items-center">
                                     <i class="ph ph-trash me-1"></i>
                                     Delete
                               </a>';

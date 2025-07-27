@@ -20,17 +20,17 @@ class CrossCriteriaController extends Controller
                     return $row->description;
                 })
                 ->editColumn('color', function ($row) {
-                    return '<span class="badge" style="background-color: ' . e($row->color) . '; padding: 4px 8px; border-radius: 5px;">' . e($row->color) . '</span>';
+                    return '<span class="badge" style="background-color: '.e($row->color).'; padding: 4px 8px; border-radius: 5px;">'.e($row->color).'</span>';
                 })
                 ->addColumn(
                     'actions',
                     function ($row) {
                         return '<div class="btn-group">
-                                <a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-secondary btn-sm d-flex align-items-center">
+                                <a href="javascript:void(0)" data-id="'.$row->id.'" class="edit btn btn-secondary btn-sm d-flex align-items-center">
                                     <i class="ph ph-pencil me-1"></i>
                                     Edit
                                 </a>
-                                <a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm d-flex align-items-center">
+                                <a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm d-flex align-items-center">
                                     <i class="ph ph-trash me-1"></i>
                                     Delete
                                 </a>
@@ -92,7 +92,7 @@ class CrossCriteriaController extends Controller
     {
         $hex = str_replace('#', '', $hex);
         if (strlen($hex) == 3) {
-            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+            $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
         }
 
         $r = hexdec(substr($hex, 0, 2));
