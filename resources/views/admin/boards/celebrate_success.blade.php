@@ -19,7 +19,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-end align-items-center flex-wrap mb-2">
                 <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                    id="addSuccessNoteBtn">
+                        id="addSuccessNoteBtn">
                     <i class="ph ph-plus"></i>
                 </button>
             </div>
@@ -27,17 +27,17 @@
             <div class="table-responsive">
                 <table class="table table-bordered text-nowrap">
                     <tbody>
-                        @forelse ($celebrateSuccesses as $celebrateSuccess)
-                            <tr class="align-middle">
-                                <td class="bg-light td-date">
+                    @forelse ($celebrateSuccesses as $celebrateSuccess)
+                        <tr class="align-middle">
+                            <td class="bg-light td-date">
                                     <span>
                                         {{ $celebrateSuccess->dailyShiftEntry->date }}
                                         ({{ \Carbon\Carbon::parse($celebrateSuccess->dailyShiftEntry->date)->format('l') }})
                                     </span>
-                                </td>
-                                <td class="p-1 align-top w-auto">
-                                    <div contenteditable="true" class="success-note" data-date=""
-                                        style="
+                            </td>
+                            <td class="p-1 align-top w-auto">
+                                <div contenteditable="true" class="success-note" data-date=""
+                                     style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
                  min-height: 25px;
@@ -49,15 +49,15 @@
                  background-color: #fff;
                  border-radius: 4px;
         ">
-                                        {{ $celebrateSuccess->note }}
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center">No data found</td>
-                            </tr>
-                        @endforelse
+                                    {{ $celebrateSuccess->note }}
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">No data found</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
@@ -78,12 +78,12 @@
 </div>
 
 <script>
-    $('#previousStepBtn').on('click', function() {
+    $('#previousStepBtn').on('click', function () {
         currentStep = 5;
         updateBoard(currentStep, "Our Productivity");
     })
 
-    $('#nextStepBtn').on('click', function() {
+    $('#nextStepBtn').on('click', function () {
         currentStep = 7;
         updateBoard(currentStep, "Site Communication");
     })

@@ -1,13 +1,13 @@
 <div id="safetyCalendarModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
-    style="display: none;">
+     style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-light py-2">
                 <h5 class="modal-title" id="myModalLabel">Safety Calendar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('boards.store.health-safety-cross-criteria') }}" method="POST"
-                id="safetyCalendarForm">
+                  id="safetyCalendarForm">
                 @csrf
                 <input type="hidden" name="daily_shift_entry_id" value="{{ $dailyShiftEntryId }}">
                 <input type="hidden" name="cell" id="safetyCalendarCell">
@@ -16,9 +16,9 @@
                     <div class="row">
                         @foreach ($crossCriteria as $criteria)
                             <div class="col-3 criteria-option" data-id="{{ $criteria->id }}"
-                                data-color="{{ $criteria->color }}" data-bg="{{ $criteria->bg_color }}">
+                                 data-color="{{ $criteria->color }}" data-bg="{{ $criteria->bg_color }}">
                                 <div class="option"
-                                    style="border: {{ $criteria->color }} 2px solid; background-color: {{ $criteria->bg_color }};">
+                                     style="border: {{ $criteria->color }} 2px solid; background-color: {{ $criteria->bg_color }};">
                                     {{ $criteria->name }}
                                 </div>
                             </div>
@@ -59,8 +59,8 @@
 
 <script>
     // ✅ Reset everything when modal is closed
-    $('#safetyCalendarModal').on('hidden.bs.modal', function() {
-        $('.criteria-option').each(function() {
+    $('#safetyCalendarModal').on('hidden.bs.modal', function () {
+        $('.criteria-option').each(function () {
             let $item = $(this);
             let color = $item.data('color');
             let bg = $item.data('bg');

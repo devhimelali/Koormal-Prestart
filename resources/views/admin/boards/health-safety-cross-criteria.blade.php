@@ -5,7 +5,7 @@
             <img src="{{ asset('assets/logos/4emus-logo.png') }}" class="img-fluid header-logo float-start">
         </div>
         <div class="col-8 col-md-8 text-center">
-            <h5 class="board-title mb-0">What is our assessment of our <br />
+            <h5 class="board-title mb-0">What is our assessment of our <br/>
                 <span style="color: #202a44;">Health & Safety performance during the last shift?</span>
             </h5>
         </div>
@@ -23,11 +23,13 @@
                     $cell_2 = $safetyCalendar->where('cell_number', 2)->first();
                 @endphp
                 <div class="calendar-cell green" data-cell="1"
-                    style="background-color: {{ $cell_1?->crossCriteria?->bg_color }}; border: {{ $cell_1?->crossCriteria?->color }} 2px solid;">
-                    1</div>
+                     style="background-color: {{ $cell_1?->crossCriteria?->bg_color }}; border: {{ $cell_1?->crossCriteria?->color }} 2px solid;">
+                    1
+                </div>
                 <div class="calendar-cell green" data-cell="2"
-                    style="background-color: {{ $cell_2?->crossCriteria?->bg_color }}; border: {{ $cell_2?->crossCriteria?->color }} 2px solid;">
-                    2</div>
+                     style="background-color: {{ $cell_2?->crossCriteria?->bg_color }}; border: {{ $cell_2?->crossCriteria?->color }} 2px solid;">
+                    2
+                </div>
             </div>
 
             <!-- Row 2: 3 cells -->
@@ -38,14 +40,17 @@
                     $cell_5 = $safetyCalendar->where('cell_number', 5)->first();
                 @endphp
                 <div class="calendar-cell green" data-cell="3"
-                    style="background-color: {{ $cell_3?->crossCriteria?->bg_color }}; border: {{ $cell_3?->crossCriteria?->color }} 2px solid;">
-                    3</div>
+                     style="background-color: {{ $cell_3?->crossCriteria?->bg_color }}; border: {{ $cell_3?->crossCriteria?->color }} 2px solid;">
+                    3
+                </div>
                 <div class="calendar-cell" data-cell="4"
-                    style="background-color: {{ $cell_4?->crossCriteria?->bg_color }}; border: {{ $cell_4?->crossCriteria?->color }} 2px solid;">
-                    4</div>
+                     style="background-color: {{ $cell_4?->crossCriteria?->bg_color }}; border: {{ $cell_4?->crossCriteria?->color }} 2px solid;">
+                    4
+                </div>
                 <div class="calendar-cell green" data-cell="5"
-                    style="background-color: {{ $cell_5?->crossCriteria?->bg_color }}; border: {{ $cell_5?->crossCriteria?->color }} 2px solid;">
-                    5</div>
+                     style="background-color: {{ $cell_5?->crossCriteria?->bg_color }}; border: {{ $cell_5?->crossCriteria?->color }} 2px solid;">
+                    5
+                </div>
             </div>
 
             <!-- Row 3: 7 cells -->
@@ -60,26 +65,33 @@
                     $cell_12 = $safetyCalendar->where('cell_number', 12)->first();
                 @endphp
                 <div class="calendar-cell blue" data-cell="6"
-                    style="background-color: {{ $cell_6?->crossCriteria?->bg_color }}; border: {{ $cell_6?->crossCriteria?->color }} 2px solid;">
-                    6</div>
+                     style="background-color: {{ $cell_6?->crossCriteria?->bg_color }}; border: {{ $cell_6?->crossCriteria?->color }} 2px solid;">
+                    6
+                </div>
                 <div class="calendar-cell" data-cell="7"
-                    style="background-color: {{ $cell_7?->crossCriteria?->bg_color }}; border: {{ $cell_7?->crossCriteria?->color }} 2px solid;">
-                    7</div>
+                     style="background-color: {{ $cell_7?->crossCriteria?->bg_color }}; border: {{ $cell_7?->crossCriteria?->color }} 2px solid;">
+                    7
+                </div>
                 <div class="calendar-cell" data-cell="8"
-                    style="background-color: {{ $cell_8?->crossCriteria?->bg_color }}; border: {{ $cell_8?->crossCriteria?->color }} 2px solid;">
-                    8</div>
+                     style="background-color: {{ $cell_8?->crossCriteria?->bg_color }}; border: {{ $cell_8?->crossCriteria?->color }} 2px solid;">
+                    8
+                </div>
                 <div class="calendar-cell" data-cell="9"
-                    style="background-color: {{ $cell_9?->crossCriteria?->bg_color }}; border: {{ $cell_9?->crossCriteria?->color }} 2px solid;">
-                    9</div>
+                     style="background-color: {{ $cell_9?->crossCriteria?->bg_color }}; border: {{ $cell_9?->crossCriteria?->color }} 2px solid;">
+                    9
+                </div>
                 <div class="calendar-cell" data-cell="10"
-                    style="background-color: {{ $cell_10?->crossCriteria?->bg_color }}; border: {{ $cell_10?->crossCriteria?->color }} 2px solid;">
-                    10</div>
+                     style="background-color: {{ $cell_10?->crossCriteria?->bg_color }}; border: {{ $cell_10?->crossCriteria?->color }} 2px solid;">
+                    10
+                </div>
                 <div class="calendar-cell" data-cell="11"
-                    style="background-color: {{ $cell_11?->crossCriteria?->bg_color }}; border: {{ $cell_11?->crossCriteria?->color }} 2px solid;">
-                    11</div>
+                     style="background-color: {{ $cell_11?->crossCriteria?->bg_color }}; border: {{ $cell_11?->crossCriteria?->color }} 2px solid;">
+                    11
+                </div>
                 <div class="calendar-cell" data-cell="12"
-                    style="background-color: {{ $cell_12?->crossCriteria?->bg_color }}; border: {{ $cell_12?->crossCriteria?->color }} 2px solid;">
-                    12</div>
+                     style="background-color: {{ $cell_12?->crossCriteria?->bg_color }}; border: {{ $cell_12?->crossCriteria?->color }} 2px solid;">
+                    12
+                </div>
             </div>
 
             <!-- Row 4: 7 cells -->
@@ -94,26 +106,33 @@
                     $cell_19 = $safetyCalendar->where('cell_number', 19)->first();
                 @endphp
                 <div class="calendar-cell" data-cell="13"
-                    style="background-color: {{ $cell_13?->crossCriteria?->bg_color }}; border: {{ $cell_13?->crossCriteria?->color }} 2px solid;">
-                    13</div>
+                     style="background-color: {{ $cell_13?->crossCriteria?->bg_color }}; border: {{ $cell_13?->crossCriteria?->color }} 2px solid;">
+                    13
+                </div>
                 <div class="calendar-cell" data-cell="14"
-                    style="background-color: {{ $cell_14?->crossCriteria?->bg_color }}; border: {{ $cell_14?->crossCriteria?->color }} 2px solid;">
-                    14</div>
+                     style="background-color: {{ $cell_14?->crossCriteria?->bg_color }}; border: {{ $cell_14?->crossCriteria?->color }} 2px solid;">
+                    14
+                </div>
                 <div class="calendar-cell" data-cell="15"
-                    style="background-color: {{ $cell_15?->crossCriteria?->bg_color }}; border: {{ $cell_15?->crossCriteria?->color }} 2px solid;">
-                    15</div>
+                     style="background-color: {{ $cell_15?->crossCriteria?->bg_color }}; border: {{ $cell_15?->crossCriteria?->color }} 2px solid;">
+                    15
+                </div>
                 <div class="calendar-cell" data-cell="16"
-                    style="background-color: {{ $cell_16?->crossCriteria?->bg_color }}; border: {{ $cell_16?->crossCriteria?->color }} 2px solid;">
-                    16</div>
+                     style="background-color: {{ $cell_16?->crossCriteria?->bg_color }}; border: {{ $cell_16?->crossCriteria?->color }} 2px solid;">
+                    16
+                </div>
                 <div class="calendar-cell" data-cell="17"
-                    style="background-color: {{ $cell_17?->crossCriteria?->bg_color }}; border: {{ $cell_17?->crossCriteria?->color }} 2px solid;">
-                    17</div>
+                     style="background-color: {{ $cell_17?->crossCriteria?->bg_color }}; border: {{ $cell_17?->crossCriteria?->color }} 2px solid;">
+                    17
+                </div>
                 <div class="calendar-cell" data-cell="18"
-                    style="background-color: {{ $cell_18?->crossCriteria?->bg_color }}; border: {{ $cell_18?->crossCriteria?->color }} 2px solid;">
-                    18</div>
+                     style="background-color: {{ $cell_18?->crossCriteria?->bg_color }}; border: {{ $cell_18?->crossCriteria?->color }} 2px solid;">
+                    18
+                </div>
                 <div class="calendar-cell" data-cell="19"
-                    style="background-color: {{ $cell_19?->crossCriteria?->bg_color }}; border: {{ $cell_19?->crossCriteria?->color }} 2px solid;">
-                    19</div>
+                     style="background-color: {{ $cell_19?->crossCriteria?->bg_color }}; border: {{ $cell_19?->crossCriteria?->color }} 2px solid;">
+                    19
+                </div>
             </div>
             <!-- Row 4: 7 cells -->
             <div class="calendar-row">
@@ -127,26 +146,33 @@
                     $cell_26 = $safetyCalendar->where('cell_number', 26)->first();
                 @endphp
                 <div class="calendar-cell" data-cell="20"
-                    style="background-color: {{ $cell_20?->crossCriteria?->bg_color }}; border: {{ $cell_20?->crossCriteria?->color }} 2px solid;">
-                    20</div>
+                     style="background-color: {{ $cell_20?->crossCriteria?->bg_color }}; border: {{ $cell_20?->crossCriteria?->color }} 2px solid;">
+                    20
+                </div>
                 <div class="calendar-cell" data-cell="21"
-                    style="background-color: {{ $cell_21?->crossCriteria?->bg_color }}; border: {{ $cell_21?->crossCriteria?->color }} 2px solid;">
-                    21</div>
+                     style="background-color: {{ $cell_21?->crossCriteria?->bg_color }}; border: {{ $cell_21?->crossCriteria?->color }} 2px solid;">
+                    21
+                </div>
                 <div class="calendar-cell" data-cell="22"
-                    style="background-color: {{ $cell_22?->crossCriteria?->bg_color }}; border: {{ $cell_22?->crossCriteria?->color }} 2px solid;">
-                    22</div>
+                     style="background-color: {{ $cell_22?->crossCriteria?->bg_color }}; border: {{ $cell_22?->crossCriteria?->color }} 2px solid;">
+                    22
+                </div>
                 <div class="calendar-cell" data-cell="23"
-                    style="background-color: {{ $cell_23?->crossCriteria?->bg_color }}; border: {{ $cell_23?->crossCriteria?->color }} 2px solid;">
-                    23</div>
+                     style="background-color: {{ $cell_23?->crossCriteria?->bg_color }}; border: {{ $cell_23?->crossCriteria?->color }} 2px solid;">
+                    23
+                </div>
                 <div class="calendar-cell" data-cell="24"
-                    style="background-color: {{ $cell_24?->crossCriteria?->bg_color }}; border: {{ $cell_24?->crossCriteria?->color }} 2px solid;">
-                    24</div>
+                     style="background-color: {{ $cell_24?->crossCriteria?->bg_color }}; border: {{ $cell_24?->crossCriteria?->color }} 2px solid;">
+                    24
+                </div>
                 <div class="calendar-cell" data-cell="25"
-                    style="background-color: {{ $cell_25?->crossCriteria?->bg_color }}; border: {{ $cell_25?->crossCriteria?->color }} 2px solid;">
-                    25</div>
+                     style="background-color: {{ $cell_25?->crossCriteria?->bg_color }}; border: {{ $cell_25?->crossCriteria?->color }} 2px solid;">
+                    25
+                </div>
                 <div class="calendar-cell" data-cell="26"
-                    style="background-color: {{ $cell_26?->crossCriteria?->bg_color }}; border: {{ $cell_26?->crossCriteria?->color }} 2px solid;">
-                    26</div>
+                     style="background-color: {{ $cell_26?->crossCriteria?->bg_color }}; border: {{ $cell_26?->crossCriteria?->color }} 2px solid;">
+                    26
+                </div>
             </div>
 
             <!-- Row 5: 3 cells -21 -->
@@ -157,14 +183,17 @@
                     $cell_29 = $safetyCalendar->where('cell_number', 29)->first();
                 @endphp
                 <div class="calendar-cell" data-cell="27"
-                    style="background-color: {{ $cell_27?->crossCriteria?->bg_color }}; border: {{ $cell_27?->crossCriteria?->color }} 2px solid;">
-                    27</div>
+                     style="background-color: {{ $cell_27?->crossCriteria?->bg_color }}; border: {{ $cell_27?->crossCriteria?->color }} 2px solid;">
+                    27
+                </div>
                 <div class="calendar-cell" data-cell="28"
-                    style="background-color: {{ $cell_28?->crossCriteria?->bg_color }}; border: {{ $cell_28?->crossCriteria?->color }} 2px solid;">
-                    28</div>
+                     style="background-color: {{ $cell_28?->crossCriteria?->bg_color }}; border: {{ $cell_28?->crossCriteria?->color }} 2px solid;">
+                    28
+                </div>
                 <div class="calendar-cell" data-cell="29"
-                    style="background-color: {{ $cell_29?->crossCriteria?->bg_color }}; border: {{ $cell_29?->crossCriteria?->color }} 2px solid;">
-                    29</div>
+                     style="background-color: {{ $cell_29?->crossCriteria?->bg_color }}; border: {{ $cell_29?->crossCriteria?->color }} 2px solid;">
+                    29
+                </div>
             </div>
 
             <!-- Row 6: 2 cells -->
@@ -174,11 +203,13 @@
                     $cell_31 = $safetyCalendar->where('cell_number', 31)->first();
                 @endphp
                 <div class="calendar-cell" data-cell="30"
-                    style="background-color: {{ $cell_30?->crossCriteria?->bg_color }}; border: {{ $cell_30?->crossCriteria?->color }} 2px solid;">
-                    30</div>
+                     style="background-color: {{ $cell_30?->crossCriteria?->bg_color }}; border: {{ $cell_30?->crossCriteria?->color }} 2px solid;">
+                    30
+                </div>
                 <div class="calendar-cell" data-cell="31"
-                    style="background-color: {{ $cell_31?->crossCriteria?->bg_color }}; border: {{ $cell_31?->crossCriteria?->color }} 2px solid;">
-                    31</div>
+                     style="background-color: {{ $cell_31?->crossCriteria?->bg_color }}; border: {{ $cell_31?->crossCriteria?->color }} 2px solid;">
+                    31
+                </div>
             </div>
         </div>
 
@@ -192,9 +223,9 @@
             </div> --}}
             @forelse ($crossCriteria as $legend)
                 <div class="legend-item" data-name="{{ $legend->name }}" data-color="{{ $legend->color }}"
-                    data-bg-color="{{ $legend->bg_color }}" data-description="{{ $legend->description }}">
+                     data-bg-color="{{ $legend->bg_color }}" data-description="{{ $legend->description }}">
                     <div class="color-box"
-                        style="background-color: {{ $legend->bg_color }}; border-color: {{ $legend->color }};">
+                         style="background-color: {{ $legend->bg_color }}; border-color: {{ $legend->color }};">
                         {{ $legend->name }}
                     </div>
                 </div>
@@ -215,12 +246,12 @@
 </div>
 @include('components.admin.boards.modal.safety-calendar')
 <script>
-    $('#previousStepBtn').on('click', function() {
+    $('#previousStepBtn').on('click', function () {
         currentStep = 2;
         updateBoard(currentStep);
     })
 
-    $('#nextStepBtn').on('click', function() {
+    $('#nextStepBtn').on('click', function () {
         currentStep = 4;
         updateBoard(currentStep, "Our Productivity");
     })

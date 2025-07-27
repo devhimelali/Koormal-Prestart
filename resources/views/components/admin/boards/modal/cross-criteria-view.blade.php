@@ -1,10 +1,10 @@
 <div id="crossCriteriaViewModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
-    style="display: none;">
+     style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-light py-2">
                 <h5 class="modal-title cross-criteria-title" id="myModalLabel">Modal Heading</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="cross-criteria-content"></div>

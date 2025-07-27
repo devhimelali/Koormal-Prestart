@@ -18,7 +18,7 @@
         border-radius: 0% 0% 4px 4px;
     }
 
-    .card{
+    .card {
         min-width: 350px;
     }
 </style>

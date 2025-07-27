@@ -15,7 +15,8 @@
                     <div class="mb-2 log-details"></div>
                     <div class="mb-2">
                         <label for="fatality_risk_control" class="form-label">Fatality Risk Control</label>
-                        <select name="fatality_risk_control[]" id="fatality_risk_control" class="form-select select2" multiple>
+                        <select name="fatality_risk_control[]" id="fatality_risk_control" class="form-select select2"
+                                multiple>
                             <option value="">Select Fatality Risk Control</option>
                             @foreach ($fatalityRisks as $fatalityRiskControl)
                                 <option value="{{ $fatalityRiskControl->id }}"

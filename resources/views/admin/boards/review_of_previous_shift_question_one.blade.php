@@ -22,7 +22,7 @@
                     What did we do well to be more productive on our last shift?
                 </h6>
                 <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                    id="addProductivityQuestionOneBtn">
+                        id="addProductivityQuestionOneBtn">
                     <i class="ph ph-plus"></i>
                 </button>
             </div>
@@ -30,17 +30,17 @@
             <div class="table-responsive">
                 <table class="table table-bordered text-nowrap">
                     <tbody>
-                        @forelse ($productiveQuestionOne as $productive)
-                            <tr class="align-middle">
-                                <td class="bg-light td-date">
+                    @forelse ($productiveQuestionOne as $productive)
+                        <tr class="align-middle">
+                            <td class="bg-light td-date">
                                     <span>
                                         {{ $productive->dailyShiftEntry->date }}
                                         ({{ \Carbon\Carbon::parse($productive->dailyShiftEntry->date)->format('l') }})
                                     </span>
-                                </td>
-                                <td class="p-1 align-top w-auto">
-                                    <div contenteditable="true" class="productivity-question-one" data-date=""
-                                        style="
+                            </td>
+                            <td class="p-1 align-top w-auto">
+                                <div contenteditable="true" class="productivity-question-one" data-date=""
+                                     style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
                  min-height: 25px;
@@ -52,15 +52,15 @@
                  background-color: #fff;
                  border-radius: 4px;
         ">
-                                        {{ $productive->answer }}
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center">No data found</td>
-                            </tr>
-                        @endforelse
+                                    {{ $productive->answer }}
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">No data found</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
@@ -81,12 +81,12 @@
 </div>
 
 <script>
-    $('#previousStepBtn').on('click', function() {
+    $('#previousStepBtn').on('click', function () {
         currentStep = 3;
         updateBoard(currentStep);
     })
 
-    $('#nextStepBtn').on('click', function() {
+    $('#nextStepBtn').on('click', function () {
         currentStep = 5;
         updateBoard(currentStep, "Our Productivity");
     })

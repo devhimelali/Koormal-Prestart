@@ -2,7 +2,7 @@
     <!-- GLightbox Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
     <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
         .supervisor-name {
             border: 1px solid #ccc;
@@ -54,7 +54,7 @@
             max-width: 90px;
         }
 
-        .table>:not(caption)>*>* {
+        .table > :not(caption) > * > * {
             padding: .45rem .5rem;
         }
 

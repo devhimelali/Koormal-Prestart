@@ -19,6 +19,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', initGlightbox);
+
         function getSupervisorAndLabour() {
             $.ajax({
                 url: "{{route('boards.get-supervisor-and-labour-list', $dailyShiftEntry->id)}}",

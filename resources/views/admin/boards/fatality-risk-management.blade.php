@@ -295,7 +295,7 @@
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
-                if(response.status == 'success') {
+                if (response.status == 'success') {
                     notify('success', response.message);
                     $(`span[data-fatality-risk-control-id="${fatalityRiskControlId}"]`).closest('.image-container').remove();
                 }
