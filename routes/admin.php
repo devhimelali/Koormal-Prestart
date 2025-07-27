@@ -44,4 +44,5 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::resource('fatality-risk-controls', FatalityRiskControlController::class);
     Route::get('get-supervisor-and-labour-list/{daily_shift_entry_id}', [BoardController::class, 'getSupervisorAndLabourList'])->name('boards.get-supervisor-and-labour-list');
     Route::post('assign-fatality-risk-control', [BoardController::class, 'assignFatalityRiskControl'])->name('fatality-risk-controls.assign');
+    Route::post('delete-fatality-risk-control-image', [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
 });

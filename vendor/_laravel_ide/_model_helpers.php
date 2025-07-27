@@ -958,6 +958,7 @@ namespace App\Models {
      * @property string|null $description
      * @property string $name
      * @property int $id
+     * @property-read \App\Models\ShiftLog $shiftLog
      * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereName($value)
      * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereDescription($value)
@@ -1888,6 +1889,18 @@ namespace App\Models {
     /**
      * App\Models\LabourShift
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string $shift
+     * @property string $date
+     * @property string|null $name
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift whereName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift whereDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift whereShift($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<LabourShift>|LabourShift query()
@@ -2813,6 +2826,71 @@ namespace App\Models {
     /**
      * App\Models\ShiftLog
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property bool $critical_work
+     * @property mixed $scheduled
+     * @property int|null $note_id
+     * @property string|null $log_date
+     * @property mixed $requisition
+     * @property string $progress
+     * @property bool $mark_as_complete
+     * @property string|null $supervisor_notes
+     * @property int|null $position
+     * @property bool $is_excel_upload
+     * @property string|null $other_cost
+     * @property string|null $labor_cost
+     * @property string|null $material_cost
+     * @property string|null $department
+     * @property string|null $job_type
+     * @property string|null $priority
+     * @property string|null $start_date
+     * @property string|null $raised
+     * @property string|null $status
+     * @property string|null $due_start
+     * @property string|null $trades
+     * @property string|null $duration
+     * @property string|null $labour
+     * @property string|null $work_description
+     * @property string|null $asset_description
+     * @property string|null $asset_no
+     * @property string|null $wo_number
+     * @property string|null $shift_name
+     * @property int $id
+     * @property-read mixed $fatality_risk_controls
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FatalityRiskControl> $fatalityRiskControls
+     * @property-read int|null $fatalityRiskControls_count
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereShiftName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereWoNumber($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereAssetNo($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereAssetDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereWorkDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereLabour($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereDuration($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereTrades($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereDueStart($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereStatus($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereRaised($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereStartDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog wherePriority($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereJobType($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereDepartment($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereMaterialCost($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereLaborCost($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereOtherCost($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereIsExcelUpload($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog wherePosition($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereSupervisorNotes($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereMarkAsComplete($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereProgress($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereRequisition($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereLogDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereNoteId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereScheduled($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereCriticalWork($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog query()
@@ -3734,6 +3812,18 @@ namespace App\Models {
     /**
      * App\Models\Supervisor
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string $shift
+     * @property string $date
+     * @property string|null $name
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor whereName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor whereDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor whereShift($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Supervisor>|Supervisor query()

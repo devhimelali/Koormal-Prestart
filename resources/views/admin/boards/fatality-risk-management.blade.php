@@ -77,13 +77,19 @@
                 <td>
                     <div class="d-flex align-items-center justify-content-center flex-wrap gap-1">
                         @forelse($shiftLog->fatality_risk_controls as $fatality_risk_control)
-                            <div>
+                            <div class="image-container">
                                 @php
                                     $url = asset('storage/'.$fatality_risk_control->image);
                                 @endphp
-                                <a href="{{ $url }}" class="glightbox" data-gallery="media-gallery" data-glightbox="title:{{$fatality_risk_control->name}}; description:{{$fatality_risk_control->description}}; descPosition: left">
+                                <a href="{{ $url }}" class="glightbox" data-gallery="media-gallery"
+                                   data-glightbox="title:{{$fatality_risk_control->name}}; description:{{$fatality_risk_control->description}}; descPosition: left">
                                     <img src="{{ $url }}" width="45" height="45"
                                          alt="{{$fatality_risk_control->name}}" loading="lazy">
+                                    <span class="remove-image"
+                                          data-fatality-risk-control-id="{{$fatality_risk_control->id}}"
+                                          data-shift-log-id="{{$shiftLog->id}}">
+                                        <i class="ph ph-x"></i>
+                                    </span>
                                 </a>
                             </div>
                         @empty
@@ -99,14 +105,14 @@
                                     data-asset-no="{{ $shiftLog->asset_no }}"
                                     data-fatality-risk-control-ids="{{ implode(',', $shiftLog->fatality_risk_controls->pluck('id')->toArray()) }}">
                                 <i class="bi bi-pencil-square"></i>
-                                Edit
+                                Edit RFC
                             </button>
                         @else
                             <button class="btn btn-sm btn-secondary addFatalityRiskControlBtn"
                                     data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}"
                                     data-asset-no="{{ $shiftLog->asset_no }}">
                                 <i class="bi bi-plus"></i>
-                                Add
+                                Add RFC
                             </button>
                         @endif
                     </div>
@@ -162,7 +168,7 @@
     }
 
     th.th-actions {
-        min-width: 80px;
+        min-width: 100px;
     }
 
     label {
@@ -180,6 +186,30 @@
 
     span.select2-selection__choice__display {
         padding: 3px 0;
+    }
+
+    .image-container {
+        position: relative;
+    }
+
+    span.remove-image {
+        background: rgba(255, 0, 0, 0.85);
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        position: absolute;
+        text-align: center;
+        padding: 2px;
+        border-radius: 50%;
+        top: -3px;
+        right: -3px;
+        cursor: pointer;
+    }
+
+    span.remove-image i {
+        font-size: 10px;
+        color: #fff;
+        transform: translate(0px, -2px);
     }
 </style>
 
@@ -248,6 +278,32 @@
 
         // Show modal
         $('#fatalityRiskControlModal').modal('show');
+    });
+
+    $('.remove-image').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let fatalityRiskControlId = $(this).data('fatality-risk-control-id');
+        let shiftLogId = $(this).data('shift-log-id');
+
+        $.ajax({
+            url: "{{route('fatality-risk-controls.delete-image')}}",
+            type: 'POST',
+            data: {
+                fatality_risk_control_id: fatalityRiskControlId,
+                shift_log_id: shiftLogId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if(response.status == 'success') {
+                    notify('success', response.message);
+                    $(`span[data-fatality-risk-control-id="${fatalityRiskControlId}"]`).closest('.image-container').remove();
+                }
+            },
+            error: function () {
+                alert('Failed to remove the image. Please try again.');
+            }
+        });
     });
 
 

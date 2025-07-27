@@ -8,6 +8,7 @@ use App\Models\FatalityRiskControl;
 use App\Services\BoardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BoardController extends Controller
 {
@@ -143,6 +144,16 @@ class BoardController extends Controller
     public function assignFatalityRiskControl(Request $request)
     {
         return $this->boardService->assignFatalityRiskControl($request);
+    }
+
+    public function deleteFatalityRiskControlImage(Request $request)
+    {
+        DB::table('shift_log_fatality_risk_control')->where('shift_log_id', $request->shift_log_id)->where('fatality_risk_control_id', $request->fatality_risk_control_id)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fatality Risk Control image deleted successfully',
+        ]);
     }
 }
 
