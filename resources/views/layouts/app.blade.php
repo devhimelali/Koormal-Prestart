@@ -11,7 +11,7 @@
     <meta content="{{ env('APP_NAME') }}" name="author">
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+{{--    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">--}}
 
     <!-- Fonts css load -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -152,20 +152,6 @@
     @endif
     @stack('scripts')
     <script>
-
-        let lightboxInstance;
-
-        function initGlightbox() {
-            if (lightboxInstance && typeof lightboxInstance.destroy === 'function') {
-                lightboxInstance.destroy();
-            }
-
-            lightboxInstance = GLightbox({
-                selector: '.glightbox'
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', initGlightbox);
 
         @if (Session::has('success'))
             notify('success', "{{ session('success') }}");

@@ -94,13 +94,13 @@
                 <td>
                     <div class="btn-group">
                         @if($shiftLog->fatality_risk_controls->count() > 0)
-                            <button class="btn btn-sm btn-warning editFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}"
+                            <button class="btn btn-sm btn-warning editFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}" data-asset-no="{{ $shiftLog->asset_no }}"
                                     data-fatality-risk-control-ids="{{ implode(',', $shiftLog->fatality_risk_controls->pluck('id')->toArray()) }}">
                                 <i class="bi bi-pencil-square"></i>
                                 Edit
                             </button>
                         @else
-                            <button class="btn btn-sm btn-secondary addFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}">
+                            <button class="btn btn-sm btn-secondary addFatalityRiskControlBtn" data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}" data-asset-no="{{ $shiftLog->asset_no }}">
                                 <i class="bi bi-plus"></i>
                                 Add
                             </button>
@@ -110,7 +110,9 @@
             </tr>
         @empty
             <tr>
-                <td colspan="9">No data found</td>
+                <td colspan="9">
+                    <p class="text-center my-4">No data found</p>
+                </td>
             </tr>
         @endforelse
     </x-table>
@@ -166,6 +168,14 @@
         width: 100% !important;
     }
 
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        display: flex !important;
+        align-items: center;
+    }
+
+    span.select2-selection__choice__display {
+        padding: 3px 0;
+    }
 </style>
 
 <script>
@@ -179,11 +189,18 @@
 
     $(".addFatalityRiskControlBtn").on('click', function () {
         let shiftLogId = $(this).data('shift-log-id');
+        let woNumber = $(this).data('wo-number');
+        let assetNo = $(this).data('asset-no');
+       $('#shift_log_id').val(shiftLogId);
+       $('.log-details').html(`
+            <p class="mb-1">WO Number: <span class="fw-bold">${woNumber}</span></p>
+            <p class="mb-1">Asset Number: <span class="fw-bold">${assetNo}</span></p>
+        `);
         $('#fatalityRiskControlModal').modal('show');
-
     });
 
     $('#fatality_risk_control').select2({
+        dropdownParent: $('#fatalityRiskControlModal'),
         templateResult: formatOptionWithImage,
         templateSelection: formatOptionWithImage,
     });
@@ -201,4 +218,10 @@
                 </span>
             `);
     }
+
+    $('.editFatalityRiskControlBtn').on('click', function () {
+        alert('Not implemented yet. Will be available soon.');
+    })
+
+
 </script>

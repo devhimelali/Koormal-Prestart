@@ -6,6 +6,19 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        let lightboxInstance;
+
+        function initGlightbox() {
+            if (lightboxInstance && typeof lightboxInstance.destroy === 'function') {
+                lightboxInstance.destroy();
+            }
+
+            lightboxInstance = GLightbox({
+                selector: '.glightbox'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initGlightbox);
         function getSupervisorAndLabour() {
             $.ajax({
                 url: "{{route('boards.get-supervisor-and-labour-list', $dailyShiftEntry->id)}}",
@@ -37,9 +50,7 @@
                 },
                 success: function (response) {
                     $('#board-container').html(response);
-                    if (step == 8) {
-                        initGlightbox();
-                    }
+                    initGlightbox();
                 },
                 error: handleAjaxErrors,
                 complete: function () {
@@ -47,6 +58,39 @@
                 }
             })
         }
+
+        $(document).on('submit', '#fatalityRiskControlForm', function (e) {
+            e.preventDefault();
+            let form = $(this);
+            let data = form.serialize();
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: data,
+                beforeSend: function () {
+                    ajaxBeforeSend('#fatalityRiskControlForm', '#fatalityRiskControlSubmitBtn');
+                },
+                success: function (response) {
+                    $('#loader').hide();
+                    if (response.status == 'success') {
+                        notify('success', response.message);
+                        $('#board-header').removeClass('mb-3');
+                        $('#board-header').addClass('mb-1');
+                        $('#board-info').removeClass('d-none');
+                        $('#fatalityRiskControlModal').modal('hide');
+                        setTimeout(() => {
+                            updateBoard(response.step, "Fatality Risk Management (FRM) Job Risk Control Board");
+                        }, 1500);
+                        getSupervisorAndLabour();
+                    }
+                },
+                error: handleAjaxErrors,
+                complete: function () {
+                    ajaxComplete('#fatalityRiskControlSubmitBtn', 'Save');
+
+                }
+            });
+        });
 
 
         let currentAudio = null;

@@ -13,6 +13,7 @@ use App\Models\HealthSafetyReview;
 use App\Models\ReviewPreviousShift;
 use App\Models\HealthSafetyCrossCriteria;
 use App\Models\SiteCommunication;
+use Illuminate\Support\Facades\DB;
 
 class BoardService
 {
@@ -138,6 +139,7 @@ class BoardService
             })
             ->get();
     }
+
     public function getProductiveQuestionTwo($request)
     {
         $validated = $request->validate([
@@ -283,5 +285,28 @@ class BoardService
     public function getShiftLog($shift, $date)
     {
         return ShiftLog::where('log_date', $date)->where('shift_name', $shift)->get();
+    }
+
+    public function assignFatalityRiskControl($request)
+    {
+        $validated = $request->validate([
+            'fatality_risk_control' => 'required|array|min:1',
+            'fatality_risk_control.*' => 'integer|exists:fatality_risk_controls,id',
+        ]);
+
+        foreach ($validated['fatality_risk_control'] as $fatalityRiskControlId) {
+            DB::table('shift_log_fatality_risk_control')->insert([
+                'shift_log_id' => $request->shift_log_id,
+                'fatality_risk_control_id' => $fatalityRiskControlId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fatality Risk Control assigned successfully',
+            'step' => 8
+        ]);
     }
 }

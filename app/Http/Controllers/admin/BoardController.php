@@ -139,6 +139,11 @@ class BoardController extends Controller
         $labor = $this->boardService->getLaborName($shift, $date);
         return view('components.admin.boards.supervisor-labour-name', compact('supervisor', 'labor'));
     }
+
+    public function assignFatalityRiskControl(Request $request)
+    {
+        return $this->boardService->assignFatalityRiskControl($request);
+    }
 }
 
 
