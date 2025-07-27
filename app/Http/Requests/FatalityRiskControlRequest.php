@@ -21,10 +21,14 @@ class FatalityRiskControlRequest extends FormRequest
      */
     public function rules(): array
     {
+        $imageRule = $this->isMethod('post')
+            ? 'required|image|mimes:jpeg,png,jpg,gif,svg'
+            : 'nullable|image|mimes:jpeg,png,jpg,gif,svg';
+
         return [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'image' => $imageRule
         ];
     }
 }
