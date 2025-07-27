@@ -1,11 +1,11 @@
 <div class="modal fade" id="{{ $id ?? 'deleteModal' }}" tabindex="-1" aria-labelledby="{{ $id ?? 'deleteModal' }}Label"
-    style="display: none;" aria-modal="true" role="dialog">
+     style="display: none;" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light py-2">
                 <h5 class="modal-title" id="{{ $id ?? 'deleteModal' }}Label">{{ $title ?? 'Delete Item' }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    id="close-modal"></button>
+                        id="close-modal"></button>
             </div>
 
             <form class="tablelist-form" method="POST" id="deleteForm">

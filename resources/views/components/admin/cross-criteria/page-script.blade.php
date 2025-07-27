@@ -1,16 +1,16 @@
 @section('page-script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             let table = $('#dataTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('cross-criteria.index') }}",
                 columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
                     {
                         data: 'name',
                         name: 'name'
@@ -37,7 +37,7 @@
 
 
             // Form submit handler
-            $('#addOrEditForm').submit(function(e) {
+            $('#addOrEditForm').submit(function (e) {
                 e.preventDefault();
                 // Get CKEditor data and sync it to the textarea
                 // $('#description').val(ckeditorInstance.getData());
@@ -47,10 +47,10 @@
                     url: $(this).attr('action'),
                     type: 'POST',
                     data: formData,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         ajaxBeforeSend('#addOrEditForm', '#addOrEditSubmitBtn');
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#addOrEditModal').modal('hide');
                         table.ajax.reload();
                         notify('success', response.message);
@@ -58,14 +58,14 @@
                         resetCkEditors();
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         ajaxComplete('#addOrEditSubmitBtn', 'Save');
                     }
                 });
             });
 
             // Reset CKEditor and form when modal closes
-            $('#addOrEditModal').on('hidden.bs.modal', function() {
+            $('#addOrEditModal').on('hidden.bs.modal', function () {
                 $('#method').val('POST');
                 $('#addOrEditForm').attr('action', "{{ route('cross-criteria.store') }}");
                 $('#addOrEditModal .modal-title').text('Add a new cross criteria');
@@ -74,11 +74,11 @@
                 resetCkEditors();
             });
 
-            $(document).on('click', '.edit', function() {
+            $(document).on('click', '.edit', function () {
                 let id = $(this).data('id');
                 $('#loader').show();
                 let editUrl = "{{ route('cross-criteria.edit', ':id') }}".replace(':id', id);
-                $.get(editUrl, function(response) {
+                $.get(editUrl, function (response) {
                     $('#loader').hide();
                     $('#addOrEditModal .modal-title').text('Edit cross criteria');
                     $('#method').val('PUT');
@@ -94,14 +94,14 @@
                 });
             })
 
-            $('body').on('click', '.delete', function() {
+            $('body').on('click', '.delete', function () {
                 let id = $(this).data('id');
                 let deleteUrl = "{{ route('cross-criteria.destroy', ':id') }}".replace(':id', id);
                 $('#deleteForm').attr('action', deleteUrl);
                 $('#deleteCrossCriteriaModal').modal('show');
             });
 
-            $('#deleteForm').submit(function(e) {
+            $('#deleteForm').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
                 var url = form.attr('action');
@@ -110,16 +110,16 @@
                     url: url,
                     type: 'POST',
                     data: form.serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         ajaxBeforeSend('#deleteForm', '#deleteBtn');
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#deleteCrossCriteriaModal').modal('hide');
                         table.ajax.reload();
                         notify('success', response.message);
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         ajaxComplete('#deleteBtn', 'Delete');
                     }
                 });

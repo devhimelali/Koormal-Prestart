@@ -1,16 +1,16 @@
 @section('page-script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             let table = $('#fatalityRiskControlsTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('fatality-risk-controls.index') }}",
                 columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
                     {
                         data: 'image',
                         name: 'image',
@@ -31,7 +31,7 @@
                 ]
             });
 
-            $('#addFatalityRiskControlForm').submit(function(e) {
+            $('#addFatalityRiskControlForm').submit(function (e) {
                 e.preventDefault();
                 let form = this;
                 let formData = new FormData(form);
@@ -42,11 +42,11 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         ajaxBeforeSend('#addFatalityRiskControlForm',
                             '#addFatalityRiskControlSubmitBtn');
                     },
-                    success: function(response) {
+                    success: function (response) {
                         table.ajax.reload();
                         notify('success', response.message);
                         $('#addFatalityRiskControlForm')[0].reset();
@@ -61,14 +61,14 @@
                         $('#addFatalityRiskControlModal').modal('hide');
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         ajaxComplete('#addFatalityRiskControlSubmitBtn', 'Save');
                     }
                 });
             });
 
             // Reset CKEditor and form when modal closes
-            $('#addFatalityRiskControlModal').on('hidden.bs.modal', function() {
+            $('#addFatalityRiskControlModal').on('hidden.bs.modal', function () {
                 $('#method').val('POST');
                 $('#addFatalityRiskControlForm').attr('action',
                     "{{ route('fatality-risk-controls.store') }}");
@@ -78,18 +78,18 @@
                 resetCkEditors();
             });
 
-            $(document).on('click', '.edit', function() {
+            $(document).on('click', '.edit', function () {
                 let id = $(this).data('id');
                 $('#loader').show();
                 let editUrl = "{{ route('fatality-risk-controls.edit', ':id') }}".replace(':id', id);
-                $.get(editUrl, function(response) {
+                $.get(editUrl, function (response) {
                     $('#loader').hide();
                     $('#addFatalityRiskControlModal .modal-title').text(
                         'Edit fatality risk control');
                     $('#method').val('PUT');
                     $('#addFatalityRiskControlForm').attr('action',
                         "{{ route('fatality-risk-controls.update', ':id') }}"
-                        .replace(':id', id));
+                            .replace(':id', id));
                     $('#addFatalityRiskControlForm #name').val(response.data.name);
                     //show description in CKEditor
                     if (window.editors && window.editors['description']) {
@@ -107,14 +107,14 @@
                 return "{{ asset('storage') }}/" + path;
             }
 
-            $('body').on('click', '.delete', function() {
+            $('body').on('click', '.delete', function () {
                 let id = $(this).data('id');
                 let deleteUrl = "{{ route('fatality-risk-controls.destroy', ':id') }}".replace(':id', id);
                 $('#deleteForm').attr('action', deleteUrl);
                 $('#deleteFatalityRiskControlModal').modal('show');
             });
 
-            $('#deleteForm').submit(function(e) {
+            $('#deleteForm').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
                 var url = form.attr('action');
@@ -123,16 +123,16 @@
                     url: url,
                     type: 'POST',
                     data: form.serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         ajaxBeforeSend('#deleteForm', '#deleteBtn');
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#deleteFatalityRiskControlModal').modal('hide');
                         table.ajax.reload();
                         notify('success', response.message);
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         ajaxComplete('#deleteBtn', 'Delete');
                     }
                 });

@@ -16,5 +16,5 @@
 @endphp
 
 <input type="{{ $type }}" name="{{ $name }}" id="{{ $inputId }}" value="{{ $inputValue }}"
-    placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }}
+       placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }}
     {{ $attributes->merge(['class' => $class . ($errors->has($name) ? ' is-invalid' : '')]) }}>

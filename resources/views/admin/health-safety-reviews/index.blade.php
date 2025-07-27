@@ -18,13 +18,14 @@
         }
         $dateArrayBetween = dateRangeBetween($start_date, $end_date);
     @endphp
-    <x-common.breadcrumb :title="'Our Health & Safety List'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Our Health & Safety List']]" />
+    <x-common.breadcrumb :title="'Our Health & Safety List'"
+                         :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Our Health & Safety List']]"/>
     <div class="row">
         <div class="col-12 mx-auto bg-white p-3 mb-4 border rounded shadow-sm text-center">
             <h4 class="mb-1 d-flex align-items-center justify-content-center gap-2">
                 Supervisor Name:
                 <span contenteditable="true" class="d-inline-block supervisor-name"
-                    style="border: 1px solid #ccc; padding: 4px 8px; min-width: 250px; width: 250px; border-radius: 4px; background-color: #f9f9f9; text-align: left;">
+                      style="border: 1px solid #ccc; padding: 4px 8px; min-width: 250px; width: 250px; border-radius: 4px; background-color: #f9f9f9; text-align: left;">
                     {{ $healthSafetyReviews['supervisor_name'] ?? '' }}
                 </span>
             </h4>
@@ -46,14 +47,14 @@
                             <div class="row align-items-center board-header mb-3">
                                 <div class="col-2 col-md-2 text-start text-md-center mb-2 mb-md-0">
                                     <img src="{{ asset('assets/logos/4emus-logo.png') }}"
-                                        class="img-fluid header-logo float-start">
+                                         class="img-fluid header-logo float-start">
                                 </div>
                                 <div class="col-8 col-md-8 text-center">
                                     <h5 class="board-title mb-0">Review of Health & Safety</h5>
                                 </div>
                                 <div class="col-2 col-md-2 text-end text-md-center">
                                     <img src="{{ asset('assets/logos/koormal-logo.png') }}"
-                                        class="img-fluid header-logo float-end">
+                                         class="img-fluid header-logo float-end">
                                 </div>
                             </div>
                             <div class="row my-4">
@@ -63,9 +64,9 @@
                                         <h6 class="mb-2">Question 1 - What did we do to work more safely or improve
                                             our
                                             health on our last shift? <span class="play-icon"
-                                                data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
+                                                                            data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy"
-                                                    focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                     focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                     <path
                                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
                                                     </path>
@@ -76,17 +77,17 @@
                                     <div class="table-responsive">
                                         <table class="table table-bordered text-nowrap">
                                             <tbody>
-                                                @forelse ($dateArrayBetween as $date)
-                                                    <tr class="align-middle">
-                                                        <td class="bg-light text-nowrap"
-                                                            style="min-width: 100px !important;max-width: 180px;width: 180px;">
-                                                            {{ $date }}
-                                                            ({{ \Carbon\Carbon::parse($date)->format('l') }})
-                                                        </td>
-                                                        <td class="p-1 align-top w-auto">
-                                                            <div contenteditable="true" class="question-one"
-                                                                data-date="{{ $date }}"
-                                                                style="
+                                            @forelse ($dateArrayBetween as $date)
+                                                <tr class="align-middle">
+                                                    <td class="bg-light text-nowrap"
+                                                        style="min-width: 100px !important;max-width: 180px;width: 180px;">
+                                                        {{ $date }}
+                                                        ({{ \Carbon\Carbon::parse($date)->format('l') }})
+                                                    </td>
+                                                    <td class="p-1 align-top w-auto">
+                                                        <div contenteditable="true" class="question-one"
+                                                             data-date="{{ $date }}"
+                                                             style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
                  min-height: 25px;
@@ -98,15 +99,15 @@
                  background-color: #fff;
                  border-radius: 4px;
         ">
-                                                                {{ $healthSafetyReviews['question_1'][$date] ?? '' }}
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="4" class="text-center">No data found</td>
-                                                    </tr>
-                                                @endforelse
+                                                            {{ $healthSafetyReviews['question_1'][$date] ?? '' }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No data found</td>
+                                                </tr>
+                                            @endforelse
                                             </tbody>
                                         </table>
                                     </div>
@@ -114,11 +115,12 @@
                                 <!-- Question 2 -->
                                 <div class="col-12 col-md-6">
                                     <div>
-                                        <h6>Question 2 - What wasn’t as healthy or safe as it should have been on our last
+                                        <h6>Question 2 - What wasn’t as healthy or safe as it should have been on our
+                                            last
                                             shift?<span class="play-icon"
-                                                data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
+                                                        data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy"
-                                                    focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                     focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                     <path
                                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
                                                     </path>
@@ -130,17 +132,17 @@
                                     <div class="table-responsive">
                                         <table class="table table-bordered text-nowrap">
                                             <tbody>
-                                                @forelse ($dateArrayBetween as $date)
-                                                    <tr class="align-middle">
-                                                        <td class="bg-light text-nowrap"
-                                                            style="min-width: 100px !important;max-width: 180px;width: 180px;">
-                                                            {{ $date }}
-                                                            ({{ \Carbon\Carbon::parse($date)->format('l') }})
-                                                        </td>
-                                                        <td class="p-1 align-top">
-                                                            <div contenteditable="true" class="question-two"
-                                                                data-date="{{ $date }}"
-                                                                style="
+                                            @forelse ($dateArrayBetween as $date)
+                                                <tr class="align-middle">
+                                                    <td class="bg-light text-nowrap"
+                                                        style="min-width: 100px !important;max-width: 180px;width: 180px;">
+                                                        {{ $date }}
+                                                        ({{ \Carbon\Carbon::parse($date)->format('l') }})
+                                                    </td>
+                                                    <td class="p-1 align-top">
+                                                        <div contenteditable="true" class="question-two"
+                                                             data-date="{{ $date }}"
+                                                             style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
                  min-height: 25px;
@@ -153,15 +155,15 @@
                  border-radius: 4px;
         ">
 
-                                                                {{ $healthSafetyReviews['question_2'][$date] ?? '' }}
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="4" class="text-center">No data found</td>
-                                                    </tr>
-                                                @endforelse
+                                                            {{ $healthSafetyReviews['question_2'][$date] ?? '' }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No data found</td>
+                                                </tr>
+                                            @endforelse
                                             </tbody>
                                         </table>
                                     </div>
@@ -181,14 +183,14 @@
 @section('page-script')
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             flatpickr("#date", {
                 dateFormat: "d-m-Y",
                 maxDate: "today",
                 defaultDate: "today"
             });
 
-            $('#addOrEditOffCanvas').on('hidden.bs.offcanvas', function() {
+            $('#addOrEditOffCanvas').on('hidden.bs.offcanvas', function () {
                 $('#addOrEditForm')[0].reset();
             });
 
@@ -196,7 +198,7 @@
             let currentIcon = null;
             let currentWrapper = null;
 
-            $('.play-icon').on('click', function() {
+            $('.play-icon').on('click', function () {
                 let $iconWrapper = $(this);
                 let $icon = $iconWrapper.find('i');
                 let audioSrc = $iconWrapper.data('audio');
@@ -232,7 +234,7 @@
                     $iconWrapper.addClass('active');
                 }
 
-                currentAudio.onended = function() {
+                currentAudio.onended = function () {
                     $icon.removeClass('ph-pause-circle').addClass('ph-play-circle');
                     $iconWrapper.removeClass('active');
                     currentAudio = null;
@@ -241,7 +243,7 @@
                 };
             });
 
-            $('#addOrEditForm').submit(function(e) {
+            $('#addOrEditForm').submit(function (e) {
                 e.preventDefault();
                 let formData = new FormData(this);
 
@@ -255,10 +257,10 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         ajaxBeforeSend('#addOrEditForm', '#formSubmitBtn');
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status == 'success') {
                             let offcanvasElement = document.getElementById(
                                 'addOrEditOffCanvas');
@@ -273,7 +275,7 @@
                         }
                     },
                     error: handleAjaxErrors,
-                    complete: function() {
+                    complete: function () {
                         ajaxComplete('#formSubmitBtn');
                     }
                 });
@@ -297,12 +299,12 @@
                         shift: '{{ $shift ?? '' }}',
                         supervisor_name: supervisorName
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status === 'success') {
                             notify('success', 'Supervisor name saved successfully.');
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error('Error saving supervisor name:', xhr.responseText);
                     }
                 });
@@ -334,25 +336,26 @@
                         } : null,
                         supervisor_name: supervisorName
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status == 'success') {
                             notify('success', response.message);
                             setTimeout(() => location.reload(), 1000);
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error('Error saving for date:', date, xhr.responseText);
                     }
                 });
             }
+
             // Handle supervisor name blur
-            $(document).on('blur', '.supervisor-name', function() {
+            $(document).on('blur', '.supervisor-name', function () {
                 supervisorName = $(this).text().trim();
                 sendSupervisorName();
             });
 
             // Handle question-one blur
-            $(document).on('blur', '.question-one', function() {
+            $(document).on('blur', '.question-one', function () {
                 let answer = $(this).text().trim();
                 let date = $(this).data('date');
                 questionOneData[date] = answer;
@@ -360,7 +363,7 @@
             });
 
             // Handle question-two blur
-            $(document).on('blur', '.question-two', function() {
+            $(document).on('blur', '.question-two', function () {
                 let answer = $(this).text().trim();
                 let date = $(this).data('date');
                 questionTwoData[date] = answer;

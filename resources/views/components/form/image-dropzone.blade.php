@@ -5,10 +5,11 @@
 @endphp
 
 <div class="dropzone border border-secondary rounded p-3 text-center bg-light" id="dropzone-{{ $inputId }}"
-    data-input-id="{{ $inputId }}">
-    <p class="text-muted mb-0 drop-zone-title">Drag & drop or click to upload {{ $multiple ? 'images' : 'an image' }}</p>
+     data-input-id="{{ $inputId }}">
+    <p class="text-muted mb-0 drop-zone-title">Drag & drop or click to
+        upload {{ $multiple ? 'images' : 'an image' }}</p>
     <input type="file" name="{{ $multiple ? $name . '[]' : $name }}" id="file-input-{{ $inputId }}" class="d-none"
-        accept="image/*" {{ $multiple ? 'multiple' : '' }}>
+           accept="image/*" {{ $multiple ? 'multiple' : '' }}>
 </div>
 
 <div id="preview-{{ $inputId }}" class="d-flex flex-wrap gap-2 mt-2">
@@ -16,7 +17,8 @@
         <div class="position-relative">
             <img src="{{ $img }}" alt="Uploaded" class="img-thumbnail" style="width: 100px; height: 100px;">
             <button type="button"
-                class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-preview">&times;</button>
+                    class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-preview">&times;
+            </button>
         </div>
     @endforeach
 </div>
@@ -44,7 +46,7 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const dropzone = document.getElementById('dropzone-{{ $inputId }}');
             const input = document.getElementById('file-input-{{ $inputId }}');
             const preview = document.getElementById('preview-{{ $inputId }}');
@@ -117,7 +119,7 @@
 
             // Remove button handler for initial value previews
             preview.querySelectorAll('.remove-preview').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     this.parentElement.remove();
                 });
             });

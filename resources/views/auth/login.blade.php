@@ -20,7 +20,7 @@
                                                 class="text-danger">*</span></label>
                                         <div class="position-relative ">
                                             <input type="email" class="form-control  password-input" name="email"
-                                                id="email" placeholder="Enter email">
+                                                   id="email" placeholder="Enter email">
                                             <div class="invalid-feedback"></div>
                                         </div>
                                     </div>
@@ -34,7 +34,7 @@
                                                 class="text-danger">*</span></label>
                                         <div class="position-relative auth-pass-inputgroup mb-3">
                                             <input type="password" class="form-control pe-5 password-input "
-                                                placeholder="Enter password" name="password" id="password-input">
+                                                   placeholder="Enter password" name="password" id="password-input">
                                             <button
                                                 class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                                 type="button" id="password-addon"><i
@@ -66,8 +66,8 @@
 @endsection
 @section('page-script')
     <script>
-        $(document).ready(function() {
-            $('#loginForm').on('submit', function(e) {
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (e) {
                 e.preventDefault();
                 let formData = new FormData(this);
                 $.ajax({
@@ -77,7 +77,7 @@
                     dataType: 'json',
                     contentType: false,
                     processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.is-invalid').removeClass('is-invalid');
                         $('.invalid-feedback').text('');
                         $('#submitBtn').attr('disabled', true);
@@ -85,7 +85,7 @@
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...'
                         );
                     },
-                    success: function(response) {
+                    success: function (response) {
                         console.log(response);
                         notify('success', 'Logged in successfully');
                         if (response.two_factor) {
@@ -99,10 +99,10 @@
                             }, 1000);
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         if (xhr.status == 422) {
                             let errors = xhr.responseJSON.errors;
-                            $.each(errors, function(key, value) {
+                            $.each(errors, function (key, value) {
                                 notify('error', value);
                                 let input = $('[name="' + key + '"]');
                                 input.addClass('is-invalid');
@@ -123,7 +123,7 @@
                             notify('error', error);
                         }
                     },
-                    complete: function() {
+                    complete: function () {
                         $('#submitBtn').attr('disabled', false);
                         $('#submitBtn').html('Sign In');
                     }

@@ -1,6 +1,6 @@
 <!-- right offcanvas -->
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="addOrEditOffCanvas"
-    aria-labelledby="offcanvasRightLabel">
+     aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
         <h5 id="offcanvasRightLabel">Review of Health & Safety</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -25,7 +25,7 @@
                         improve
                         our health on our last shift?
                         <span class="play-icon"
-                            data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
+                              data-audio="{{ asset('assets/audios/our-health-safety/question-one.mp3') }}">
                             <i class="ph ph-play-circle"></i>
                         </span>
                     </label>
@@ -38,7 +38,7 @@
                         improve
                         our health on our last shift?
                         <span class="play-icon"
-                            data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
+                              data-audio="{{ asset('assets/audios/our-health-safety/question-two.mp3') }}">
                             <i class="ph ph-play-circle"></i>
                         </span>
                     </label>

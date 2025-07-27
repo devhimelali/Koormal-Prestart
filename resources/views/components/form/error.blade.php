@@ -1,7 +1,7 @@
 @props(['name'])
 
 @error($name)
-    <div class="invalid-feedback d-block">
-        {{ $message }}
-    </div>
+<div class="invalid-feedback d-block">
+    {{ $message }}
+</div>
 @enderror

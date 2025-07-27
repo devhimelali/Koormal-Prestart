@@ -13,7 +13,7 @@
 
     @foreach ($options as $optionValue => $optionLabel)
         <option value="{{ $optionValue }}"
-            @if ($multiple && is_array($selected) && in_array($optionValue, $selected)) selected
+                @if ($multiple && is_array($selected) && in_array($optionValue, $selected)) selected
                 @elseif(!$multiple && $optionValue == $selected) selected @endif>
             {{ $optionLabel }}
         </option>

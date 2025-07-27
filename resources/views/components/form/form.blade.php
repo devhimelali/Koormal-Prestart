@@ -12,9 +12,9 @@
 @endphp
 
 <form action="{{ $action }}" method="{{ $spoofMethod ? 'POST' : $formMethod }}"
-    @if ($hasFile) enctype="multipart/form-data" @endif
-    @if ($class) class="{{ $class }}" @endif
-    @if ($id) id="{{ $id }}" @endif>
+      @if ($hasFile) enctype="multipart/form-data" @endif
+      @if ($class) class="{{ $class }}" @endif
+      @if ($id) id="{{ $id }}" @endif>
     @csrf
 
     @if ($spoofMethod)

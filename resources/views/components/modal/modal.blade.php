@@ -20,7 +20,7 @@
 
 
 <div class="{{ $modalClasses }}" id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label"
-    aria-hidden="true" data-bs-backdrop="{{ $backdrop }}" data-bs-keyboard="{{ $keyboard ? 'true' : 'false' }}">
+     aria-hidden="true" data-bs-backdrop="{{ $backdrop }}" data-bs-keyboard="{{ $keyboard ? 'true' : 'false' }}">
     <div class="modal-dialog {{ $size }} {{ $scrollable }}">
         <div class="modal-content">
 

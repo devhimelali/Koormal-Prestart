@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Roster List')
 @section('content')
-    <x-common.breadcrumb :title="'Roster List'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Roster List']]" />
+    <x-common.breadcrumb :title="'Roster List'"
+                         :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Roster List']]"/>
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -42,8 +43,8 @@
                                 <td>{{ $day['day_shift'] }}</td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-secondary viewBoard"
-                                        data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
-                                        data-crew="{{ $day['day_shift'] }}" data-shift="day">View Board</a>
+                                       data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
+                                       data-crew="{{ $day['day_shift'] }}" data-shift="day">View Board</a>
                                 </td>
                             </tr>
                             <tr>
@@ -54,8 +55,8 @@
                                 <td>{{ $day['night_shift'] }}</td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-secondary viewBoard"
-                                        data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
-                                        data-crew="{{ $day['night_shift'] }}" data-shift="night">View
+                                       data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
+                                       data-crew="{{ $day['night_shift'] }}" data-shift="night">View
                                         Board</a>
                                 </td>
                             </tr>
@@ -72,7 +73,7 @@
         flatpickr("#date-range", {
             mode: "range",
             dateFormat: "d-m-Y",
-            onClose: function(selectedDates, dateStr, instance) {
+            onClose: function (selectedDates, dateStr, instance) {
                 if (selectedDates.length === 2) {
                     let startDate = flatpickr.formatDate(selectedDates[0], "Y-m-d");
                     let endDate = flatpickr.formatDate(selectedDates[1], "Y-m-d");
@@ -82,7 +83,7 @@
             }
         });
         // health-safety-review.index
-        $(document).on('click', '.viewBoard', function(e) {
+        $(document).on('click', '.viewBoard', function (e) {
             let start_date = $(this).data('start_date');
             let end_date = $(this).data('end_date');
             let crew = $(this).data('crew');
@@ -100,12 +101,12 @@
                     start_date: startDate,
                     end_date: endDate
                 },
-                success: function(response) {
+                success: function (response) {
                     let tbody = $("#scheduleTable tbody");
                     tbody.empty();
                     let sn = 1;
 
-                    response.forEach(function(day) {
+                    response.forEach(function (day) {
                         tbody.append(`
                             <tr>
                                 <td>${sn}</td>
@@ -129,7 +130,7 @@
                         sn++;
                     });
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     alert("Failed to load schedule.");
                 }
             });

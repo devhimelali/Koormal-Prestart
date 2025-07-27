@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Cross Criteria')
 @section('content')
-    <x-common.breadcrumb :title="'Cross Criteria'" :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Cross Criteria']]" />
+    <x-common.breadcrumb :title="'Cross Criteria'"
+                         :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Cross Criteria']]"/>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -9,7 +10,7 @@
                     <h3 class="card-title">Cross Criteria List</h3>
                     <div>
                         <button class="btn btn-sm btn-secondary d-flex align-items-center" data-bs-toggle="modal"
-                            data-bs-target="#addOrEditModal">
+                                data-bs-target="#addOrEditModal">
                             <i class="ph ph-plus me-1"></i>
                             Add
                         </button>
@@ -17,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <x-table id="dataTable" tableVariant="table-sm table-hover table-striped align-middle mb-0"
-                        :thead="[
+                             :thead="[
                             [
                                 'label' => '#',
                                 'class' => 'th-sn',
@@ -38,7 +39,7 @@
                                 'label' => 'Actions',
                                 'class' => 'th-actions',
                             ],
-                        ]" />
+                        ]"/>
                 </div>
             </div>
         </div>
@@ -84,7 +85,7 @@
     @include('components.admin.cross-criteria.modal.add-or-edit')
     <!-- Delete Modal -->
     <x-common.delete-modal id="deleteCrossCriteriaModal" title="Delete Cross Criteria"
-        message="Are you sure you want to delete this cross criteria?" />
+                           message="Are you sure you want to delete this cross criteria?"/>
 @endsection
 @include('components.admin.cross-criteria.vendor-script')
 @include('components.admin.cross-criteria.vendor-css')

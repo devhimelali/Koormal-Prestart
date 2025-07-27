@@ -9,8 +9,8 @@
 ])
 
 <textarea name="{{ $name }}" id="{{ $id }}"
-    class="form-control @error($name) is-invalid @enderror {{ $useCkeditor ? 'ckeditor' : '' }}"
-    rows="{{ $rows }}" placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }}>{{ $value }}</textarea>
+          class="form-control @error($name) is-invalid @enderror {{ $useCkeditor ? 'ckeditor' : '' }}"
+          rows="{{ $rows }}" placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }}>{{ $value }}</textarea>
 
 @if ($useCkeditor)
     @once
@@ -34,9 +34,9 @@
                             data.append('_token', '{{ csrf_token() }}');
 
                             fetch('{{ route('ckeditor.upload') }}', {
-                                    method: 'POST',
-                                    body: data,
-                                })
+                                method: 'POST',
+                                body: data,
+                            })
                                 .then(response => response.json())
                                 .then(result => {
                                     if (result.url) {
@@ -62,7 +62,7 @@
                 };
             }
 
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 ClassicEditor
                     .create(document.querySelector('#{{ $id }}'), {
                         extraPlugins: [LaravelUploadAdapterPlugin],
