@@ -81,7 +81,7 @@
                                 @php
                                     $url = asset('storage/'.$fatality_risk_control->image);
                                 @endphp
-                                <a href="{{ $url }}" class="glightbox" data-gallery="media-gallery">
+                                <a href="{{ $url }}" class="glightbox" data-gallery="media-gallery" data-glightbox="title:{{$fatality_risk_control->name}}; description:{{$fatality_risk_control->description}}; descPosition: left">
                                     <img src="{{ $url }}" width="45" height="45"
                                          alt="{{$fatality_risk_control->name}}" loading="lazy">
                                 </a>
