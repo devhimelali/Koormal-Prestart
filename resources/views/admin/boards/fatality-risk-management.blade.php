@@ -280,6 +280,12 @@
         $('#fatalityRiskControlModal').modal('show');
     });
 
+    // when modal is closed
+    $('#fatalityRiskControlModal').on('hidden.bs.modal', function () {
+        // Clear existing selections
+        $('#fatality_risk_control').val([]).trigger('change');
+    });
+
     $('.remove-image').on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
