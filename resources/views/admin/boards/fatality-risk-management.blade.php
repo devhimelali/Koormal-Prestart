@@ -6,7 +6,7 @@
         </div>
         <div class="col-8 col-md-8 text-center">
             <h5 class="board-title mb-0">
-                {{ucfirst($shift)}} Shift FRM Control Board
+                {{ucfirst($shift)}} Shift Control Board
             </h5>
         </div>
         <div class="col-2 col-md-2 text-end text-md-center">
@@ -105,14 +105,14 @@
                                     data-asset-no="{{ $shiftLog->asset_no }}"
                                     data-fatality-risk-control-ids="{{ implode(',', $shiftLog->fatality_risk_controls->pluck('id')->toArray()) }}">
                                 <i class="bi bi-pencil-square"></i>
-                                Edit RFC
+                                Edit
                             </button>
                         @else
                             <button class="btn btn-sm btn-secondary addFatalityRiskControlBtn"
                                     data-shift-log-id="{{ $shiftLog->id }}" data-wo-number="{{ $shiftLog->wo_number }}"
                                     data-asset-no="{{ $shiftLog->asset_no }}">
                                 <i class="bi bi-plus"></i>
-                                Add RFC
+                                Add
                             </button>
                         @endif
                     </div>
