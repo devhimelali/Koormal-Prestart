@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Models\DailyShiftEntry;
 use App\Models\FatalityRiskControl;
 use App\Services\BoardService;
@@ -97,9 +98,9 @@ class BoardController extends Controller
         }
     }
 
-    public function storeHealthSafetyReview(Request $request)
+    public function storeHealthSafetyReview(HealthSafetyReviewRequest $request)
     {
-        $this->boardService->storeHealthSafetyReview($request);
+        $this->boardService->storeHealthSafetyReview($request->validated());
         $step = $request->question_number == 'question_one' ? 1 : 2;
         return response()->json([
             'status' => 'success',

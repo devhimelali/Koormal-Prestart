@@ -22,15 +22,9 @@ class HealthSafetyReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start_date' => 'required|date_format:d-m-Y',
-            'crew' => 'required|string',
-            'shift' => 'required|string|in:day,night',
-            'date' => 'nullable|date_format:d-m-Y',
-            'question_1' => 'nullable|array',
-            'question_1.*' => 'nullable|string',
-            'question_2' => 'nullable|array',
-            'question_2.*' => 'nullable|string',
-            'supervisor_name' => 'nullable|string|max:255'
+            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
+            'question_number' => 'required|in:question_one,question_two',
+            'answer' => 'nullable|string',
         ];
 
     }
@@ -38,9 +32,11 @@ class HealthSafetyReviewRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'date.before_or_equal' => 'You cannot select a future date.',
-            'shift_id.required' => 'Shift is required.',
-            'rotation_id.required' => 'Rotation is required.',
+            'daily_shift_entry_id.required' => 'The daily shift entry ID is required.',
+            'daily_shift_entry_id.exists' => 'The daily shift entry ID does not exist.',
+            'question_number.required' => 'The question number is required.',
+            'question_number.in' => 'The question number is invalid.',
+            'answer.string' => 'The answer must be a string.',
         ];
     }
 }

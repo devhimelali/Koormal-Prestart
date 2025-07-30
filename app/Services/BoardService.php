@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
 use App\Models\Supervisor;
@@ -54,14 +55,8 @@ class BoardService
             ->get();
     }
 
-    public function storeHealthSafetyReview(Request $request)
+    public function storeHealthSafetyReview($validated)
     {
-        $validated = $request->validate([
-            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
-            'question_number' => 'required|in:question_one,question_two',
-            'answer' => 'nullable|string',
-        ]);
-
         HealthSafetyReview::updateOrCreate([
             'daily_shift_entry_id' => $validated['daily_shift_entry_id'],
             'question_number' => $validated['question_number']
