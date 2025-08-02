@@ -5,6 +5,8 @@
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Sweetalert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // ============= GLightbox Init Start  =============
         let lightboxInstance;
@@ -96,10 +98,12 @@
             });
         });
 
-
+        // =============  Define Audio Variables  =============
         let currentAudio = null;
         let currentIcon = null;
         let currentWrapper = null;
+
+        let supervisorName = null;
 
         $(document).ready(function () {
             $(document).on('blur', '.supervisor-name', function () {
@@ -131,25 +135,7 @@
 
             updateBoard(currentStep);
 
-
-            $(document).on('click', '#addQuestionOneBtn', function () {
-                addBlankQuestion('question_one');
-            });
-
-            $(document).on('click', '#addQuestionTwoBtn', function () {
-                addBlankQuestion('question_two');
-            });
-
-            $(document).on('blur', '.question-one', function () {
-                let answer = $(this).text().trim();
-                addBlankQuestion('question_one', answer);
-            });
-
-            $(document).on('blur', '.question-two', function () {
-                let answer = $(this).text().trim();
-                addBlankQuestion('question_two', answer);
-            });
-
+            // ============= Add Blank Question Start  =============
             function addBlankQuestion(question_number, answer = null) {
                 $.ajax({
                     url: "{{ route('boards.store.health-safety-review') }}",
@@ -179,6 +165,57 @@
                     }
                 });
             }
+
+            // ============= Add Blank Question End  =============
+
+            // ============= Show Already Submitted Warning Start  =============
+            function showAlreadySubmittedWarning() {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Already Submitted',
+                    text: "You have already submitted today's health and safety review! You can only submit one health and safety review per day.",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d33',
+                });
+            }
+
+            // ============= Show Already Submitted Warning End  =============
+
+            // ============= Add Blank Health Safety Review Question One Start  =============
+            $(document).on('click', '#addQuestionOneBtn', function () {
+                let question_one = $('.question-one').text().trim();
+                if (question_one != '') {
+                    showAlreadySubmittedWarning();
+                    return;
+                } else {
+                    addBlankQuestion('question_one');
+                }
+            });
+
+            $(document).on('blur', '.question-one', function () {
+                let answer = $(this).text().trim();
+                addBlankQuestion('question_one', answer);
+            });
+            // ============= Add Blank Health Safety Review Question One End  =============
+
+
+            // ============= Add Blank Health Safety Review Question Two Start  =============
+            $(document).on('click', '#addQuestionTwoBtn', function () {
+                let question_two = $('.question-two').text().trim();
+                if (question_two != '') {
+                    showAlreadySubmittedWarning();
+                    return;
+                } else {
+                    addBlankQuestion('question_two');
+                }
+            });
+
+            $(document).on('blur', '.question-two', function () {
+                let answer = $(this).text().trim();
+                addBlankQuestion('question_two', answer);
+            });
+            // ============= Add Blank Health Safety Review Question Two End  =============
+
 
             $(document).on('click', '#addProductivityQuestionOneBtn', function () {
                 let daily_shift_entry_id = 1;
