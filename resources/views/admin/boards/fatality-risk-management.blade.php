@@ -6,7 +6,7 @@
         </div>
         <div class="col-8 col-md-8 text-center">
             <h5 class="board-title mb-0">
-                {{ucfirst($shift)}} Shift Control Board
+                Day / Night Shift Control Board
             </h5>
         </div>
         <div class="col-2 col-md-2 text-end text-md-center">
