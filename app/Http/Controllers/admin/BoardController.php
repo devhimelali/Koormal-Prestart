@@ -38,35 +38,29 @@ class BoardController extends Controller
 
     public function show(ShowBoardRequest $request)
     {
-//        dd($request->all());
         $step = $request->step;
+        $timezone = Config::get('app.timezone', 'Australia/Perth');
+        $now = Carbon::now($timezone);
+        $hour = $now->hour;
+
+        $isDayShiftTime = $hour >= 6 && $hour < 18;
+        $isNightShiftTime = $hour >= 18 || $hour < 6;
+
         if ($step == 1) {
             $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionOne($request);
-//            dd($healthSafetyReview);
-
-            $timezone = Config::get('app.timezone', 'Australia/Perth');
-            $now = Carbon::now($timezone);
-
-            $hour = $now->hour;
-            $minute = $now->minute;
-
-            $isDayShiftTime = $hour >= 6 && $hour < 18;
-            $isNightShiftTime = $hour >= 18 || $hour < 6;
-
             // Check if the current time is between 6AM and 6PM for day shift
-
             if ($request->shift_type === 'day' && $isDayShiftTime) {
                 return view('admin.boards.health-safety-review-question-one', [
                     'healthSafetyReview' => $healthSafetyReview,
                     'disabled' => false
                 ])->render();
-                // Check if the current time is between 6PM and the next day 6am for night shift
+                // Check if the current time is between 6PM and 6AM for night shift
             } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
                 return view('admin.boards.health-safety-review-question-one', [
                     'healthSafetyReview' => $healthSafetyReview,
                     'disabled' => false
                 ])->render();
-            }else {
+            } else {
                 return view('admin.boards.health-safety-review-question-one', [
                     'healthSafetyReview' => $healthSafetyReview,
                     'disabled' => true
@@ -74,10 +68,24 @@ class BoardController extends Controller
             }
         } elseif ($step == 2) {
             $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionTwo($request);
-
-            return view('admin.boards.health-safety-review-question-two', [
-                'healthSafetyReview' => $healthSafetyReview
-            ])->render();
+            // Check if the current time is between 6AM and 6PM for day shift
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.health-safety-review-question-two', [
+                    'healthSafetyReview' => $healthSafetyReview,
+                    'disabled' => false
+                ])->render();
+                // Check if the current time is between 6PM and 6AM for night shift
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.health-safety-review-question-two', [
+                    'healthSafetyReview' => $healthSafetyReview,
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.health-safety-review-question-two', [
+                    'healthSafetyReview' => $healthSafetyReview,
+                    'disabled' => true
+                ])->render();
+            }
         } elseif ($step == 3) {
             $crossCriteria = $this->boardService->getCrossCriteria();
             $safetyCalendar = $this->boardService->getSafetyCalendarData();
