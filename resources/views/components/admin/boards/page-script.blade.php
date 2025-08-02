@@ -142,25 +142,25 @@
 
             $(document).on('blur', '.question-one', function () {
                 let answer = $(this).text().trim();
-                addBlankQuestion('question_one', 1, answer);
+                addBlankQuestion('question_one', answer);
             });
 
             $(document).on('blur', '.question-two', function () {
                 let answer = $(this).text().trim();
-                addBlankQuestion('question_two', 1, answer);
+                addBlankQuestion('question_two', answer);
             });
 
-            function addBlankQuestion(question_number, shift_id = "{{$shift_id}}", shift_rotation_id = "{{$rotation_id}}", start_date = "{{$start_date}}", end_date = "{{$end_date}}", shift_type = "{{$shift_type}}", answer = null) {
+            function addBlankQuestion(question_number, answer = null) {
                 $.ajax({
                     url: "{{ route('boards.store.health-safety-review') }}",
                     method: 'POST',
                     data: {
                         question_number: question_number,
-                        shift_id: {{$shift_id}},
-                        shift_rotation_id: shift_rotation_id,
-                        start_date: start_date,
-                        end_date: end_date,
-                        shift_type: shift_type,
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
                         answer: answer,
                         _token: '{{ csrf_token() }}'
                     },
