@@ -26,10 +26,12 @@
                         </svg>
                     </span>
                 </h6>
-                <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                        id="addQuestionTwoBtn">
-                    <i class="ph ph-plus"></i>
-                </button>
+                @if(!$disabled)
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
+                            id="addQuestionTwoBtn">
+                        <i class="ph ph-plus"></i>
+                    </button>
+                @endif
             </div>
 
             <div class="table-responsive">
@@ -38,12 +40,13 @@
                     @forelse ($healthSafetyReview as $review)
                         <tr class="align-middle">
                             <td class="bg-light td-date">
-                                {{ $review->dailyShiftEntry->date }}
-                                ({{ \Carbon\Carbon::parse($review->dailyShiftEntry->date)->format('l') }})
+                                {{ $review->date }}
+                                ({{ \Carbon\Carbon::parse($review->date)->format('l') }})
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="true" class="question-two"
-                                     data-date="{{ $review->dailyShiftEntry->date }}"
+                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
+                                     class="{{$disabled ? '': 'question-two'}}"
+                                     data-date="{{ $review->date }}"
                                      style="border: 1px solid #ccc; padding: 6px 8px; min-height: 25px; width: 100%; box-sizing: border-box; word-break: break-word; overflow-wrap: break-word; white-space: normal; background-color: #fff; border-radius: 4px;">
                                     {{ $review->answer }}
                                 </div>
