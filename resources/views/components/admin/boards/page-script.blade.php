@@ -47,6 +47,7 @@
                     shift_type: "{{$shift_type}}",
                     start_date: "{{$start_date}}",
                     end_date: "{{$end_date}}",
+                    rotation_id: "{{$rotation_id}}",
                     _token: '{{ csrf_token() }}'
                 },
                 beforeSend: function () {
@@ -216,6 +217,87 @@
             });
             // ============= Add Blank Health Safety Review Question Two End  =============
 
+            // ============= Health and Safety Cross Criteria Calendar Start  =============
+            $(document).on('click', '.legend-item', function () {
+                let name = $(this).data('name');
+                let color = $(this).data('color');
+                let bg_color = $(this).data('bg-color');
+                let description = $(this).data('description');
+                $('#crossCriteriaViewModal .cross-criteria-title').text(name);
+                $('#crossCriteriaViewModal .cross-criteria-content').html(`
+                <div style="border: ${color} 2px solid; background-color: ${bg_color};padding: 10px; border-radius: 5px;">
+                    ${description}
+                    </div>
+                `);
+                $('#crossCriteriaViewModal').modal('show');
+            });
+
+            $(document).on('click', '.calendar-cell', function () {
+                let cell = $(this).data('cell');
+                $('#safetyCalendarModal #safetyCalendarCell').val(cell);
+                $('#safetyCalendarModal #safetyCalendarStartDate').val("{{$start_date}}");
+                $('#safetyCalendarModal #safetyCalendarEndDate').val("{{$end_date}}");
+                $('#safetyCalendarModal #safetyCalendarShiftId').val("{{$shift_id}}");
+                $('#safetyCalendarModal #safetyCalendarRotationId').val("{{$rotation_id}}");
+                $('#safetyCalendarModal #safetyCalendarShiftType').val("{{$shift_type}}");
+                $('#safetyCalendarModal').modal('show');
+            });
+
+
+            $(document).on('click', '.criteria-option', function () {
+                let $clicked = $(this);
+                let $option = $clicked.find('.option');
+                let criteriaId = $clicked.data('id');
+
+                // Set hidden input value
+                $('#safetyCalendarModal #safetyCalendarCriteriaId').val(criteriaId);
+
+                // Deselect all other options
+                $('.criteria-option').each(function () {
+                    let $item = $(this);
+                    let color = $item.data('color');
+                    let bg = $item.data('bg');
+                    $item.find('.option')
+                        .removeClass('selected')
+                        .css({
+                            border: `${color} 2px solid`,
+                            backgroundColor: bg
+                        });
+                });
+
+                // Select the clicked one
+                $option.addClass('selected').css({
+                    border: '2px solid #000',
+                    backgroundColor: '#f0f0f0'
+                });
+            });
+
+            $(document).on('submit', '#safetyCalendarForm', function (e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    beforeSend: function () {
+                        ajaxBeforeSend('#safetyCalendarForm', '#safetyCalendarSubmitBtn')
+                    },
+                    success: function (response) {
+                        notify('success', response.message);
+                        $('#safetyCalendarModal').modal('hide');
+                        setTimeout(() => {
+                            updateBoard(response.step);
+                        }, 500);
+                    },
+                    error: handleAjaxErrors,
+                    complete: function () {
+                        ajaxComplete('#safetyCalendarSubmitBtn');
+                    }
+                });
+            });
+
+            // ============= Health and Safety Cross Criteria Calendar End  =============
+
 
             $(document).on('click', '#addProductivityQuestionOneBtn', function () {
                 let daily_shift_entry_id = 1;
@@ -337,118 +419,42 @@
                 });
             }
 
-            $(document).on('click', '.legend-item', function () {
-                let name = $(this).data('name');
-                let color = $(this).data('color');
-                let bg_color = $(this).data('bg-color');
-                let description = $(this).data('description');
-                $('#crossCriteriaViewModal .cross-criteria-title').text(name);
-                $('#crossCriteriaViewModal .cross-criteria-content').html(`
-                <div style="border: ${color} 2px solid; background-color: ${bg_color};padding: 10px; border-radius: 5px;">
-                    ${description}
-                    </div>
-                `);
-                $('#crossCriteriaViewModal').modal('show');
-            });
-
-            $(document).on('click', '.calendar-cell', function () {
-                let cell = $(this).data('cell');
-                $('#safetyCalendarModal #safetyCalendarCell').val(cell);
-                $('#safetyCalendarModal #safetyCalendarStartDate').val("{{$start_date}}");
-                $('#safetyCalendarModal #safetyCalendarEndDate').val("{{$end_date}}");
-                $('#safetyCalendarModal #safetyCalendarShiftId').val("{{$shift_id}}");
-                $('#safetyCalendarModal #safetyCalendarRotationId').val("{{$rotation_id}}");
-                $('#safetyCalendarModal #safetyCalendarShiftType').val("{{$shift_type}}");
-                $('#safetyCalendarModal').modal('show');
-            });
 
 
-            $(document).on('click', '.criteria-option', function () {
-                let $clicked = $(this);
-                let $option = $clicked.find('.option');
-                let criteriaId = $clicked.data('id');
-
-                // Set hidden input value
-                $('#safetyCalendarModal #safetyCalendarCriteriaId').val(criteriaId);
-
-                // Deselect all other options
-                $('.criteria-option').each(function () {
-                    let $item = $(this);
-                    let color = $item.data('color');
-                    let bg = $item.data('bg');
-                    $item.find('.option')
-                        .removeClass('selected')
-                        .css({
-                            border: `${color} 2px solid`,
-                            backgroundColor: bg
-                        });
-                });
-
-                // Select the clicked one
-                $option.addClass('selected').css({
-                    border: '2px solid #000',
-                    backgroundColor: '#f0f0f0'
-                });
-            });
-
-            $(document).on('submit', '#safetyCalendarForm', function (e) {
-                e.preventDefault();
-                let formData = $(this).serialize();
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: 'POST',
-                    data: formData,
-                    beforeSend: function () {
-                        ajaxBeforeSend('#safetyCalendarForm', '#safetyCalendarSubmitBtn')
-                    },
-                    success: function (response) {
-                        notify('success', response.message);
-                        $('#safetyCalendarModal').modal('hide');
-                        setTimeout(() => {
-                            updateBoard(response.step);
-                        }, 500);
-                    },
-                    error: handleAjaxErrors,
-                    complete: function () {
-                        ajaxComplete('#safetyCalendarSubmitBtn');
-                    }
-                });
-            });
-
-            $(document).on('click', '#resetLegendBtn', function () {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This will reset the safety calendar to its default state.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, reset it!',
-                    confirmButtonColor: '#d33',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{ route('boards.reset.safety-calendar') }}",
-                            method: 'POST',
-                            data: {
-                                daily_shift_entry_id: 1,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            beforeSend: function () {
-                                $('#loader').show();
-                            },
-                            success: function (response) {
-                                notify('success', response.message);
-                                setTimeout(() => {
-                                    updateBoard(response.step);
-                                }, 500);
-                            },
-                            error: handleAjaxErrors,
-                            complete: function () {
-                                $('#loader').hide();
-                            }
-                        });
-                    }
-                });
-            });
+            {{--$(document).on('click', '#resetLegendBtn', function () {--}}
+            {{--    Swal.fire({--}}
+            {{--        title: 'Are you sure?',--}}
+            {{--        text: "This will reset the safety calendar to its default state.",--}}
+            {{--        icon: 'warning',--}}
+            {{--        showCancelButton: true,--}}
+            {{--        confirmButtonText: 'Yes, reset it!',--}}
+            {{--        confirmButtonColor: '#d33',--}}
+            {{--    }).then((result) => {--}}
+            {{--        if (result.isConfirmed) {--}}
+            {{--            $.ajax({--}}
+            {{--                url: "{{ route('boards.reset.safety-calendar') }}",--}}
+            {{--                method: 'POST',--}}
+            {{--                data: {--}}
+            {{--                    daily_shift_entry_id: 1,--}}
+            {{--                    _token: '{{ csrf_token() }}'--}}
+            {{--                },--}}
+            {{--                beforeSend: function () {--}}
+            {{--                    $('#loader').show();--}}
+            {{--                },--}}
+            {{--                success: function (response) {--}}
+            {{--                    notify('success', response.message);--}}
+            {{--                    setTimeout(() => {--}}
+            {{--                        updateBoard(response.step);--}}
+            {{--                    }, 500);--}}
+            {{--                },--}}
+            {{--                error: handleAjaxErrors,--}}
+            {{--                complete: function () {--}}
+            {{--                    $('#loader').hide();--}}
+            {{--                }--}}
+            {{--            });--}}
+            {{--        }--}}
+            {{--    });--}}
+            {{--});--}}
 
         });
     </script>

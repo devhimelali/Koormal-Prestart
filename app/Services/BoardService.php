@@ -319,7 +319,6 @@ class BoardService
     {
         $timezone = Config::get('app.timezone', 'Australia/Perth');
         $now = Carbon::now($timezone);
-        $currentHour = $now->hour;
         return $now->copy()->format('Y-m-d');
     }
 }
