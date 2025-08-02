@@ -24,7 +24,7 @@ class HealthSafetyReviewCrossCriteriaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cross_criteria_id' => ['required', Rule::exists('cross_criteria', 'id')],
+            'cross_criteria_id' => ['required', Rule::exists('cross_criterias', 'id')],
             'shift_id' => ['required', Rule::exists('shifts', 'id')],
             'shift_rotation_id' => ['required', Rule::exists('shift_rotations', 'id')],
             'start_date' => ['required', Rule::date()->format('d-m-Y')],

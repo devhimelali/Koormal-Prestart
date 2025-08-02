@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
 use App\Models\Supervisor;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Models\CrossCriteria;
 use App\Models\DailyShiftEntry;
@@ -47,17 +49,7 @@ class BoardService
 
     public function storeHealthSafetyReview(HealthSafetyReviewDto $dto)
     {
-        $timezone = Config::get('app.timezone', 'Australia/Perth');
-        $now = Carbon::now($timezone);
-        $currentHour = $now->hour;
-
-        if ($currentHour >= 6 && $currentHour < 18) {
-            $shiftDate = $now->copy()->format('Y-m-d');
-        } else {
-            $shiftDate = $now->copy()->setTime(18, 0)->isPast()
-                ? $now->copy()->format('Y-m-d')       // Between 6PM and 11:59PM
-                : $now->copy()->subDay()->format('Y-m-d'); // Between 12AM and 5:59AM
-        }
+        $shiftDate = $this->getShiftDate();
 
         HealthSafetyReview::updateOrCreate([
             'shift_id' => $dto->shift_id,
@@ -84,18 +76,16 @@ class BoardService
             ->get();
     }
 
-    public function storeHealthSafetyCrossCriteria(Request $request)
+    public function storeHealthSafetyCrossCriteria(HealthSafetyReviewCrossCriteriaDto $dto)
     {
-        $validated = $request->validate([
-            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
-            'cell' => 'required|min:1|max:31',
-            'criteria_id' => 'required|exists:cross_criterias,id',
-        ]);
+        $shiftDate = $this->getShiftDate();
 
-        //find running month date using cell number
-        $date = now()->startOfMonth()->addDays($validated['cell'] - 1)->format('Y-m-d');
+        $date = now(Config::get('app.timezone', 'Australia/Perth'))
+            ->startOfMonth()
+            ->addDays($dto->cell_number - 1)
+            ->format('Y-m-d');
 
-        // only allow cross criteria for today
+        // only allow cross-criteria for today
         if ($date != today()->format('Y-m-d')) {
             return response()->json([
                 'status' => 'error',
@@ -104,10 +94,17 @@ class BoardService
         }
 
         HealthSafetyCrossCriteria::updateOrCreate(
-            ['daily_shift_entry_id' => $validated['daily_shift_entry_id']],
             [
-                'cross_criteria_id' => $validated['criteria_id'],
-                'cell_number' => $validated['cell']
+                'shift_id' => $dto->shift_id,
+                'shift_rotation_id' => $dto->shift_rotation_id,
+                'start_date' => $dto->start_date,
+                'end_date' => $dto->end_date,
+                'shift_type' => $dto->shift_type,
+            ],
+            [
+                'date' => $shiftDate,
+                'cross_criteria_id' => $dto->cross_criteria_id,
+                'cell_number' => $dto->cell_number,
             ]
         );
 
@@ -316,5 +313,13 @@ class BoardService
                 'updated_at' => now(),
             ]);
         }
+    }
+
+    private function getShiftDate()
+    {
+        $timezone = Config::get('app.timezone', 'Australia/Perth');
+        $now = Carbon::now($timezone);
+        $currentHour = $now->hour;
+        return $now->copy()->format('Y-m-d');
     }
 }

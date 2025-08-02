@@ -10,7 +10,7 @@
                   id="safetyCalendarForm">
                 @csrf
                 <input type="hidden" name="cell_number" id="safetyCalendarCell">
-                <input type="hidden" name="$cross_criteria_id" id="safetyCalendarCriteriaId">
+                <input type="hidden" name="cross_criteria_id" id="safetyCalendarCriteriaId">
                 <input type="hidden" name="start_date" id="safetyCalendarStartDate">
                 <input type="hidden" name="end_date" id="safetyCalendarEndDate">
                 <input type="hidden" name="shift_id" id="safetyCalendarShiftId">

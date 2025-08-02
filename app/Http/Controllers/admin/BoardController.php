@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HealthSafetyReviewCrossCriteriaRequest;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Http\Requests\ShowBoardRequest;
 use App\Models\DailyShiftEntry;
@@ -140,9 +142,9 @@ class BoardController extends Controller
         ]);
     }
 
-    public function storeHealthSafetyCrossCriteria(Request $request)
+    public function storeHealthSafetyCrossCriteria(HealthSafetyReviewCrossCriteriaRequest $request)
     {
-        return $this->boardService->storeHealthSafetyCrossCriteria($request);
+        return $this->boardService->storeHealthSafetyCrossCriteria(HealthSafetyReviewCrossCriteriaDto::fromArray($request->validated()));
     }
 
     public function storeProductiveQuestion(Request $request)
