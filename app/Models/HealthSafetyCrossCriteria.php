@@ -2,34 +2,23 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HealthSafetyCrossCriteria\HasAttributes;
+use App\Models\Concerns\HealthSafetyCrossCriteria\HasRelations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HealthSafetyCrossCriteria extends Model
 {
+    use HasAttributes, HasRelations;
+
     protected $fillable = [
-        'daily_shift_entry_id',
         'cross_criteria_id',
+        'shift_id',
+        'shift_rotation_id',
+        'start_date',
+        'end_date',
+        'shift_type',
+        'date',
         'cell_number',
     ];
-
-    /**
-     * The daily shift entry for the health and safety cross criteria.
-     *
-     * @return BelongsTo
-     */
-    public function dailyShiftEntry(): BelongsTo
-    {
-        return $this->belongsTo(DailyShiftEntry::class);
-    }
-
-    /**
-     * The cross criteria for the health and safety review.
-     *
-     * @return BelongsTo
-     */
-    public function crossCriteria(): BelongsTo
-    {
-        return $this->belongsTo(CrossCriteria::class);
-    }
 }
