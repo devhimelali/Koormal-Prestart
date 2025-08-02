@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ShiftTypeEnum;
 use App\Models\Concerns\HealthSafetyCrossCriteria\HasAttributes;
 use App\Models\Concerns\HealthSafetyCrossCriteria\HasQueryScopes;
 use App\Models\Concerns\HealthSafetyCrossCriteria\HasRelations;
@@ -21,4 +22,11 @@ class HealthSafetyCrossCriteria extends Model
         'date',
         'cell_number',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'shift_type' => ShiftTypeEnum::class,
+        ];
+    }
 }

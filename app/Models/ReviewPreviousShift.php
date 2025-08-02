@@ -2,24 +2,38 @@
 
 namespace App\Models;
 
+use App\Enums\QuestionTypeEnum;
+use App\Enums\ShiftTypeEnum;
+use App\Models\Concerns\ReviewPreviousShift\HasAttributes;
+use App\Models\Concerns\ReviewPreviousShift\HasQueryScopes;
+use App\Models\Concerns\ReviewPreviousShift\HasRelations;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ReviewPreviousShift extends Model
 {
+    use HasAttributes, HasQueryScopes, HasRelations;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
     protected $fillable = [
-        'daily_shift_entry_id',
+        'shift_id',
+        'shift_rotation_id',
+        'start_date',
+        'end_date',
+        'shift_type',
+        'date',
         'question_number',
         'answer',
     ];
 
-    /**
-     * Get the daily shift entry that this review belongs to.
-     *
-     * @return BelongsTo
-     */
-    public function dailyShiftEntry(): BelongsTo
+    protected function casts(): array
     {
-        return $this->belongsTo(DailyShiftEntry::class);
+        return [
+            'shift_type' => ShiftTypeEnum::class,
+            'question_number' => QuestionTypeEnum::class
+        ];
     }
 }
