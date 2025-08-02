@@ -170,11 +170,11 @@
             // ============= Add Blank Question End  =============
 
             // ============= Show Already Submitted Warning Start  =============
-            function showAlreadySubmittedWarning() {
+            function showAlreadySubmittedWarning(message) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Already Submitted',
-                    text: "You have already submitted today's health and safety review! You can only submit one health and safety review per day.",
+                    text: message,
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#d33',
                 });
@@ -186,7 +186,7 @@
             $(document).on('click', '#addQuestionOneBtn', function () {
                 let question_one = $('.question-one').text().trim();
                 if (question_one != '') {
-                    showAlreadySubmittedWarning();
+                    showAlreadySubmittedWarning("You have already submitted today's health and safety review! You can only submit one health and safety review per day.");
                     return;
                 } else {
                     addBlankQuestion('question_one');
@@ -298,37 +298,19 @@
 
             // ============= Health and Safety Cross Criteria Calendar End  =============
 
-
-            $(document).on('click', '#addProductivityQuestionOneBtn', function () {
-                let daily_shift_entry_id = 1;
-                addBlankProductiveQuestion('question_one', daily_shift_entry_id);
-            });
-
-            $(document).on('click', '#addProductivityQuestionTwoBtn', function () {
-                let daily_shift_entry_id = 1;
-                addBlankProductiveQuestion('question_two', daily_shift_entry_id);
-            });
-
-            $(document).on('blur', '.productivity-question-one', function () {
-                let answer = $(this).text().trim();
-                addBlankProductiveQuestion('question_one', 1, answer);
-            });
-
-            $(document).on('blur', '.productivity-question-two', function () {
-                let answer = $(this).text().trim();
-                addBlankProductiveQuestion('question_two', 1, answer);
-            });
-
-            function addBlankProductiveQuestion(question_number, daily_shift_entry_id = 1,
-                                                answer =
-                                                null) {
+            // ============= Productivity Review Start  =============
+            function addBlankProductiveQuestion(question_number, answer = null) {
                 $.ajax({
                     url: "{{ route('boards.store.productive-question') }}",
                     method: 'POST',
                     data: {
-                        daily_shift_entry_id: daily_shift_entry_id,
                         question_number: question_number,
                         answer: answer,
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
                         _token: '{{ csrf_token() }}'
                     },
                     beforeSend: function () {
@@ -346,6 +328,39 @@
                     }
                 });
             }
+
+            $(document).on('click', '#addProductivityQuestionOneBtn', function () {
+                let question_one = $('.productivity-question-one').text().trim();
+                if (question_one != '') {
+                    showAlreadySubmittedWarning("You have already submitted today's productivity review! You can only submit one productivity review per day.");
+                    return;
+                } else {
+                    addBlankProductiveQuestion('question_one');
+                }
+            });
+
+            $(document).on('blur', '.productivity-question-one', function () {
+                let answer = $(this).text().trim();
+                addBlankProductiveQuestion('question_one', answer);
+            });
+
+            $(document).on('click', '#addProductivityQuestionTwoBtn', function () {
+                let question_two = $('.productivity-question-two').text().trim();
+                if (question_two != '') {
+                    showAlreadySubmittedWarning("You have already submitted today's productivity review! You can only submit one productivity review per day.");
+                    return;
+                } else {
+                    addBlankProductiveQuestion('question_two');
+                }
+            });
+
+            $(document).on('blur', '.productivity-question-two', function () {
+                let answer = $(this).text().trim();
+                addBlankProductiveQuestion('question_two', answer);
+            });
+
+            // ============= Productivity Review End  =============
+
 
             $(document).on('click', '#addSuccessNoteBtn', function () {
                 addBlankSuccessNote();

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\admin;
 
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
+use App\DTOs\ReviewOfPreviousShiftDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HealthSafetyReviewCrossCriteriaRequest;
 use App\Http\Requests\HealthSafetyReviewRequest;
+use App\Http\Requests\ReviewOfPreviousShiftRequest;
 use App\Http\Requests\ShowBoardRequest;
 use App\Models\DailyShiftEntry;
 use App\Models\FatalityRiskControl;
@@ -98,14 +100,41 @@ class BoardController extends Controller
             ])->render();
         } elseif ($step == 4) {
             $productiveQuestionOne = $this->boardService->getProductiveQuestionOne($request);
-            return view('admin.boards.review_of_previous_shift_question_one', [
-                'productiveQuestionOne' => $productiveQuestionOne
-            ])->render();
+
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.review_of_previous_shift_question_one', [
+                    'productiveQuestionOne' => $productiveQuestionOne,
+                    'disabled' => false
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.review_of_previous_shift_question_one', [
+                    'productiveQuestionOne' => $productiveQuestionOne,
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.review_of_previous_shift_question_one', [
+                    'productiveQuestionOne' => $productiveQuestionOne,
+                    'disabled' => true
+                ])->render();
+            }
         } elseif ($step == 5) {
             $productiveQuestionTwo = $this->boardService->getProductiveQuestionTwo($request);
-            return view('admin.boards.review_of_previous_shift_question_two', [
-                'productiveQuestionTwo' => $productiveQuestionTwo
-            ])->render();
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.review_of_previous_shift_question_two', [
+                    'productiveQuestionTwo' => $productiveQuestionTwo,
+                    'disabled' => false
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.review_of_previous_shift_question_two', [
+                    'productiveQuestionTwo' => $productiveQuestionTwo,
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.review_of_previous_shift_question_two', [
+                    'productiveQuestionTwo' => $productiveQuestionTwo,
+                    'disabled' => true
+                ])->render();
+            }
         } elseif ($step == 6) {
             $celebrateSuccesses = $this->boardService->getCelebrateSuccesses($request);
             return view('admin.boards.celebrate_success', [
@@ -147,9 +176,9 @@ class BoardController extends Controller
         return $this->boardService->storeHealthSafetyCrossCriteria(HealthSafetyReviewCrossCriteriaDto::fromArray($request->validated()));
     }
 
-    public function storeProductiveQuestion(Request $request)
+    public function storeProductiveQuestion(ReviewOfPreviousShiftRequest $request)
     {
-        return $this->boardService->storeProductiveQuestion($request);
+        return $this->boardService->storeProductiveQuestion(ReviewOfPreviousShiftDto::fromArray($request->validated()));
     }
 
     public function storeCelebrateSuccess(Request $request)

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
+use App\DTOs\ReviewOfPreviousShiftDto;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
@@ -117,59 +118,39 @@ class BoardService
 
     public function getProductiveQuestionOne($request)
     {
-        $validated = $request->validate([
-            'shift_id' => 'required|exists:shifts,id',
-            'rotation_id' => 'required|exists:shift_rotations,id',
-            'shift_type' => 'required|string|in:day,night'
-        ]);
-
-        return ReviewPreviousShift::with('dailyShiftEntry')
-            ->where('question_number', 'question_one')
-            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
-                $query->where('shift_id', $validated['shift_id'])
-                    ->where('shift_rotation_id', $validated['rotation_id'])
-                    ->where('shift_type', $validated['shift_type']);
-            })
+        return ReviewPreviousShift::filterPreviousShiftsQuestionOne($request)
             ->get();
     }
 
     public function getProductiveQuestionTwo($request)
     {
-        $validated = $request->validate([
-            'shift_id' => 'required|exists:shifts,id',
-            'rotation_id' => 'required|exists:shift_rotations,id',
-            'shift_type' => 'required|string|in:day,night'
-        ]);
-
-        return ReviewPreviousShift::with('dailyShiftEntry')
-            ->where('question_number', 'question_two')
-            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
-                $query->where('shift_id', $validated['shift_id'])
-                    ->where('shift_rotation_id', $validated['rotation_id'])
-                    ->where('shift_type', $validated['shift_type']);
-            })
+        return ReviewPreviousShift::filterPreviousShiftsQuestionTwo($request)
             ->get();
     }
 
-    public function storeProductiveQuestion($request)
+    public function storeProductiveQuestion(ReviewOfPreviousShiftDto $dto)
     {
-        $validated = $request->validate([
-            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
-            'question_number' => 'required|in:question_one,question_two',
-            'answer' => 'nullable|string',
-        ]);
+        $shiftDate = $this->getShiftDate();
 
-        ReviewPreviousShift::updateOrCreate([
-            'daily_shift_entry_id' => $validated['daily_shift_entry_id'],
-            'question_number' => $validated['question_number']
-        ], [
-            'answer' => $validated['answer']
-        ]);
+        ReviewPreviousShift::updateOrCreate(
+            [
+                'shift_id' => $dto->shift_id,
+                'shift_rotation_id' => $dto->shift_rotation_id,
+                'start_date' => $dto->start_date,
+                'end_date' => $dto->end_date,
+                'shift_type' => $dto->shift_type,
+                'question_number' => $dto->question_number,
+            ],
+            [
+                'date' => $shiftDate,
+                'answer' => $dto->answer,
+            ]
+        );
 
         return response()->json([
             'status' => 'success',
             'message' => 'Productive Question saved successfully',
-            'step' => $validated['question_number'] == 'question_one' ? 4 : 5
+            'step' => $dto->question_number == 'question_one' ? 4 : 5
         ]);
     }
 

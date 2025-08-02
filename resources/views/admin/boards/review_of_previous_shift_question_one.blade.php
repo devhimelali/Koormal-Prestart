@@ -21,10 +21,12 @@
                 <h6>
                     What did we do well to be more productive on our last shift?
                 </h6>
-                <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                        id="addProductivityQuestionOneBtn">
-                    <i class="ph ph-plus"></i>
-                </button>
+                @if(!$disabled)
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
+                            id="addProductivityQuestionOneBtn">
+                        <i class="ph ph-plus"></i>
+                    </button>
+                @endif
             </div>
 
             <div class="table-responsive">
@@ -34,12 +36,13 @@
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                     <span>
-                                        {{ $productive->dailyShiftEntry->date }}
-                                        ({{ \Carbon\Carbon::parse($productive->dailyShiftEntry->date)->format('l') }})
+                                        {{ $productive->date }}
+                                        ({{ \Carbon\Carbon::parse($productive->date)->format('l') }})
                                     </span>
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="true" class="productivity-question-one" data-date=""
+                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
+                                     class="{{$disabled ? '' : 'productivity-question-one'}}" data-date=""
                                      style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
