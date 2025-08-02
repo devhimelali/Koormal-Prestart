@@ -232,7 +232,7 @@
                 $('#crossCriteriaViewModal').modal('show');
             });
 
-            $(document).on('click', '.calendar-cell', function () {
+            $(document).on('click', '.cross-criteria', function () {
                 let cell = $(this).data('cell');
                 $('#safetyCalendarModal #safetyCalendarCell').val(cell);
                 $('#safetyCalendarModal #safetyCalendarStartDate').val("{{$start_date}}");

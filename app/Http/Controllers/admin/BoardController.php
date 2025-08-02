@@ -94,10 +94,25 @@ class BoardController extends Controller
             $crossCriteria = $this->boardService->getCrossCriteria();
             $safetyCalendar = $this->boardService->getSafetyCalendarData($request);
 
-            return view('admin.boards.health-safety-cross-criteria', [
-                'crossCriteria' => $crossCriteria,
-                'safetyCalendar' => $safetyCalendar
-            ])->render();
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.health-safety-cross-criteria', [
+                    'crossCriteria' => $crossCriteria,
+                    'safetyCalendar' => $safetyCalendar,
+                    'disabled' => false
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.health-safety-cross-criteria', [
+                    'crossCriteria' => $crossCriteria,
+                    'safetyCalendar' => $safetyCalendar,
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.health-safety-cross-criteria', [
+                    'crossCriteria' => $crossCriteria,
+                    'safetyCalendar' => $safetyCalendar,
+                    'disabled' => true
+                ])->render();
+            }
         } elseif ($step == 4) {
             $productiveQuestionOne = $this->boardService->getProductiveQuestionOne($request);
 
