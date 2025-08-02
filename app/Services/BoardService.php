@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\DTOs\HealthSafetyReviewDto;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
 use App\Models\Supervisor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\CrossCriteria;
 use App\Models\DailyShiftEntry;
@@ -14,6 +16,7 @@ use App\Models\HealthSafetyReview;
 use App\Models\ReviewPreviousShift;
 use App\Models\HealthSafetyCrossCriteria;
 use App\Models\SiteCommunication;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class BoardService
@@ -42,13 +45,30 @@ class BoardService
             ->get();
     }
 
-    public function storeHealthSafetyReview($validated)
+    public function storeHealthSafetyReview(HealthSafetyReviewDto $dto)
     {
+        $timezone = Config::get('app.timezone', 'Australia/Perth');
+        $now = Carbon::now($timezone);
+        $currentHour = $now->hour;
+
+        if ($currentHour >= 6 && $currentHour < 18) {
+            $shiftDate = $now->copy()->format('Y-m-d');
+        } else {
+            $shiftDate = $now->copy()->setTime(18, 0)->isPast()
+                ? $now->copy()->format('Y-m-d')       // Between 6PM and 11:59PM
+                : $now->copy()->subDay()->format('Y-m-d'); // Between 12AM and 5:59AM
+        }
+
         HealthSafetyReview::updateOrCreate([
-            'daily_shift_entry_id' => $validated['daily_shift_entry_id'],
-            'question_number' => $validated['question_number']
+            'shift_id' => $dto->shift_id,
+            'shift_rotation_id' => $dto->shift_rotation_id,
+            'start_date' => $dto->start_date,
+            'end_date' => $dto->end_date,
+            'shift_type' => $dto->shift_type,
+            'question_number' => $dto->question_number,
         ], [
-            'answer' => $validated['answer']
+            'answer' => $dto->answer,
+            'date' => $shiftDate,
         ]);
     }
 

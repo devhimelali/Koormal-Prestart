@@ -8,15 +8,15 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('site_communications', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('daily_shift_entry_id')->constrained('daily_shift_entries')->onDelete('cascade');
-            $table->longText('note')->nullable();
-            $table->timestamps();
-        });
-    }
+//    public function up(): void
+//    {
+//        Schema::create('site_communications', function (Blueprint $table) {
+//            $table->id();
+//            $table->foreignId('daily_shift_entry_id')->constrained('daily_shift_entries')->onDelete('cascade');
+//            $table->longText('note')->nullable();
+//            $table->timestamps();
+//        });
+//    }
 
     /**
      * Reverse the migrations.

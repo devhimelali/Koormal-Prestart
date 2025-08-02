@@ -7,6 +7,8 @@
         $shift_type = request()->query('shift_type');
         $crew = request()->query('crew');
         $shift_id = \App\Models\Shift::where('name', $crew)->first()->id;
+//        dd($shift_id);
+        $rotation_id = \App\Models\ShiftRotation::where('is_active', true)->value('id');
     @endphp
     <x-common.breadcrumb :title="'Boards'"
                          :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Boards']]"/>

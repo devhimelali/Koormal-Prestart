@@ -33,17 +33,18 @@
         {{--    });--}}
         {{--}--}}
 
-        function updateBoard(step, heading = "Our Health & Safety", shift_id = "{{$shift_id}}", shift_type = "{{$shift_type}}", start_date = "{{$start_date}}", end_date = "{{$end_date}}") {
+        // ============= Update Board Start  =============
+        function updateBoard(step, heading = "Our Health & Safety") {
             $('#board-title').text(heading);
             $.ajax({
                 url: "{{ route('boards.show.board') }}",
                 method: 'POST',
                 data: {
                     step: step,
-                    shift_id: shift_id,
-                    shift_type: shift_type,
-                    start_date: start_date,
-                    end_date: end_date,
+                    shift_id: "{{ $shift_id }}",
+                    shift_type: "{{$shift_type}}",
+                    start_date: "{{$start_date}}",
+                    end_date: "{{$end_date}}",
                     _token: '{{ csrf_token() }}'
                 },
                 beforeSend: function () {
@@ -59,6 +60,8 @@
                 }
             })
         }
+
+        // ============= Update Board End  =============
 
         $(document).on('submit', '#fatalityRiskControlForm', function (e) {
             e.preventDefault();
@@ -130,13 +133,11 @@
 
 
             $(document).on('click', '#addQuestionOneBtn', function () {
-                let daily_shift_entry_id = 1;
-                addBlankQuestion('question_one', daily_shift_entry_id);
+                addBlankQuestion('question_one');
             });
 
             $(document).on('click', '#addQuestionTwoBtn', function () {
-                let daily_shift_entry_id = 1;
-                addBlankQuestion('question_two', daily_shift_entry_id);
+                addBlankQuestion('question_two');
             });
 
             $(document).on('blur', '.question-one', function () {
@@ -149,14 +150,17 @@
                 addBlankQuestion('question_two', 1, answer);
             });
 
-            function addBlankQuestion(question_number, daily_shift_entry_id = 1, answer =
-            null) {
+            function addBlankQuestion(question_number, shift_id = "{{$shift_id}}", shift_rotation_id = "{{$rotation_id}}", start_date = "{{$start_date}}", end_date = "{{$end_date}}", shift_type = "{{$shift_type}}", answer = null) {
                 $.ajax({
                     url: "{{ route('boards.store.health-safety-review') }}",
                     method: 'POST',
                     data: {
-                        daily_shift_entry_id: daily_shift_entry_id,
                         question_number: question_number,
+                        shift_id: {{$shift_id}},
+                        shift_rotation_id: shift_rotation_id,
+                        start_date: start_date,
+                        end_date: end_date,
+                        shift_type: shift_type,
                         answer: answer,
                         _token: '{{ csrf_token() }}'
                     },

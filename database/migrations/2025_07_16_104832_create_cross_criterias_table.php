@@ -8,17 +8,17 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('cross_criterias', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->longText('description')->nullable();
-            $table->string('color')->nullable();
-            $table->string('bg_color')->nullable();
-            $table->timestamps();
-        });
-    }
+//    public function up(): void
+//    {
+//        Schema::create('cross_criterias', function (Blueprint $table) {
+//            $table->id();
+//            $table->string('name');
+//            $table->longText('description')->nullable();
+//            $table->string('color')->nullable();
+//            $table->string('bg_color')->nullable();
+//            $table->timestamps();
+//        });
+//    }
 
     /**
      * Reverse the migrations.

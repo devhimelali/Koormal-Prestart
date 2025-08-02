@@ -27,10 +27,12 @@
                         </svg>
                     </span>
                 </h6>
-                <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                        id="addQuestionOneBtn">
-                    <i class="ph ph-plus"></i>
-                </button>
+                @if(!$disabled)
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
+                            id="addQuestionOneBtn">
+                        <i class="ph ph-plus"></i>
+                    </button>
+                @endif
             </div>
 
             <div class="table-responsive">
@@ -40,12 +42,13 @@
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                     <span>
-                                        {{ $healthSafetyReview->dailyShiftEntry->date }}
-                                        ({{ \Carbon\Carbon::parse($healthSafetyReview->dailyShiftEntry->date)->format('l') }})
+                                        {{ $healthSafetyReview->date }}
+                                        ({{ \Carbon\Carbon::parse($healthSafetyReview->date)->format('l') }})
                                     </span>
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="true" class="question-one" data-date=""
+                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
+                                     class="{{$disabled ? '': 'question-one'}}" data-date=""
                                      style="
             border: 1px solid #ccc;
                  padding: 6px 8px;

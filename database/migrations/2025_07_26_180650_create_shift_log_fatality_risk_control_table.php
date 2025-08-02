@@ -9,19 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('shift_log_fatality_risk_control', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('shift_log_id');
-            $table->unsignedBigInteger('fatality_risk_control_id');
-            $table->timestamps();
-
-            // Indexes for faster queries
-            $table->index('shift_log_id');
-            $table->index('fatality_risk_control_id');
-        });
-    }
+//    public function up(): void
+//    {
+//        Schema::create('shift_log_fatality_risk_control', function (Blueprint $table) {
+//            $table->id();
+//            $table->unsignedBigInteger('shift_log_id');
+//            $table->unsignedBigInteger('fatality_risk_control_id');
+//            $table->timestamps();
+//
+//            // Indexes for faster queries
+//            $table->index('shift_log_id');
+//            $table->index('fatality_risk_control_id');
+//        });
+//    }
 
     /**
      * Reverse the migrations.

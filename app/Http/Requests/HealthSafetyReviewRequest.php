@@ -29,12 +29,10 @@ class HealthSafetyReviewRequest extends FormRequest
             'shift_rotation_id' => ['required', Rule::exists('shift_rotations', 'id')],
             'start_date' => ['required', Rule::date()->format('d-m-Y')],
             'end_date' => ['required', Rule::date()->format('d-m-Y')->afterOrEqual('start_date')],
-            'date' => ['required', Rule::date()->format('d-m-Y')],
             'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
             'question_number' => ['required', Rule::enum(QuestionTypeEnum::class)],
             'answer' => ['nullable', 'string']
         ];
-
     }
 
     public function messages(): array
@@ -49,7 +47,6 @@ class HealthSafetyReviewRequest extends FormRequest
             'end_date.required' => 'End date is required.',
             'end_date.format' => 'End date must be a valid date in the format d-m-Y.',
             'end_date.after_or_equal' => 'End date must be after or equal to start date.',
-            'date.required' => 'Date is required.',
             'shift_type.required' => 'Shift type is required.',
             'question_number.required' => 'Question number is required.',
             'answer.string' => 'Answer must be a string.',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DTOs\HealthSafetyReviewDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Http\Requests\ShowBoardRequest;
@@ -10,6 +11,7 @@ use App\Models\FatalityRiskControl;
 use App\Services\BoardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class BoardController extends Controller
@@ -36,13 +38,40 @@ class BoardController extends Controller
 
     public function show(ShowBoardRequest $request)
     {
+//        dd($request->all());
         $step = $request->step;
         if ($step == 1) {
             $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionOne($request);
+//            dd($healthSafetyReview);
 
-            return view('admin.boards.health-safety-review-question-one', [
-                'healthSafetyReview' => $healthSafetyReview
-            ])->render();
+            $timezone = Config::get('app.timezone', 'Australia/Perth');
+            $now = Carbon::now($timezone);
+
+            $hour = $now->hour;
+            $minute = $now->minute;
+
+            $isDayShiftTime = $hour >= 6 && $hour < 18;
+            $isNightShiftTime = $hour >= 18 || $hour < 6;
+
+            // Check if the current time is between 6AM and 6PM for day shift
+
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.health-safety-review-question-one', [
+                    'healthSafetyReview' => $healthSafetyReview,
+                    'disabled' => false
+                ])->render();
+                // Check if the current time is between 6PM and the next day 6am for night shift
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.health-safety-review-question-one', [
+                    'healthSafetyReview' => $healthSafetyReview,
+                    'disabled' => false
+                ])->render();
+            }else {
+                return view('admin.boards.health-safety-review-question-one', [
+                    'healthSafetyReview' => $healthSafetyReview,
+                    'disabled' => true
+                ])->render();
+            }
         } elseif ($step == 2) {
             $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionTwo($request);
 
@@ -94,7 +123,8 @@ class BoardController extends Controller
 
     public function storeHealthSafetyReview(HealthSafetyReviewRequest $request)
     {
-        $this->boardService->storeHealthSafetyReview($request->validated());
+        $this->boardService->storeHealthSafetyReview(HealthSafetyReviewDto::fromArray($request->validated()));
+
         $step = $request->question_number == 'question_one' ? 1 : 2;
         return response()->json([
             'status' => 'success',
