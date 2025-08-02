@@ -44,7 +44,7 @@
                                 <td>
                                     <a href="#" class="btn btn-sm btn-secondary viewBoard"
                                        data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
-                                       data-crew="{{ $day['day_shift'] }}" data-shift="day">View Board</a>
+                                       data-crew="{{ $day['day_shift'] }}" data-shift-type="day">View Board</a>
                                 </td>
                             </tr>
                             <tr>
@@ -56,7 +56,7 @@
                                 <td>
                                     <a href="#" class="btn btn-sm btn-secondary viewBoard"
                                        data-start_date="{{ $day['start_date'] }}" data-end_date="{{ $day['end_date'] }}"
-                                       data-crew="{{ $day['night_shift'] }}" data-shift="night">View
+                                       data-crew="{{ $day['night_shift'] }}" data-shift-type="night">View
                                         Board</a>
                                 </td>
                             </tr>
@@ -87,10 +87,10 @@
             let start_date = $(this).data('start_date');
             let end_date = $(this).data('end_date');
             let crew = $(this).data('crew');
-            let shift = $(this).data('shift');
+            let shift_type = $(this).data('shift-type');
             window.location.href = "{{ route('boards.index') }}?start_date=" + start_date +
                 "&end_date=" + end_date +
-                "&crew=" + crew + "&shift=" + shift;
+                "&crew=" + crew + "&shift_type=" + shift_type;
         });
 
         function fetchSchedule(startDate, endDate) {

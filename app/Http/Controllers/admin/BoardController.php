@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HealthSafetyReviewRequest;
+use App\Http\Requests\ShowBoardRequest;
 use App\Models\DailyShiftEntry;
 use App\Models\FatalityRiskControl;
 use App\Services\BoardService;
@@ -20,13 +21,7 @@ class BoardController extends Controller
 
     public function index(Request $request)
     {
-        return view('admin.boards.index', [
-            'dailyShiftEntry' => DailyShiftEntry::findOrFail($request->daily_shift_entry_id),
-            'shiftType' => $request->shift,
-            'crewName' => $request->crew,
-            'startDate' => $request->start_date,
-            'endDate' => $request->end_date
-        ]);
+        return view('admin.boards.index');
     }
 
     public function updateSupervisorName(Request $request)
@@ -39,10 +34,9 @@ class BoardController extends Controller
         ]);
     }
 
-    public function show(Request $request)
+    public function show(ShowBoardRequest $request)
     {
         $step = $request->step;
-        $dailyShiftEntryId = $request->daily_shift_entry_id;
         if ($step == 1) {
             $healthSafetyReview = $this->boardService->getHealthSafetyReviewForQuestionOne($request);
 

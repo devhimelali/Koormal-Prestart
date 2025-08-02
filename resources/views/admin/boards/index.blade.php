@@ -1,6 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Boards')
 @section('content')
+    @php
+        $start_date = request()->query('start_date');
+        $end_date = request()->query('end_date');
+        $shift_type = request()->query('shift_type');
+        $crew = request()->query('crew');
+        $shift_id = \App\Models\Shift::where('name', $crew)->first()->id;
+    @endphp
     <x-common.breadcrumb :title="'Boards'"
                          :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Boards']]"/>
     <div class="row">
@@ -11,13 +18,13 @@
                     {{ $dailyShiftEntry->supervisor_name ?? '' }}
                 </span>
             </h4>
-            <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Date: </strong> {{ $startDate }} to
-                {{ $endDate }}
+            <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Date: </strong> {{ $start_date }} to
+                {{ $end_date }}
             </p>
             <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Shift: </strong>
-                {{ ucfirst($shiftType) }}
+                {{ ucfirst($shift_type) }}
             </p>
-            <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Crew: </strong>{{ ucfirst($crewName) }}
+            <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Crew: </strong>{{ ucfirst($crew) }}
             </p>
         </div>
         <div class="d-flex justify-content-between align-items-center  bg-white p-3 rounded shadow-sm mb-4 d-none"

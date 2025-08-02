@@ -28,13 +28,13 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('roster-fetch', [ShiftRotationController::class, 'applyDataRangeFilter'])->name('roster.fetch');
     Route::get('health-safety-review', [
         HealthSafetyReviewController::class, 'index'
-    ])->name('health-safety-review.index')->middleware('daily.shift.entry');
+    ])->name('health-safety-review.index');
     Route::post('health-safety-review',
         [HealthSafetyReviewController::class, 'store'])->name('health-safety-review.store');
     Route::resource('cross-criteria', CrossCriteriaController::class);
 
 
-    Route::get('boards', [BoardController::class, 'index'])->name('boards.index')->middleware('daily.shift.entry');
+    Route::get('boards', [BoardController::class, 'index'])->name('boards.index');
     Route::post('update-supervisor-name',
         [BoardController::class, 'updateSupervisorName'])->name('boards.updateSupervisorName');
     Route::post('show-board', [BoardController::class, 'show'])->name('boards.show.board');

@@ -6,6 +6,7 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        // ============= GLightbox Init Start  =============
         let lightboxInstance;
 
         function initGlightbox() {
@@ -19,31 +20,30 @@
         }
 
         document.addEventListener('DOMContentLoaded', initGlightbox);
+        // ============= GLightbox Init End  =============
 
-        function getSupervisorAndLabour() {
-            $.ajax({
-                url: "{{route('boards.get-supervisor-and-labour-list', $dailyShiftEntry->id)}}",
-                method: 'GET',
-                success: function (response) {
-                    $('#board-info').html(response);
-                },
-                error: handleAjaxErrors,
-            });
-        }
+        {{--function getSupervisorAndLabour() {--}}
+        {{--    $.ajax({--}}
+        {{--        url: "{{route('boards.get-supervisor-and-labour-list', $d)}}",--}}
+        {{--        method: 'GET',--}}
+        {{--        success: function (response) {--}}
+        {{--            $('#board-info').html(response);--}}
+        {{--        },--}}
+        {{--        error: handleAjaxErrors,--}}
+        {{--    });--}}
+        {{--}--}}
 
-        function updateBoard(step, heading = "Our Health & Safety", $shift_id = {{ $dailyShiftEntry->shift_id }},
-                             $rotation_id = {{ $dailyShiftEntry->shift_rotation_id }}, $shift_type = "{{ $dailyShiftEntry->shift_type }}"
-        ) {
+        function updateBoard(step, heading = "Our Health & Safety", shift_id = "{{$shift_id}}", shift_type = "{{$shift_type}}", start_date = "{{$start_date}}", end_date = "{{$end_date}}") {
             $('#board-title').text(heading);
             $.ajax({
                 url: "{{ route('boards.show.board') }}",
                 method: 'POST',
                 data: {
                     step: step,
-                    daily_shift_entry_id: {{ $dailyShiftEntry->id }},
-                    shift_id: $shift_id,
-                    rotation_id: $rotation_id,
-                    shift_type: $shift_type,
+                    shift_id: shift_id,
+                    shift_type: shift_type,
+                    start_date: start_date,
+                    end_date: end_date,
                     _token: '{{ csrf_token() }}'
                 },
                 beforeSend: function () {
@@ -106,7 +106,7 @@
                     method: 'POST',
                     data: {
                         supervisor_name: supervisorName,
-                        daily_shift_entry_id: {{ $dailyShiftEntry->id }},
+                        daily_shift_entry_id: 1,
                         _token: '{{ csrf_token() }}'
                     },
                     beforeSend: function () {
@@ -130,26 +130,26 @@
 
 
             $(document).on('click', '#addQuestionOneBtn', function () {
-                let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
+                let daily_shift_entry_id = 1;
                 addBlankQuestion('question_one', daily_shift_entry_id);
             });
 
             $(document).on('click', '#addQuestionTwoBtn', function () {
-                let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
+                let daily_shift_entry_id = 1;
                 addBlankQuestion('question_two', daily_shift_entry_id);
             });
 
             $(document).on('blur', '.question-one', function () {
                 let answer = $(this).text().trim();
-                addBlankQuestion('question_one', {{ $dailyShiftEntry->id }}, answer);
+                addBlankQuestion('question_one', 1, answer);
             });
 
             $(document).on('blur', '.question-two', function () {
                 let answer = $(this).text().trim();
-                addBlankQuestion('question_two', {{ $dailyShiftEntry->id }}, answer);
+                addBlankQuestion('question_two', 1, answer);
             });
 
-            function addBlankQuestion(question_number, daily_shift_entry_id = {{ $dailyShiftEntry->id }}, answer =
+            function addBlankQuestion(question_number, daily_shift_entry_id = 1, answer =
             null) {
                 $.ajax({
                     url: "{{ route('boards.store.health-safety-review') }}",
@@ -177,26 +177,26 @@
             }
 
             $(document).on('click', '#addProductivityQuestionOneBtn', function () {
-                let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
+                let daily_shift_entry_id = 1;
                 addBlankProductiveQuestion('question_one', daily_shift_entry_id);
             });
 
             $(document).on('click', '#addProductivityQuestionTwoBtn', function () {
-                let daily_shift_entry_id = {{ $dailyShiftEntry->id }};
+                let daily_shift_entry_id = 1;
                 addBlankProductiveQuestion('question_two', daily_shift_entry_id);
             });
 
             $(document).on('blur', '.productivity-question-one', function () {
                 let answer = $(this).text().trim();
-                addBlankProductiveQuestion('question_one', {{ $dailyShiftEntry->id }}, answer);
+                addBlankProductiveQuestion('question_one', 1, answer);
             });
 
             $(document).on('blur', '.productivity-question-two', function () {
                 let answer = $(this).text().trim();
-                addBlankProductiveQuestion('question_two', {{ $dailyShiftEntry->id }}, answer);
+                addBlankProductiveQuestion('question_two', 1, answer);
             });
 
-            function addBlankProductiveQuestion(question_number, daily_shift_entry_id = {{ $dailyShiftEntry->id }},
+            function addBlankProductiveQuestion(question_number, daily_shift_entry_id = 1,
                                                 answer =
                                                 null) {
                 $.ajax({
@@ -234,7 +234,7 @@
             });
 
             function addBlankSuccessNote(note =
-                                         null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
+                                         null, daily_shift_entry_id = 1
             ) {
                 $.ajax({
                     url: "{{ route('boards.store.celebrate-success') }}",
@@ -270,7 +270,7 @@
             });
 
             function addBlankSiteCommunication(note =
-                                               null, daily_shift_entry_id = {{ $dailyShiftEntry->id }}
+                                               null, daily_shift_entry_id = 1
             ) {
                 $.ajax({
                     url: "{{ route('boards.store.site-communication') }}",
@@ -383,7 +383,7 @@
                             url: "{{ route('boards.reset.safety-calendar') }}",
                             method: 'POST',
                             data: {
-                                daily_shift_entry_id: {{ $dailyShiftEntry->id }},
+                                daily_shift_entry_id: 1,
                                 _token: '{{ csrf_token() }}'
                             },
                             beforeSend: function () {

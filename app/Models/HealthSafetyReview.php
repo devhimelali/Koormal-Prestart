@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Enums\QuestionTypeEnum;
 use App\Enums\ShiftTypeEnum;
 use App\Models\Concerns\HealthSafetyReview\HasAttributes;
+use App\Models\Concerns\HealthSafetyReview\HasQueryScopes;
 use App\Models\Concerns\HealthSafetyReview\HasRelations;
 use Illuminate\Database\Eloquent\Model;
 
 class HealthSafetyReview extends Model
 {
-    use HasRelations, HasAttributes;
+    use HasAttributes, HasQueryScopes, HasRelations;
 
     protected $fillable = [
         'shift_id',
