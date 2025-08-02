@@ -22,7 +22,7 @@ class CrossCriteriaSeeder extends Seeder
             [
                 'name' => 'Healthy & Safe Shift',
                 'color' => '#008000',
-                'description' => "<ul><li>No Heallth &amp; safety events AND</li><li>The team's H&amp;S Focus was actioned AND</li><li>Critical controls were in place or identified as absent and applied AND</li><li>All live work ttasks identified aand signed off by their manager</li></ul>",
+                'description' => "<ul><li>No Health &amp; safety events AND</li><li>The team's H&amp;S Focus was actioned AND</li><li>Critical controls were in place or identified as absent and applied AND</li><li>All live work tasks are identified and signed off by their manager</li></ul>",
             ],
             [
                 'name' => 'Less Healthy or Safe Shift',
@@ -32,7 +32,7 @@ class CrossCriteriaSeeder extends Seeder
             [
                 'name' => 'Unhealthy and/or less Safe Shift',
                 'color' => '#ff0000',
-                'description' => "<ul><li>We had a Reordable Injury OR</li><li>We had a Significant Potential Event OR</li><li>Live Work was completed without Manager sign off OR</li><li>A critical control was not in place and task was not stopped</li></ul>",
+                'description' => "<ul><li>We had a Recordable Injury OR</li><li>We had a Significant Potential Event OR</li><li>Live Work was completed without Manager sign off OR</li><li>A critical control was not in place and task was not stopped</li></ul>",
             ]
         ];
 

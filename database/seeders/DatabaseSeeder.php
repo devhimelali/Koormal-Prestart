@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             ShiftSeeder::class,
-//            CrossCriteriaSeeder::class,
+            CrossCriteriaSeeder::class,
         ]);
     }
 }
