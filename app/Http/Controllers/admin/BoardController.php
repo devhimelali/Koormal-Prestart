@@ -88,11 +88,10 @@ class BoardController extends Controller
             }
         } elseif ($step == 3) {
             $crossCriteria = $this->boardService->getCrossCriteria();
-            $safetyCalendar = $this->boardService->getSafetyCalendarData();
+            $safetyCalendar = $this->boardService->getSafetyCalendarData($request);
 
             return view('admin.boards.health-safety-cross-criteria', [
                 'crossCriteria' => $crossCriteria,
-                'dailyShiftEntryId' => $dailyShiftEntryId,
                 'safetyCalendar' => $safetyCalendar
             ])->render();
         } elseif ($step == 4) {

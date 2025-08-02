@@ -354,6 +354,11 @@
             $(document).on('click', '.calendar-cell', function () {
                 let cell = $(this).data('cell');
                 $('#safetyCalendarModal #safetyCalendarCell').val(cell);
+                $('#safetyCalendarModal #safetyCalendarStartDate').val("{{$start_date}}");
+                $('#safetyCalendarModal #safetyCalendarEndDate').val("{{$end_date}}");
+                $('#safetyCalendarModal #safetyCalendarShiftId').val("{{$shift_id}}");
+                $('#safetyCalendarModal #safetyCalendarRotationId').val("{{$rotation_id}}");
+                $('#safetyCalendarModal #safetyCalendarShiftType').val("{{$shift_type}}");
                 $('#safetyCalendarModal').modal('show');
             });
 

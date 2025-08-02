@@ -77,16 +77,10 @@ class BoardService
         return CrossCriteria::get();
     }
 
-    public function getSafetyCalendarData()
+    public function getSafetyCalendarData($request)
     {
-        $currentMonth = now()->format('m');
-        $currentYear = now()->format('Y');
 
-        return HealthSafetyCrossCriteria::with('crossCriteria')
-            ->whereHas('dailyShiftEntry', function ($query) use ($currentMonth, $currentYear) {
-                $query->whereMonth('date', $currentMonth)
-                    ->whereYear('date', $currentYear);
-            })
+        return HealthSafetyCrossCriteria::filterSafetyCalendar($request)
             ->get();
     }
 

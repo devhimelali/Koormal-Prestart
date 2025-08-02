@@ -9,9 +9,13 @@
             <form action="{{ route('boards.store.health-safety-cross-criteria') }}" method="POST"
                   id="safetyCalendarForm">
                 @csrf
-                <input type="hidden" name="daily_shift_entry_id" value="{{ $dailyShiftEntryId }}">
-                <input type="hidden" name="cell" id="safetyCalendarCell">
-                <input type="hidden" name="criteria_id" id="safetyCalendarCriteriaId">
+                <input type="hidden" name="cell_number" id="safetyCalendarCell">
+                <input type="hidden" name="$cross_criteria_id" id="safetyCalendarCriteriaId">
+                <input type="hidden" name="start_date" id="safetyCalendarStartDate">
+                <input type="hidden" name="end_date" id="safetyCalendarEndDate">
+                <input type="hidden" name="shift_id" id="safetyCalendarShiftId">
+                <input type="hidden" name="shift_rotation_id" id="safetyCalendarRotationId">
+                <input type="hidden" name="shift_type" id="safetyCalendarShiftType">
                 <div class="modal-body">
                     <div class="row">
                         @foreach ($crossCriteria as $criteria)
