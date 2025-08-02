@@ -2,26 +2,32 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Enums\QuestionTypeEnum;
+use App\Enums\ShiftTypeEnum;
+use App\Models\Concerns\HealthSafetyReview\HasAttributes;
+use App\Models\Concerns\HealthSafetyReview\HasRelations;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HealthSafetyReview extends Model
 {
+    use HasRelations, HasAttributes;
+
     protected $fillable = [
-        'daily_shift_entry_id',
+        'shift_id',
+        'shift_rotation_id',
+        'start_date',
+        'end_date',
+        'date',
+        'shift_type',
         'question_number',
         'answer',
     ];
 
-    /**
-     * Get the daily shift entry that this health and safety review belongs to.
-     *
-     * @return BelongsTo
-     */
-    public function dailyShiftEntry(): BelongsTo
+    protected function casts(): array
     {
-        return $this->belongsTo(DailyShiftEntry::class);
+        return [
+            'shift_type' => ShiftTypeEnum::class,
+            'question_number' => QuestionTypeEnum::class
+        ];
     }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\QuestionTypeEnum;
+use App\Enums\ShiftTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class HealthSafetyReviewRequest extends FormRequest
 {
@@ -22,9 +25,14 @@ class HealthSafetyReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
-            'question_number' => 'required|in:question_one,question_two',
-            'answer' => 'nullable|string',
+            'shift_id' => ['required', Rule::exists('shifts', 'id')],
+            'shift_rotation_id' => ['required', Rule::exists('shift_rotations', 'id')],
+            'start_date' => ['required', Rule::date()->format('d-m-Y')],
+            'end_date' => ['required', Rule::date()->format('d-m-Y')->afterOrEqual('start_date')],
+            'date' => ['required', Rule::date()->format('d-m-Y')],
+            'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
+            'question_number' => ['required', Rule::enum(QuestionTypeEnum::class)],
+            'answer' => ['nullable', 'string']
         ];
 
     }
@@ -32,11 +40,19 @@ class HealthSafetyReviewRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'daily_shift_entry_id.required' => 'The daily shift entry ID is required.',
-            'daily_shift_entry_id.exists' => 'The daily shift entry ID does not exist.',
-            'question_number.required' => 'The question number is required.',
-            'question_number.in' => 'The question number is invalid.',
-            'answer.string' => 'The answer must be a string.',
+            'shift_id.required' => 'Shift ID is required.',
+            'shift_id.exists' => 'The selected shift does not exist.',
+            'shift_rotation_id.required' => 'Shift rotation ID is required.',
+            'shift_rotation_id.exists' => 'The selected shift rotation does not exist.',
+            'start_date.required' => 'Start date is required.',
+            'start_date.format' => 'Start date must be a valid date in the format d-m-Y.',
+            'end_date.required' => 'End date is required.',
+            'end_date.format' => 'End date must be a valid date in the format d-m-Y.',
+            'end_date.after_or_equal' => 'End date must be after or equal to start date.',
+            'date.required' => 'Date is required.',
+            'shift_type.required' => 'Shift type is required.',
+            'question_number.required' => 'Question number is required.',
+            'answer.string' => 'Answer must be a string.',
         ];
     }
 }
