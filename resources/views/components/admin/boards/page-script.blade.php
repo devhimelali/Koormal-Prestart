@@ -425,25 +425,19 @@
             });
             // ============= Celebrate Success End  =============
 
-
-            $(document).on('click', '#addSiteCommunicationBtn', function () {
-                addBlankSiteCommunication();
-            });
-
-            $(document).on('blur', '.site-communication-note', function () {
-                let note = $(this).text().trim();
-                addBlankSiteCommunication(note);
-            });
-
-            function addBlankSiteCommunication(note =
-                                               null, daily_shift_entry_id = 1
-            ) {
+            // ============= Site Communications Start  =============
+            function addBlankSiteCommunication(note = null, date = null) {
                 $.ajax({
                     url: "{{ route('boards.store.site-communication') }}",
                     method: 'POST',
                     data: {
-                        daily_shift_entry_id: daily_shift_entry_id,
                         note: note,
+                        date: date,
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
                         _token: '{{ csrf_token() }}'
                     },
                     beforeSend: function () {
@@ -462,6 +456,22 @@
                 });
             }
 
+            $(document).on('click', '#addSiteCommunicationBtn', function () {
+                let note = $('.site-communication-note').last();
+                if (note && note.text().trim() != '' && note.data('date') === getTodaysDate()) {
+                    showAlreadySubmittedWarning("You have already submitted today's site communication! You can only submit one site communication per day.");
+                    return;
+                } else {
+                    addBlankSiteCommunication();
+                }
+            });
+
+            $(document).on('blur', '.site-communication-note', function () {
+                let note = $(this).text().trim();
+                let date = $(this).data('date');
+                addBlankSiteCommunication(note, date);
+            });
+            // ============= Site Communications End  =============
 
 
             {{--$(document).on('click', '#resetLegendBtn', function () {--}}
