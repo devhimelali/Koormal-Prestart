@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DTOs\CelebrateSuccessDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CelebrateSuccessRequest;
 use App\Http\Requests\HealthSafetyReviewCrossCriteriaRequest;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Http\Requests\ReviewOfPreviousShiftRequest;
@@ -152,9 +154,23 @@ class BoardController extends Controller
             }
         } elseif ($step == 6) {
             $celebrateSuccesses = $this->boardService->getCelebrateSuccesses($request);
-            return view('admin.boards.celebrate_success', [
-                'celebrateSuccesses' => $celebrateSuccesses
-            ])->render();
+
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.celebrate_success', [
+                    'celebrateSuccesses' => $celebrateSuccesses,
+                    'disabled' => false
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.celebrate_success', [
+                    'celebrateSuccesses' => $celebrateSuccesses,
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.celebrate_success', [
+                    'celebrateSuccesses' => $celebrateSuccesses,
+                    'disabled' => true
+                ])->render();
+            }
         } elseif ($step == 7) {
             $siteCommunications = $this->boardService->getSiteCommunications($request);
             return view('admin.boards.site_communication', [
@@ -196,9 +212,9 @@ class BoardController extends Controller
         return $this->boardService->storeProductiveQuestion(ReviewOfPreviousShiftDto::fromArray($request->validated()));
     }
 
-    public function storeCelebrateSuccess(Request $request)
+    public function storeCelebrateSuccess(CelebrateSuccessRequest $request)
     {
-        return $this->boardService->storeCelebrateSuccess($request);
+        return $this->boardService->storeCelebrateSuccess(CelebrateSuccessDto::fromArray($request->validated()));
     }
 
     public function storeSiteCommunication(Request $request)

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTOs\CelebrateSuccessDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
@@ -156,33 +157,27 @@ class BoardService
 
     public function getCelebrateSuccesses($request)
     {
-        $validated = $request->validate([
-            'shift_id' => 'required|exists:shifts,id',
-            'rotation_id' => 'required|exists:shift_rotations,id',
-            'shift_type' => 'required|string|in:day,night'
-        ]);
-
-        return CelebrateSuccess::with('dailyShiftEntry')
-            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
-                $query->where('shift_id', $validated['shift_id'])
-                    ->where('shift_rotation_id', $validated['rotation_id'])
-                    ->where('shift_type', $validated['shift_type']);
-            })
+        return CelebrateSuccess::successNote($request)
             ->get();
     }
 
-    public function storeCelebrateSuccess($request)
+    public function storeCelebrateSuccess(CelebrateSuccessDto $dto)
     {
-        $validated = $request->validate([
-            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
-            'note' => 'nullable|string',
-        ]);
+        $shiftDate = $this->getShiftDate();
 
-        CelebrateSuccess::updateOrCreate([
-            'daily_shift_entry_id' => $validated['daily_shift_entry_id']
-        ], [
-            'note' => $validated['note']
-        ]);
+        CelebrateSuccess::updateOrCreate(
+            [
+                'shift_id' => $dto->shift_id,
+                'shift_rotation_id' => $dto->shift_rotation_id,
+                'start_date' => $dto->start_date,
+                'end_date' => $dto->end_date,
+                'shift_type' => $dto->shift_type,
+            ],
+            [
+                'date' => $shiftDate,
+                'note' => $dto->note,
+            ]
+        );
 
         return response()->json([
             'status' => 'success',

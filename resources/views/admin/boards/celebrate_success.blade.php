@@ -18,10 +18,12 @@
         <!-- Question 1 -->
         <div class="col-12">
             <div class="d-flex justify-content-end align-items-center flex-wrap mb-2">
-                <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                        id="addSuccessNoteBtn">
-                    <i class="ph ph-plus"></i>
-                </button>
+                @if(!$disabled)
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
+                            id="addSuccessNoteBtn">
+                        <i class="ph ph-plus"></i>
+                    </button>
+                @endif
             </div>
 
             <div class="table-responsive">
@@ -31,12 +33,14 @@
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                     <span>
-                                        {{ $celebrateSuccess->dailyShiftEntry->date }}
-                                        ({{ \Carbon\Carbon::parse($celebrateSuccess->dailyShiftEntry->date)->format('l') }})
+                                        {{ $celebrateSuccess->date }}
+                                        ({{ \Carbon\Carbon::parse($celebrateSuccess->date)->format('l') }})
                                     </span>
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="true" class="success-note" data-date=""
+                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
+                                     class="{{$disabled ? '' : 'success-note'}}"
+                                     data-date=""
                                      style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
