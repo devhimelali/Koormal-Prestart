@@ -29,7 +29,8 @@ class CelebrateSuccessRequest extends FormRequest
             'start_date' => ['required', Rule::date()->format('d-m-Y')],
             'end_date' => ['required', Rule::date()->format('d-m-Y')->afterOrEqual('start_date')],
             'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
-            'note' => ['nullable', 'string']
+            'note' => ['nullable', 'string'],
+            'date' => ['nullable', Rule::date()->format('d-m-Y')],
         ];
     }
 }

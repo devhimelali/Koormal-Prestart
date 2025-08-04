@@ -16,6 +16,7 @@ class CelebrateSuccessDto
      * @param  DateTimeImmutable  $end_date  Shift end date
      * @param  ShiftTypeEnum  $shift_type  Type of shift (enum)
      * @param  string|null  $note  note to the celebrating success (nullable)
+     * @param  DateTimeImmutable|null  $date  celebration date (nullable)
      */
     public function __construct(
         public int $shift_id,
@@ -23,7 +24,8 @@ class CelebrateSuccessDto
         public DateTimeImmutable $start_date,
         public DateTimeImmutable $end_date,
         public ShiftTypeEnum $shift_type,
-        public ?string $note
+        public ?string $note,
+        public ?DateTimeImmutable $date
     ) {
         //
     }
@@ -37,7 +39,8 @@ class CelebrateSuccessDto
             start_date: new DateTimeImmutable($data['start_date']),
             end_date: new DateTimeImmutable($data['end_date']),
             shift_type: ShiftTypeEnum::from($data['shift_type']),
-            note: $data['note'] ?? null
+            note: $data['note'] ?? null,
+            date: $data['date'] ? new DateTimeImmutable($data['date']) : null
         );
     }
 }

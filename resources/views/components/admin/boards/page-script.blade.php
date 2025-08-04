@@ -377,25 +377,19 @@
 
             // ============= Productivity Review End  =============
 
-
-            $(document).on('click', '#addSuccessNoteBtn', function () {
-                addBlankSuccessNote();
-            });
-
-            $(document).on('blur', '.success-note', function () {
-                let note = $(this).text().trim();
-                addBlankSuccessNote(note);
-            });
-
-            function addBlankSuccessNote(note =
-                                         null, daily_shift_entry_id = 1
-            ) {
+            // ============= Celebrate Success Start  =============
+            function addBlankSuccessNote(note = null, date = null) {
                 $.ajax({
                     url: "{{ route('boards.store.celebrate-success') }}",
                     method: 'POST',
                     data: {
-                        daily_shift_entry_id: daily_shift_entry_id,
                         note: note,
+                        date: date,
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
                         _token: '{{ csrf_token() }}'
                     },
                     beforeSend: function () {
@@ -413,6 +407,24 @@
                     }
                 });
             }
+
+            $(document).on('click', '#addSuccessNoteBtn', function () {
+                let note = $('.success-note').last();
+                if (note && note.text().trim() != '' && note.data('date') === getTodaysDate()) {
+                    showAlreadySubmittedWarning("You have already submitted today's celebrate success! You can only submit one celebrate success per day.");
+                    return;
+                } else {
+                    addBlankSuccessNote();
+                }
+            });
+
+            $(document).on('blur', '.success-note', function () {
+                let note = $(this).text().trim();
+                let date = $(this).data('date');
+                addBlankSuccessNote(note, date);
+            });
+            // ============= Celebrate Success End  =============
+
 
             $(document).on('click', '#addSiteCommunicationBtn', function () {
                 addBlankSiteCommunication();

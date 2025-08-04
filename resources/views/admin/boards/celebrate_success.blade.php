@@ -40,7 +40,7 @@
                             <td class="p-1 align-top w-auto">
                                 <div contenteditable="{{$disabled ? 'false' : 'true'}}"
                                      class="{{$disabled ? '' : 'success-note'}}"
-                                     data-date=""
+                                     data-date="{{$celebrateSuccess->date}}"
                                      style="
             border: 1px solid #ccc;
                  padding: 6px 8px;

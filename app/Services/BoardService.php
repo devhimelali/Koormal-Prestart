@@ -159,7 +159,7 @@ class BoardService
 
     public function getCelebrateSuccesses($request)
     {
-        return CelebrateSuccess::successNote($request)
+        return CelebrateSuccess::filterSuccessNote($request)
             ->get();
     }
 
@@ -174,7 +174,7 @@ class BoardService
                 'start_date' => $dto->start_date,
                 'end_date' => $dto->end_date,
                 'shift_type' => $dto->shift_type,
-                'date' => $shiftDate,
+                'date' => $dto->date ? $dto->date : $shiftDate,
             ],
             [
                 'note' => $dto->note,
