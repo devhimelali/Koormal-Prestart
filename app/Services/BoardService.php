@@ -60,10 +60,12 @@ class BoardService
             'end_date' => $dto->end_date,
             'shift_type' => $dto->shift_type,
             'question_number' => $dto->question_number,
-        ], [
-            'answer' => $dto->answer,
-            'date' => $shiftDate,
-        ]);
+            'date' => $dto->date ? $dto->date : $shiftDate,
+        ],
+            [
+                'answer' => $dto->answer,
+            ]
+        );
     }
 
     public function getCrossCriteria()
@@ -102,9 +104,9 @@ class BoardService
                 'start_date' => $dto->start_date,
                 'end_date' => $dto->end_date,
                 'shift_type' => $dto->shift_type,
+                'date' => $shiftDate,
             ],
             [
-                'date' => $shiftDate,
                 'cross_criteria_id' => $dto->cross_criteria_id,
                 'cell_number' => $dto->cell_number,
             ]
@@ -141,9 +143,9 @@ class BoardService
                 'end_date' => $dto->end_date,
                 'shift_type' => $dto->shift_type,
                 'question_number' => $dto->question_number,
+                'date' => $dto->date ? $dto->date : $shiftDate,
             ],
             [
-                'date' => $shiftDate,
                 'answer' => $dto->answer,
             ]
         );
@@ -151,7 +153,7 @@ class BoardService
         return response()->json([
             'status' => 'success',
             'message' => 'Productive Question saved successfully',
-            'step' => $dto->question_number == 'question_one' ? 4 : 5
+            'step' => $dto->question_number->value == 'question_one' ? 4 : 5
         ]);
     }
 
@@ -172,9 +174,9 @@ class BoardService
                 'start_date' => $dto->start_date,
                 'end_date' => $dto->end_date,
                 'shift_type' => $dto->shift_type,
+                'date' => $shiftDate,
             ],
             [
-                'date' => $shiftDate,
                 'note' => $dto->note,
             ]
         );

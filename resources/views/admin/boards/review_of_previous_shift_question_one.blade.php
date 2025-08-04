@@ -42,7 +42,8 @@
                             </td>
                             <td class="p-1 align-top w-auto">
                                 <div contenteditable="{{$disabled ? 'false' : 'true'}}"
-                                     class="{{$disabled ? '' : 'productivity-question-one'}}" data-date=""
+                                     class="{{$disabled ? '' : 'productivity-question-one'}}"
+                                     data-date="{{$productive->date}}"
                                      style="
             border: 1px solid #ccc;
                  padding: 6px 8px;

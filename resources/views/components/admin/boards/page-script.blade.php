@@ -137,7 +137,7 @@
             updateBoard(currentStep);
 
             // ============= Add Blank Question Start  =============
-            function addBlankQuestion(question_number, answer = null) {
+            function addBlankQuestion(question_number, answer = null, date = null) {
                 $.ajax({
                     url: "{{ route('boards.store.health-safety-review') }}",
                     method: 'POST',
@@ -149,6 +149,7 @@
                         end_date: "{{$end_date}}",
                         shift_type: "{{$shift_type}}",
                         answer: answer,
+                        date: date,
                         _token: '{{ csrf_token() }}'
                     },
                     beforeSend: function () {
@@ -182,10 +183,19 @@
 
             // ============= Show Already Submitted Warning End  =============
 
+            function getTodaysDate() {
+                let today = new Date();
+                let day = String(today.getDate()).padStart(2, '0');
+                let month = String(today.getMonth() + 1).padStart(2, '0');
+                let year = today.getFullYear();
+                return `${day}-${month}-${year}`;
+            }
+
             // ============= Add Blank Health Safety Review Question One Start  =============
             $(document).on('click', '#addQuestionOneBtn', function () {
-                let question_one = $('.question-one').text().trim();
-                if (question_one != '') {
+                let question_one = $('.question-one').last();
+
+                if (question_one && question_one.text().trim() !== '' && question_one.data('date') === getTodaysDate()) {
                     showAlreadySubmittedWarning("You have already submitted today's health and safety review! You can only submit one health and safety review per day.");
                     return;
                 } else {
@@ -193,18 +203,20 @@
                 }
             });
 
+
             $(document).on('blur', '.question-one', function () {
                 let answer = $(this).text().trim();
-                addBlankQuestion('question_one', answer);
+                let date = $(this).data('date');
+                addBlankQuestion('question_one', answer, date);
             });
             // ============= Add Blank Health Safety Review Question One End  =============
 
 
             // ============= Add Blank Health Safety Review Question Two Start  =============
             $(document).on('click', '#addQuestionTwoBtn', function () {
-                let question_two = $('.question-two').text().trim();
-                if (question_two != '') {
-                    showAlreadySubmittedWarning();
+                let question_two = $('.question-two').last();
+                if (question_two && question_two.text().trim() !== '' && question_two.data('date') === getTodaysDate()) {
+                    showAlreadySubmittedWarning("You have already submitted today's health and safety review! You can only submit one health and safety review per day.");
                     return;
                 } else {
                     addBlankQuestion('question_two');
@@ -213,7 +225,8 @@
 
             $(document).on('blur', '.question-two', function () {
                 let answer = $(this).text().trim();
-                addBlankQuestion('question_two', answer);
+                let date = $(this).data('date');
+                addBlankQuestion('question_two', answer, date);
             });
             // ============= Add Blank Health Safety Review Question Two End  =============
 
@@ -299,13 +312,14 @@
             // ============= Health and Safety Cross Criteria Calendar End  =============
 
             // ============= Productivity Review Start  =============
-            function addBlankProductiveQuestion(question_number, answer = null) {
+            function addBlankProductiveQuestion(question_number, answer = null, date = null) {
                 $.ajax({
                     url: "{{ route('boards.store.productive-question') }}",
                     method: 'POST',
                     data: {
                         question_number: question_number,
                         answer: answer,
+                        date: date,
                         shift_id: "{{$shift_id}}",
                         shift_rotation_id: "{{$rotation_id}}",
                         start_date: "{{$start_date}}",
@@ -330,8 +344,8 @@
             }
 
             $(document).on('click', '#addProductivityQuestionOneBtn', function () {
-                let question_one = $('.productivity-question-one').text().trim();
-                if (question_one != '') {
+                let question_one = $('.productivity-question-one').last();
+                if (question_one && question_one.text().trim() != '' && question_one.data('date') === getTodaysDate()) {
                     showAlreadySubmittedWarning("You have already submitted today's productivity review! You can only submit one productivity review per day.");
                     return;
                 } else {
@@ -341,12 +355,13 @@
 
             $(document).on('blur', '.productivity-question-one', function () {
                 let answer = $(this).text().trim();
-                addBlankProductiveQuestion('question_one', answer);
+                let date = $(this).data('date');
+                addBlankProductiveQuestion('question_one', answer, date);
             });
 
             $(document).on('click', '#addProductivityQuestionTwoBtn', function () {
-                let question_two = $('.productivity-question-two').text().trim();
-                if (question_two != '') {
+                let question_two = $('.productivity-question-two').last();
+                if (question_two && question_two.text().trim() != '' && question_two.data('date') === getTodaysDate()) {
                     showAlreadySubmittedWarning("You have already submitted today's productivity review! You can only submit one productivity review per day.");
                     return;
                 } else {
@@ -356,7 +371,8 @@
 
             $(document).on('blur', '.productivity-question-two', function () {
                 let answer = $(this).text().trim();
-                addBlankProductiveQuestion('question_two', answer);
+                let date = $(this).data('date');
+                addBlankProductiveQuestion('question_two', answer, date);
             });
 
             // ============= Productivity Review End  =============

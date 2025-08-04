@@ -48,7 +48,8 @@
                             </td>
                             <td class="p-1 align-top w-auto">
                                 <div contenteditable="{{$disabled ? 'false' : 'true'}}"
-                                     class="{{$disabled ? '': 'question-one'}}" data-date=""
+                                     class="{{$disabled ? '': 'question-one'}}"
+                                     data-date="{{ \Carbon\Carbon::parse($healthSafetyReview->date)->format('d-m-Y') }}"
                                      style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
@@ -61,7 +62,7 @@
                  background-color: #fff;
                  border-radius: 4px;
         ">
-                                    {{ $healthSafetyReview->answer }}
+                                    {!! nl2br($healthSafetyReview->answer) !!}
                                 </div>
                             </td>
                         </tr>

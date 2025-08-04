@@ -31,7 +31,8 @@ class ReviewOfPreviousShiftRequest extends FormRequest
             'end_date' => ['required', Rule::date()->format('d-m-Y')->afterOrEqual('start_date')],
             'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
             'question_number' => ['required', Rule::enum(QuestionTypeEnum::class)],
-            'answer' => ['nullable', 'string']
+            'answer' => ['nullable', 'string'],
+            'date' => ['nullable', Rule::date()->format('d-m-Y')],
         ];
     }
 
@@ -55,6 +56,7 @@ class ReviewOfPreviousShiftRequest extends FormRequest
             'shift_type.required' => 'Shift type is required.',
             'question_number.required' => 'Question number is required.',
             'answer.string' => 'Answer must be a string.',
+            'date.format' => 'Date must be a valid date in the format d-m-Y.',
         ];
     }
 }

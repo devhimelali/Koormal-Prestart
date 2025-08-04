@@ -18,6 +18,7 @@ class HealthSafetyReviewDto
      * @param  ShiftTypeEnum  $shift_type  Type of shift (enum)
      * @param  QuestionTypeEnum  $question_number  Question identifier (enum)
      * @param  string|null  $answer  Answer to the question (nullable)
+     * @param  DateTimeImmutable|null  $date  Date of the review
      */
     public function __construct(
         public int $shift_id,
@@ -26,7 +27,8 @@ class HealthSafetyReviewDto
         public DateTimeImmutable $end_date,
         public ShiftTypeEnum $shift_type,
         public QuestionTypeEnum $question_number,
-        public ?string $answer = null
+        public ?string $answer = null,
+        public ?DateTimeImmutable $date
     ) {
         //
     }
@@ -40,7 +42,8 @@ class HealthSafetyReviewDto
             end_date: new DateTimeImmutable($data['end_date']),
             shift_type: ShiftTypeEnum::from($data['shift_type']),
             question_number: QuestionTypeEnum::from($data['question_number']),
-            answer: $data['answer'] ?? null
+            answer: $data['answer'] ?? null,
+            date: $data['date'] ? new DateTimeImmutable($data['date']) : null
         );
     }
 }
