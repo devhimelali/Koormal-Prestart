@@ -33,6 +33,10 @@
                 <table class="table table-bordered text-nowrap">
                     <tbody>
                     @forelse ($productiveQuestionTwo as $productive)
+                        @php
+                            $today = \Carbon\Carbon::now()->format('d-m-Y');
+                            $isNotEditable = $productive->date !== $today;
+                        @endphp
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                     <span>
@@ -41,8 +45,8 @@
                                     </span>
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
-                                     class="{{$disabled ? '' : 'productivity-question-two'}}"
+                                <div contenteditable="{{($disabled || $isNotEditable) ? 'false' : 'true'}}"
+                                     class="{{($disabled || $isNotEditable) ? '' : 'productivity-question-two'}}"
                                      data-date="{{$productive->date}}"
                                      style="
             border: 1px solid #ccc;

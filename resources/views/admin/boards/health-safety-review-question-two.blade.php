@@ -21,7 +21,7 @@
                         <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1phnduy" focusable="false"
                              aria-hidden="true" viewBox="0 0 24 24">
                             <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.5 16.5v-9l7 4.5z">
                             </path>
                         </svg>
                     </span>
@@ -38,14 +38,18 @@
                 <table class="table table-bordered text-nowrap">
                     <tbody>
                     @forelse ($healthSafetyReview as $review)
+                        @php
+                            $today = \Carbon\Carbon::now()->format('d-m-Y');
+                            $isNotEditable = $review->date !== $today;
+                        @endphp
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                 {{ $review->date }}
                                 ({{ \Carbon\Carbon::parse($review->date)->format('l') }})
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
-                                     class="{{$disabled ? '': 'question-two'}}"
+                                <div contenteditable="{{($disabled || $isNotEditable) ? 'false' : 'true'}}"
+                                     class="{{($disabled || $isNotEditable) ? '': 'question-two'}}"
                                      data-date="{{ $review->date }}"
                                      style="border: 1px solid #ccc; padding: 6px 8px; min-height: 25px; width: 100%; box-sizing: border-box; word-break: break-word; overflow-wrap: break-word; white-space: normal; background-color: #fff; border-radius: 4px;">
                                     {{ $review->answer }}

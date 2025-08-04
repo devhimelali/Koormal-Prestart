@@ -38,7 +38,12 @@
             <div class="table-responsive">
                 <table class="table table-bordered text-nowrap">
                     <tbody>
+
                     @forelse ($healthSafetyReview as $healthSafetyReview)
+                        @php
+                            $today = \Carbon\Carbon::now()->format('d-m-Y');
+                            $isNotEditable = $healthSafetyReview->date !== $today;
+                        @endphp
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                     <span>
@@ -47,8 +52,8 @@
                                     </span>
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
-                                     class="{{$disabled ? '': 'question-one'}}"
+                                <div contenteditable="{{($disabled || $isNotEditable) ? 'false' : 'true'}}"
+                                     class="{{($disabled || $isNotEditable) ? '': 'question-one'}}"
                                      data-date="{{ \Carbon\Carbon::parse($healthSafetyReview->date)->format('d-m-Y') }}"
                                      style="
             border: 1px solid #ccc;

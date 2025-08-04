@@ -30,6 +30,10 @@
                 <table class="table table-bordered text-nowrap">
                     <tbody>
                     @forelse ($celebrateSuccesses as $celebrateSuccess)
+                        @php
+                            $today = \Carbon\Carbon::now()->format('d-m-Y');
+                            $isNotEditable = $celebrateSuccess->date !== $today;
+                        @endphp
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                     <span>
@@ -38,8 +42,8 @@
                                     </span>
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="{{$disabled ? 'false' : 'true'}}"
-                                     class="{{$disabled ? '' : 'success-note'}}"
+                                <div contenteditable="{{($disabled || $isNotEditable) ? 'false' : 'true'}}"
+                                     class="{{($disabled || $isNotEditable) ? '' : 'success-note'}}"
                                      data-date="{{$celebrateSuccess->date}}"
                                      style="
             border: 1px solid #ccc;
