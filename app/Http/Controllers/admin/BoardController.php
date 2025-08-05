@@ -6,12 +6,14 @@ use App\DTOs\CelebrateSuccessDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
+use App\DTOs\SiteCommunicationDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CelebrateSuccessRequest;
 use App\Http\Requests\HealthSafetyReviewCrossCriteriaRequest;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Http\Requests\ReviewOfPreviousShiftRequest;
 use App\Http\Requests\ShowBoardRequest;
+use App\Http\Requests\SiteCommunicationRequest;
 use App\Models\DailyShiftEntry;
 use App\Models\FatalityRiskControl;
 use App\Services\BoardService;
@@ -173,9 +175,23 @@ class BoardController extends Controller
             }
         } elseif ($step == 7) {
             $siteCommunications = $this->boardService->getSiteCommunications($request);
-            return view('admin.boards.site_communication', [
-                'siteCommunications' => $siteCommunications
-            ])->render();
+
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.site_communication', [
+                    'siteCommunications' => $siteCommunications,
+                    'disabled' => false
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.site_communication', [
+                    'siteCommunications' => $siteCommunications,
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.site_communication', [
+                    'siteCommunications' => $siteCommunications,
+                    'disabled' => true
+                ])->render();
+            }
         } elseif ($step == 8) {
             $dailyShiftEntry = DailyShiftEntry::findOrFail($dailyShiftEntryId);
             $shift = $dailyShiftEntry->shift_type;
@@ -217,9 +233,9 @@ class BoardController extends Controller
         return $this->boardService->storeCelebrateSuccess(CelebrateSuccessDto::fromArray($request->validated()));
     }
 
-    public function storeSiteCommunication(Request $request)
+    public function storeSiteCommunication(SiteCommunicationRequest $request)
     {
-        return $this->boardService->storeSiteCommunication($request);
+        return $this->boardService->storeSiteCommunication(SiteCommunicationDto::fromArray($request->validated()));
     }
 
     public function resetSafetyCalendar(Request $request)

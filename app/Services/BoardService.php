@@ -6,6 +6,7 @@ use App\DTOs\CelebrateSuccessDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
+use App\DTOs\SiteCommunicationDto;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
@@ -190,33 +191,27 @@ class BoardService
 
     public function getSiteCommunications($request)
     {
-        $validated = $request->validate([
-            'shift_id' => 'required|exists:shifts,id',
-            'rotation_id' => 'required|exists:shift_rotations,id',
-            'shift_type' => 'required|string|in:day,night'
-        ]);
-
-        return SiteCommunication::with('dailyShiftEntry')
-            ->whereHas('dailyShiftEntry', function ($query) use ($validated) {
-                $query->where('shift_id', $validated['shift_id'])
-                    ->where('shift_rotation_id', $validated['rotation_id'])
-                    ->where('shift_type', $validated['shift_type']);
-            })
+        return SiteCommunication::filterCommunication($request)
             ->get();
     }
 
-    public function storeSiteCommunication($request)
+    public function storeSiteCommunication(SiteCommunicationDto $dto)
     {
-        $validated = $request->validate([
-            'daily_shift_entry_id' => 'required|exists:daily_shift_entries,id',
-            'note' => 'nullable|string',
-        ]);
+        $shiftDate = $this->getShiftDate();
 
-        SiteCommunication::updateOrCreate([
-            'daily_shift_entry_id' => $validated['daily_shift_entry_id']
-        ], [
-            'note' => $validated['note']
-        ]);
+        SiteCommunication::updateOrCreate(
+            [
+                'shift_id' => $dto->shift_id,
+                'shift_rotation_id' => $dto->shift_rotation_id,
+                'start_date' => $dto->start_date,
+                'end_date' => $dto->end_date,
+                'shift_type' => $dto->shift_type,
+                'date' => $dto->date ? $dto->date : $shiftDate,
+            ],
+            [
+                'note' => $dto->note
+            ]
+        );
 
         return response()->json([
             'status' => 'success',

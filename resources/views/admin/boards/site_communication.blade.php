@@ -18,25 +18,33 @@
         <!-- Question 1 -->
         <div class="col-12">
             <div class="d-flex justify-content-end align-items-center flex-wrap mb-2">
-                <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                        id="addSiteCommunicationBtn">
-                    <i class="ph ph-plus"></i>
-                </button>
+                @if(!$disabled)
+                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
+                            id="addSiteCommunicationBtn">
+                        <i class="ph ph-plus"></i>
+                    </button>
+                @endif
             </div>
 
             <div class="table-responsive">
                 <table class="table table-bordered text-nowrap">
                     <tbody>
                     @forelse ($siteCommunications as $siteCommunication)
+                        @php
+                            $today = \Carbon\Carbon::now()->format('d-m-Y');
+                            $isNotEditable = $siteCommunication->date !== $today;
+                        @endphp
                         <tr class="align-middle">
                             <td class="bg-light td-date">
                                     <span>
-                                        {{ $siteCommunication->dailyShiftEntry->date }}
-                                        ({{ \Carbon\Carbon::parse($siteCommunication->dailyShiftEntry->date)->format('l') }})
+                                        {{ $siteCommunication->date }}
+                                        ({{ \Carbon\Carbon::parse($siteCommunication->date)->format('l') }})
                                     </span>
                             </td>
                             <td class="p-1 align-top w-auto">
-                                <div contenteditable="true" class="site-communication-note" data-date=""
+                                <div contenteditable="{{($disabled || $isNotEditable) ? 'false' : 'true'}}"
+                                     class="{{($disabled || $isNotEditable) ? '' : 'site-communication-note'}}"
+                                     data-date="{{$siteCommunication->date}}"
                                      style="
             border: 1px solid #ccc;
                  padding: 6px 8px;
