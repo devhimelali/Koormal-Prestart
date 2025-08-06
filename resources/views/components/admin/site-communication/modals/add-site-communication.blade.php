@@ -7,9 +7,11 @@
                 <h5 class="modal-title" id="myModalLabel">Create Site Communication</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{route('site-communications.store')}}" method="POST" enctype="multipart/form-data" id="addSiteCommunicationForm">
+            <form action="{{route('site-communications.store')}}" method="POST" enctype="multipart/form-data"
+                  id="addSiteCommunicationForm">
                 @csrf
-                <input type="hidden" name="shift_type" value="{{ request()->query('shift_type') }}">
+                <input type="hidden" name="shift_type" id="shift_type" value="{{ request()->query('shift_type') }}">
+                <input type="hidden" name="_method" id="method" value="POST">
                 <div class="modal-body">
                     <div class="mb-2">
                         <label for="title" class="form-label">Title</label>
@@ -30,7 +32,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-secondary">Save</button>
+                    <button type="submit" class="btn btn-secondary" id="addSiteCommunicationSubmitBtn">Save</button>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                 </div>
             </form>

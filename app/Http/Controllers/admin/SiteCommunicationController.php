@@ -9,11 +9,46 @@ use App\Models\SiteCommunication;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Yajra\DataTables\Facades\DataTables;
 
 class SiteCommunicationController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = SiteCommunication::with('shift', 'shiftRotation');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('crew', function ($row) {
+                    return $row->shift?->name;
+                })
+                ->addColumn('shift_type', function ($row) {
+                    return $row->shift_type === 'day' ? 'Day Shift' : 'Night Shift';
+                })
+                ->addColumn('actions', function ($row) {
+                    $buttons = '<div class="btn-group">';
+
+                    if ($row->path) {
+                        $pdfUrl = asset('storage/'.$row->path);
+                        $buttons .= '<a href="'.$pdfUrl.'" target="_blank" class="btn btn-secondary btn-sm d-flex align-items-center gap-1">
+                                        <i class="bi bi-file-earmark-pdf"></i>
+                                        View
+                                     </a>';
+                    }
+                    $buttons .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="edit btn btn-warning btn-sm d-flex align-items-center gap-1">
+                                    <i class="bi bi-pencil"></i>
+                                    Edit
+                                  </a>';
+                    $buttons .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm d-flex align-items-center gap-1">
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+                                  </a>';
+                    $buttons .= '</div>';
+                    return $buttons;
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
         return view('admin.site-communication.index');
     }
 
@@ -80,6 +115,68 @@ class SiteCommunicationController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Site Communication created successfully'
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $siteCommunication = SiteCommunication::findOrFail($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $siteCommunication
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'pdf' => ['nullable', 'file', 'mimes:pdf'],
+            'shift_type' => ['required', Rule::in(['day', 'night'])]
+        ]);
+
+        $siteCommunication = SiteCommunication::findOrFail($id);
+
+        $data = [
+            'shift_type' => $request->shift_type,
+            'date' => Carbon::createFromFormat('d-m-Y', $request->dates)->format('Y-m-d'),
+            'title' => $request->title,
+            'description' => $request->description,
+        ];
+
+        if ($request->hasFile('pdf')) {
+            if ($siteCommunication->path && file_exists(public_path('storage/'.$siteCommunication->path))) {
+                unlink(public_path('storage/'.$siteCommunication->path));
+            }
+
+            $file = $request->file('pdf');
+            $fileName = time().'_'.$file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads', $fileName, 'public');
+            $data['path'] = $filePath;
+        }
+
+        $siteCommunication->update($data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Site Communication updated successfully'
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $siteCommunication = SiteCommunication::findOrFail($id);
+
+        if ($siteCommunication->path && file_exists(public_path('storage/'.$siteCommunication->path))) {
+            unlink(public_path('storage/'.$siteCommunication->path));
+        }
+
+        $siteCommunication->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Site Communication deleted successfully'
         ]);
     }
 }
