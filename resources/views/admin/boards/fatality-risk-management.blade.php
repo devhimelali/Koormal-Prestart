@@ -215,7 +215,7 @@
 
 <script>
     $('#previousStepBtn').on('click', function () {
-        currentStep = 7;
+        currentStep = 6;
         $('#board-header').removeClass('mb-1');
         $('#board-header').addClass('mb-3');
         $('#board-info').addClass('d-none');

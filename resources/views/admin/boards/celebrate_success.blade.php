@@ -93,6 +93,10 @@
 
     $('#nextStepBtn').on('click', function () {
         currentStep = 7;
-        updateBoard(currentStep, "Site Communication");
+        $('#board-header').removeClass('mb-3');
+        $('#board-header').addClass('mb-1');
+        $('#board-info').removeClass('d-none');
+        updateBoard(currentStep, "Fatality Risk Management (FRM) Job Risk Control Board");
+        getSupervisorAndLabour();
     })
 </script>

@@ -173,34 +173,34 @@ class BoardController extends Controller
                     'disabled' => true
                 ])->render();
             }
-        } elseif ($step == 7) {
-            $siteCommunications = $this->boardService->getSiteCommunications($request);
-
-            if ($request->shift_type === 'day' && $isDayShiftTime) {
-                return view('admin.boards.site_communication', [
-                    'siteCommunications' => $siteCommunications,
-                    'disabled' => false
-                ])->render();
-            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
-                return view('admin.boards.site_communication', [
-                    'siteCommunications' => $siteCommunications,
-                    'disabled' => false
-                ])->render();
-            } else {
-                return view('admin.boards.site_communication', [
-                    'siteCommunications' => $siteCommunications,
-                    'disabled' => true
-                ])->render();
-            }
-        } elseif ($step == 8) {
-            $dailyShiftEntry = DailyShiftEntry::findOrFail($dailyShiftEntryId);
-            $shift = $dailyShiftEntry->shift_type;
-            $date = Carbon::parse($dailyShiftEntry->date)->format('d-m-Y');
-            $shiftLogs = $this->boardService->getShiftLog($shift, $date);
+        }
+//        elseif ($step == 7) {
+//            $siteCommunications = $this->boardService->getSiteCommunications($request);
+//
+//            if ($request->shift_type === 'day' && $isDayShiftTime) {
+//                return view('admin.boards.site_communication', [
+//                    'siteCommunications' => $siteCommunications,
+//                    'disabled' => false
+//                ])->render();
+//            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+//                return view('admin.boards.site_communication', [
+//                    'siteCommunications' => $siteCommunications,
+//                    'disabled' => false
+//                ])->render();
+//            } else {
+//                return view('admin.boards.site_communication', [
+//                    'siteCommunications' => $siteCommunications,
+//                    'disabled' => true
+//                ])->render();
+//            }
+//        }
+        elseif ($step == 7) {
+            $date = Carbon::now()->format('Y-m-d');
+            $shiftLogs = $this->boardService->getShiftLog($request->shift_type, $date);
             $fatalityRisks = FatalityRiskControl::orderBy('name', 'asc')->get();
             return view('admin.boards.fatality-risk-management', [
                 'shiftLogs' => $shiftLogs,
-                'shift' => $shift,
+                'shift' => $request->shift_type,
                 'fatalityRisks' => $fatalityRisks
             ])->render();
         }
