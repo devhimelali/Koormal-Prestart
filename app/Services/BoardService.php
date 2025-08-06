@@ -7,12 +7,10 @@ use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
-use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
 use App\Models\Supervisor;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Models\CrossCriteria;
 use App\Models\DailyShiftEntry;
@@ -94,7 +92,7 @@ class BoardService
         if ($date != today()->format('Y-m-d')) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Cross Criteria can only be added for today.'
+                'message' => 'You can only add safety colour assessment to today’s date.'
             ], 400);
         }
 
