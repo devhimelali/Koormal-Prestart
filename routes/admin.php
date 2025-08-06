@@ -52,7 +52,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('store-site-communication',
         [BoardController::class, 'storeSiteCommunication'])->name('boards.store.site-communication');
     Route::resource('fatality-risk-controls', FatalityRiskControlController::class);
-    Route::get('get-supervisor-and-labour-list/{daily_shift_entry_id}',
+    Route::get('get-supervisor-and-labour-list/{shift_type}',
         [BoardController::class, 'getSupervisorAndLabourList'])->name('boards.get-supervisor-and-labour-list');
     Route::post('assign-fatality-risk-control',
         [BoardController::class, 'assignFatalityRiskControl'])->name('fatality-risk-controls.assign');

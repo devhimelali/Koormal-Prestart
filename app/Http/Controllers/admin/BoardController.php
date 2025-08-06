@@ -195,8 +195,9 @@ class BoardController extends Controller
 //            }
 //        }
         elseif ($step == 7) {
-            $date = Carbon::now()->format('Y-m-d');
+            $date = Carbon::now()->format('d-m-Y');
             $shiftLogs = $this->boardService->getShiftLog($request->shift_type, $date);
+//            dd($shiftLogs, $date, $request->shift_type);
             $fatalityRisks = FatalityRiskControl::orderBy('name', 'asc')->get();
             return view('admin.boards.fatality-risk-management', [
                 'shiftLogs' => $shiftLogs,
@@ -243,13 +244,11 @@ class BoardController extends Controller
         return $this->boardService->resetSafetyCalendar($request);
     }
 
-    public function getSupervisorAndLabourList($daily_shift_entry_id)
+    public function getSupervisorAndLabourList($shift_type)
     {
-        $dailyShiftEntry = DailyShiftEntry::findOrFail($daily_shift_entry_id);
-        $shift = $dailyShiftEntry->shift_type;
-        $date = Carbon::parse($dailyShiftEntry->date)->format('d-m-Y');
-        $supervisor = $this->boardService->getSupervisorName($shift, $date);
-        $labor = $this->boardService->getLaborName($shift, $date);
+        $date = Carbon::now()->format('d-m-Y');
+        $supervisor = $this->boardService->getSupervisorName($shift_type, $date);
+        $labor = $this->boardService->getLaborName($shift_type, $date);
         return view('components.admin.boards.supervisor-labour-name', compact('supervisor', 'labor'));
     }
 

@@ -21,18 +21,19 @@
         }
 
         document.addEventListener('DOMContentLoaded', initGlightbox);
+
         // ============= GLightbox Init End  =============
 
-        {{--function getSupervisorAndLabour() {--}}
-        {{--    $.ajax({--}}
-        {{--        url: "{{route('boards.get-supervisor-and-labour-list', $d)}}",--}}
-        {{--        method: 'GET',--}}
-        {{--        success: function (response) {--}}
-        {{--            $('#board-info').html(response);--}}
-        {{--        },--}}
-        {{--        error: handleAjaxErrors,--}}
-        {{--    });--}}
-        {{--}--}}
+        function getSupervisorAndLabour() {
+            $.ajax({
+                url: "{{route('boards.get-supervisor-and-labour-list', ['shift_type' => $shift_type])}}",
+                method: 'GET',
+                success: function (response) {
+                    $('#board-info').html(response);
+                },
+                error: handleAjaxErrors,
+            });
+        }
 
         // ============= Update Board Start  =============
         function updateBoard(step, heading = "Our Health & Safety") {
