@@ -8,11 +8,17 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Site Communications</h4>
-                    <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" data-bs-toggle="modal"
-                            data-bs-target="#addSiteCommunication">
-                        <i class="ph ph-plus"></i>
-                        Add Site Communication
-                    </button>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="date-range" class="form-label mb-0" style="width: 110px;">Date Range:</label>
+                            <input type="text" name="date_range" class="form-control form-control-sm" id="date-range">
+                        </div>
+                        <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" data-bs-toggle="modal"
+                                data-bs-target="#addSiteCommunication">
+                            <i class="ph ph-plus"></i>
+                            Add Site Communication
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <x-table id="dataTable" tableVariant="table-sm table-hover table-striped align-middle mb-0"
@@ -65,10 +71,19 @@
             dateFormat: "d-m-Y",
         });
 
+        let startDate = '';
+        let endDate = '';
+
         let table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('site-communications.index') }}",
+            ajax: {
+                url: "{{ route('site-communications.index') }}" + '?shift_type={{request()->query('shift_type')}}',
+                data: function (d) {
+                    d.start_date = startDate;
+                    d.end_date = endDate;
+                }
+            },
             columns: [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -102,6 +117,18 @@
                     searchable: false
                 },
             ]
+        });
+
+        flatpickr("#date-range", {
+            mode: "range",
+            dateFormat: "d-m-Y",
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    startDate = flatpickr.formatDate(selectedDates[0], "Y-m-d");
+                    endDate = flatpickr.formatDate(selectedDates[1], "Y-m-d");
+                    table.ajax.reload();
+                }
+            }
         });
 
         $('#addSiteCommunicationForm').on('submit', function (e) {

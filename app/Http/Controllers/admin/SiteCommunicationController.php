@@ -16,14 +16,26 @@ class SiteCommunicationController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = SiteCommunication::with('shift', 'shiftRotation');
+            $shiftType = $request->shift_type == 'day_shift' ? 'day' : 'night';
+            $data = SiteCommunication::with('shift', 'shiftRotation')
+                ->where('shift_type', $shiftType);
+
+            $startDate = $request->start_date;
+            $endDate = $request->end_date;
+
+            if (isset($startDate) && isset($endDate)) {
+                $data = $data->whereBetween('date', [$startDate, $endDate]);
+            } else {
+                $today = Carbon::today()->format('Y-m-d');
+                $data = $data->where('date', $today);
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('crew', function ($row) {
                     return $row->shift?->name;
                 })
                 ->addColumn('shift_type', function ($row) {
-                    return $row->shift_type === 'day' ? 'Day Shift' : 'Night Shift';
+                    return $row->shift_type->value === 'day' ? 'Day Shift' : 'Night Shift';
                 })
                 ->addColumn('actions', function ($row) {
                     $buttons = '<div class="btn-group">';
