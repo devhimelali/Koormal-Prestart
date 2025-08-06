@@ -18,7 +18,9 @@ return new class extends Migration {
             $table->date('end_date');
             $table->string('shift_type');
             $table->date('date');
-            $table->longText('note')->nullable();
+            $table->string('path');
+            $table->string('title');
+            $table->longText('description');
             $table->timestamps();
         });
     }

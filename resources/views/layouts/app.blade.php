@@ -143,6 +143,8 @@
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ asset('assets/libs/toastr/toastr.min.js') }}"></script>
+<!-- Sweetalert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if ($errors->any())
     @foreach ($errors->all() as $error)
         <script>
@@ -151,6 +153,7 @@
     @endforeach
 @endif
 @stack('scripts')
+
 <script>
 
     @if (Session::has('success'))

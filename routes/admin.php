@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\SiteCommunicationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\BoardController;
 use App\Http\Controllers\admin\ShiftController;
@@ -57,4 +58,6 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [BoardController::class, 'assignFatalityRiskControl'])->name('fatality-risk-controls.assign');
     Route::post('delete-fatality-risk-control-image',
         [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
+
+    Route::resource('site-communications', SiteCommunicationController::class);
 });

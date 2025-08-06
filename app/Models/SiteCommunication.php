@@ -20,7 +20,9 @@ class SiteCommunication extends Model
         'end_date',
         'shift_type',
         'date',
-        'note',
+        'path',
+        'title',
+        'description',
     ];
 
 
