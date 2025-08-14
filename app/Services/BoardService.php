@@ -270,7 +270,7 @@ class BoardService
         return response()->json([
             'status' => 'success',
             'message' => 'Fatality Risk Control assigned successfully',
-            'step' => 8
+            'step' => 7
         ]);
     }
 

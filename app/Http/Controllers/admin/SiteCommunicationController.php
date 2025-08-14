@@ -42,9 +42,13 @@ class SiteCommunicationController extends Controller
 
                     if ($row->path) {
                         $pdfUrl = asset('storage/'.$row->path);
-                        $buttons .= '<a href="'.$pdfUrl.'" target="_blank" class="btn btn-secondary btn-sm d-flex align-items-center gap-1">
+                        $buttons .= '<a href="'.$pdfUrl.'" target="_blank" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
                                         <i class="bi bi-file-earmark-pdf"></i>
-                                        View
+                                        View PDF
+                                     </a>';
+                        $buttons .= '<a href="'.$pdfUrl.'" target="_blank" class="btn btn-secondary btn-sm d-flex align-items-center gap-1">
+                                        <i class="bi bi-download"></i>
+                                        Download PDF
                                      </a>';
                     }
                     $buttons .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="edit btn btn-warning btn-sm d-flex align-items-center gap-1">
