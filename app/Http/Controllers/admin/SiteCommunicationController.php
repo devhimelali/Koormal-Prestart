@@ -15,8 +15,9 @@ class SiteCommunicationController extends Controller
 {
     public function index(Request $request)
     {
+        $shiftType = $request->shift_type == 'day_shift' ? 'day' : 'night';
+
         if ($request->ajax()) {
-            $shiftType = $request->shift_type == 'day_shift' ? 'day' : 'night';
             $data = SiteCommunication::with('shift', 'shiftRotation')
                 ->where('shift_type', $shiftType);
 
@@ -201,5 +202,10 @@ class SiteCommunicationController extends Controller
             'status' => 'success',
             'message' => 'Site Communication deleted successfully'
         ]);
+    }
+
+    public function preview($path)
+    {
+        return response()->file(public_path('storage/uploads/'.$path));
     }
 }

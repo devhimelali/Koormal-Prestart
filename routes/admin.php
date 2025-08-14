@@ -60,4 +60,5 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
 
     Route::resource('site-communications', SiteCommunicationController::class);
+    Route::get('preview-site-communication/{path}', [SiteCommunicationController::class, 'preview'])->name('site-communications.preview');
 });
