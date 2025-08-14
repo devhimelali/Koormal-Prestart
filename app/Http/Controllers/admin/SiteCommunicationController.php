@@ -41,8 +41,9 @@ class SiteCommunicationController extends Controller
                     $buttons = '<div class="btn-group">';
 
                     if ($row->path) {
+                        $viewUrl = route('site-communications.show', $row->id);
                         $pdfUrl = asset('storage/'.$row->path);
-                        $buttons .= '<a href="'.$pdfUrl.'" target="_blank" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+                        $buttons .= '<a href="'.$viewUrl.'" target="_blank" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
                                         <i class="bi bi-file-earmark-pdf"></i>
                                         View PDF
                                      </a>';
@@ -132,6 +133,12 @@ class SiteCommunicationController extends Controller
             'status' => 'success',
             'message' => 'Site Communication created successfully'
         ]);
+    }
+
+    public function show($id)
+    {
+        $siteCommunication = SiteCommunication::findOrFail($id);
+        return view('admin.site-communication.show', compact('siteCommunication'));
     }
 
     public function edit($id)
