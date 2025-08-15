@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('fatality_risks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->longText('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
         });

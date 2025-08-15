@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\admin\SiteCommunicationController;
+use App\Http\Controllers\FatalityControlController;
+use App\Http\Controllers\FatalityRiskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\BoardController;
 use App\Http\Controllers\admin\ShiftController;
@@ -33,6 +35,8 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('health-safety-review',
         [HealthSafetyReviewController::class, 'store'])->name('health-safety-review.store');
     Route::resource('cross-criteria', CrossCriteriaController::class);
+    Route::resource('fatality-risks', FatalityRiskController::class);
+    Route::resource('fatality-controls', FatalityControlController::class);
 
 
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index');
@@ -60,5 +64,6 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
 
     Route::resource('site-communications', SiteCommunicationController::class);
-    Route::get('preview-site-communication/{path}', [SiteCommunicationController::class, 'preview'])->name('site-communications.preview');
+    Route::get('preview-site-communication/{path}',
+        [SiteCommunicationController::class, 'preview'])->name('site-communications.preview');
 });
