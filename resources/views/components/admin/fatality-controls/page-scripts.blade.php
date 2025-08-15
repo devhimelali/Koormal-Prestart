@@ -12,8 +12,8 @@
                     searchable: false
                 },
                     {
-                        data: 'fatalityRisk.name',
-                        name: 'fatalityRisk.name'
+                        data: 'name',
+                        name: 'name'
                     },
                     {
                         data: 'description',
@@ -26,6 +26,34 @@
                     }
                 ]
             });
+
+            function getAllFatalityRisks(preselectedId = null) {
+                return $.ajax({
+                    url: "{{ route('fatality-risks.get-list') }}",
+                    type: 'GET',
+                    success: function (response) {
+                        const $select = $('#fatality_risk_id');
+                        $select.empty();
+                        $select.append(`<option value="">Select a Fatality Risk</option>`);
+
+                        response.data.forEach(function (risk) {
+                            const selected = risk.id == preselectedId ? 'selected' : '';
+                            $select.append(
+                                `<option value="${risk.id}" ${selected}>${risk.name}</option>`
+                            );
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error(xhr);
+                        notify('error', 'Failed to load fatality risk list.');
+                    }
+                });
+            }
+
+            $(document).on('click', '#addFatalityControlBtn', function () {
+                getAllFatalityRisks()
+                $('#addFatalityControlModal').modal('show');
+            })
 
             $('#addFatalityControlForm').submit(function (e) {
                 e.preventDefault();
@@ -85,7 +113,7 @@
                     $('#addFatalityControlForm').attr('action',
                         "{{ route('fatality-controls.update', ':id') }}"
                             .replace(':id', id));
-                    $('#addFatalityControlForm #name').val(response.data.name);
+                    getAllFatalityRisks(response.data.fatality_risk_id);
                     //show description in CKEditor
                     if (window.editors && window.editors['description']) {
                         window.editors['description'].setData(response.data.description || '');

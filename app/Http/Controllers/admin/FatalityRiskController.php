@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
-use App\Http\Requests\FatalityRiskControlRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\FatalityRiskRequest;
 use App\Models\FatalityRisk;
 use Illuminate\Http\Request;
@@ -57,7 +57,7 @@ class FatalityRiskController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Fatality Risk Control created successfully.',
+            'message' => 'Fatality Risk created successfully.',
         ]);
     }
 
@@ -87,7 +87,7 @@ class FatalityRiskController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Fatality Risk Control updated successfully.',
+            'message' => 'Fatality Risk updated successfully.',
         ]);
     }
 
@@ -101,7 +101,13 @@ class FatalityRiskController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Fatality Risk Control deleted successfully.',
+            'message' => 'Fatality Risk deleted successfully.',
         ]);
+    }
+
+    public function getFatalityRisksList()
+    {
+        $fatalityRisks = FatalityRisk::orderBy('name', 'asc')->get();
+        return response()->json(['status' => 'success', 'data' => $fatalityRisks->toArray()], 200);
     }
 }

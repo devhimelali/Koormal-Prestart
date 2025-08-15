@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\admin\SiteCommunicationController;
-use App\Http\Controllers\FatalityControlController;
-use App\Http\Controllers\FatalityRiskController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\BoardController;
-use App\Http\Controllers\admin\ShiftController;
-use App\Http\Controllers\admin\RosterController;
 use App\Http\Controllers\admin\CrossCriteriaController;
-use App\Http\Controllers\admin\ShiftRotationController;
-use App\Http\Controllers\admin\HealthSafetyReviewController;
+use App\Http\Controllers\admin\FatalityControlController;
 use App\Http\Controllers\admin\FatalityRiskControlController;
+use App\Http\Controllers\admin\FatalityRiskController;
+use App\Http\Controllers\admin\HealthSafetyReviewController;
+use App\Http\Controllers\admin\RosterController;
+use App\Http\Controllers\admin\ShiftController;
+use App\Http\Controllers\admin\ShiftRotationController;
+use App\Http\Controllers\admin\SiteCommunicationController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -37,6 +37,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::resource('cross-criteria', CrossCriteriaController::class);
     Route::resource('fatality-risks', FatalityRiskController::class);
     Route::resource('fatality-controls', FatalityControlController::class);
+    Route::get('get-fatality-risk-list',[FatalityRiskController::class, 'getFatalityRisksList'])->name('fatality-risks.get-list');
 
 
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index');

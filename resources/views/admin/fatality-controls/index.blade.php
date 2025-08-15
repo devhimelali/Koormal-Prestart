@@ -11,8 +11,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0">Fatality Control List</h3>
-                    <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" data-bs-toggle="modal"
-                            data-bs-target="#addFatalityControlModal">
+                    <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" id="addFatalityControlBtn">
                         <i class="ph ph-plus"></i>
                         Add New Fatality Control
                     </button>
@@ -47,3 +46,7 @@
     <x-common.delete-modal id="deleteFatalityRiskModal" title="Delete Fatality Control"
                            message="Are you sure you want to delete this fatality control?"/>
 @endsection
+@include('components.admin.fatality-controls.vendor-css')
+@include('components.admin.fatality-controls.vendor-script')
+@include('components.admin.fatality-controls.page-scripts')
+@include('components.admin.fatality-controls.page-css')

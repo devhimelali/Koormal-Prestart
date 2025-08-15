@@ -5,9 +5,7 @@
         <x-form.input type="hidden" name="_method" id="method" value="POST"/>
         <div class="mb-2">
             <x-form.label for="name" text="Name" required="true"/>
-            <x-form.select name="fatality_risk_id" id="fatality_risk_id" options="{{}}" placeholder="Select a fatality risk"/>
-            <x-form.input name="name" type="text" label="Title" placeholder="Enter fatality control title"
-                          id="name" required/>
+            <x-form.select name="fatality_risk_id" id="fatality_risk_id" placeholder="Select a fatality risk"/>
             <x-form.error :name="'name'"/>
         </div>
 
