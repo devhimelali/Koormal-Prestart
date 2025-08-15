@@ -1,29 +1,28 @@
 @extends('layouts.app')
-@section('title', 'Fatality Risk Controls')
+@section('title', 'Fatality Controls')
 @section('content')
-    <x-common.breadcrumb :title="'Fatality Risk Controls'"
-                         :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Fatality Risk Controls']]"/>
+    <x-common.breadcrumb
+        :title="'Fatality Controls'"
+        :breadcrumbs="[['label' => 'Dashboard', 'url' => route('redirect')], ['label' => 'Fatality Controls']]
+    "/>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">Fatality Risk Control List</h3>
+                    <h3 class="card-title mb-0">Fatality Control List</h3>
                     <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" data-bs-toggle="modal"
-                            data-bs-target="#addFatalityRiskControlModal">
+                            data-bs-target="#addFatalityControlModal">
                         <i class="ph ph-plus"></i>
-                        Add New Fatality Risk Control
+                        Add New Fatality Control
                     </button>
                 </div>
                 <div class="card-body">
-                    <x-table id="fatalityRiskControlsTable"
+                    <x-table id="fatalityControlsTable"
                              tableVariant="table-sm table-hover table-striped align-middle mb-0" :thead="[
                             [
                                 'label' => '#',
                                 'class' => 'th-sn',
-                            ],
-                            [
-                                'label' => 'Image',
-                                'class' => 'th-image',
                             ],
                             [
                                 'label' => 'Name',
@@ -38,17 +37,13 @@
                                 'class' => 'th-actions',
                             ],
                         ]"/>
-
                 </div>
             </div>
         </div>
     </div>
-    @include('components.admin.fatality-risks.modals.add-or-edit')
+
+    @include('components.admin.fatality-controls.modals.add-or-edit')
     <!-- Delete Modal -->
-    <x-common.delete-modal id="deleteFatalityRiskControlModal" title="Delete Fatality Risk Control"
-                           message="Are you sure you want to delete this fatality risk control?"/>
+    <x-common.delete-modal id="deleteFatalityRiskModal" title="Delete Fatality Control"
+                           message="Are you sure you want to delete this fatality control?"/>
 @endsection
-@include('components.admin.fatality-risk-controls.vendor-css')
-@include('components.admin.fatality-risk-controls.vendor-script')
-@include('components.admin.fatality-risk-controls.page-scripts')
-@include('components.admin.fatality-risk-controls.page-css')
