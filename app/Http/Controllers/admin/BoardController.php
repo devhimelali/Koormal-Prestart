@@ -15,7 +15,7 @@ use App\Http\Requests\ReviewOfPreviousShiftRequest;
 use App\Http\Requests\ShowBoardRequest;
 use App\Http\Requests\SiteCommunicationRequest;
 use App\Models\DailyShiftEntry;
-use App\Models\FatalityRiskControl;
+use App\Models\FatalityRisk;
 use App\Services\BoardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -202,7 +202,7 @@ class BoardController extends Controller
         elseif ($step == 8) {
             $date = Carbon::now()->format('d-m-Y');
             $shiftLogs = $this->boardService->getShiftLog($request->shift_type, $date);
-            $fatalityRisks = FatalityRiskControl::orderBy('name', 'asc')->get();
+            $fatalityRisks = FatalityRisk::orderBy('name', 'asc')->get();
             return view('admin.boards.fatality-risk-management', [
                 'shiftLogs' => $shiftLogs,
                 'shift' => $request->shift_type,

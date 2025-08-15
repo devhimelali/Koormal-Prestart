@@ -13,7 +13,7 @@ class ShiftLog extends Model
 
     public function fatalityRiskControls(): HasMany
     {
-        return $this->hasMany(FatalityRiskControl::class, 'shift_log_id', 'id');
+        return $this->hasMany(FatalityRisk::class, 'shift_log_id', 'id');
     }
     public function getFatalityRiskControlsAttribute()
     {

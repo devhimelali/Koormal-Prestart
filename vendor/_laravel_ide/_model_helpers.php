@@ -959,15 +959,15 @@ namespace App\Models {
      * @property string $name
      * @property int $id
      * @property-read \App\Models\ShiftLog $shiftLog
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereDescription($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereImage($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl whereUpdatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl newModelQuery()
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl newQuery()
-     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRiskControl>|FatalityRiskControl query()
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk whereName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk whereImage($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk whereUpdatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk newModelQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk newQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder<FatalityRisk>|FatalityRisk query()
      * @method static mixed select($columns)
      * @method static mixed selectSub($query, $as)
      * @method static mixed selectRaw($expression, array $bindings)
@@ -2858,7 +2858,7 @@ namespace App\Models {
      * @property string|null $shift_name
      * @property int $id
      * @property-read mixed $fatality_risk_controls
-     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FatalityRiskControl> $fatalityRiskControls
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FatalityRisk> $fatalityRiskControls
      * @property-read int|null $fatalityRiskControls_count
      * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<ShiftLog>|ShiftLog whereShiftName($value)

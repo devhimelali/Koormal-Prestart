@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class FatalityRiskControl extends Model
+class FatalityRisk extends Model
 {
     protected $fillable = [
         'name',
-        'description',
         'image',
     ];
 

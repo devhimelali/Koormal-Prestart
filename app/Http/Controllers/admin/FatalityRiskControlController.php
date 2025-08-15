@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
-use App\Models\FatalityRiskControl;
+use App\Models\FatalityRisk;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,7 +14,7 @@ class FatalityRiskControlController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = FatalityRiskControl::query();
+            $data = FatalityRisk::query();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('name', function ($row) {
@@ -52,7 +52,7 @@ class FatalityRiskControlController extends Controller
             $validated['image'] = $request->file('image')->store('images/fatality-risk-controls', 'public');
         }
 
-        FatalityRiskControl::create($validated);
+        FatalityRisk::create($validated);
 
         return response()->json([
             'status' => 'success',
@@ -62,7 +62,7 @@ class FatalityRiskControlController extends Controller
 
     public function edit($id)
     {
-        $fatalityRiskControl = FatalityRiskControl::findOrFail($id);
+        $fatalityRiskControl = FatalityRisk::findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -72,7 +72,7 @@ class FatalityRiskControlController extends Controller
 
     public function update(FatalityRiskControlRequest $request, $id)
     {
-        $fatalityRiskControl = FatalityRiskControl::findOrFail($id);
+        $fatalityRiskControl = FatalityRisk::findOrFail($id);
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -95,7 +95,7 @@ class FatalityRiskControlController extends Controller
 
     public function destroy($id)
     {
-        $fatalityRiskControl = FatalityRiskControl::findOrFail($id);
+        $fatalityRiskControl = FatalityRisk::findOrFail($id);
 
         if ($fatalityRiskControl->image && Storage::disk('public')->exists($fatalityRiskControl->image)) {
             Storage::disk('public')->delete($fatalityRiskControl->image);

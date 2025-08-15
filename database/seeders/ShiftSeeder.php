@@ -13,23 +13,23 @@ class ShiftSeeder extends Seeder
      */
     public function run(): void
     {
+        // Step 1: Create all shifts first
         $shifts = [
-            [
-                'name' => 'A'
-            ],
-            [
-                'name' => 'B'
-            ],
-            [
-                'name' => 'C'
-            ],
-            [
-                'name' => 'D'
-            ]
+            'A',
+            'B',
+            'C',
+            'D'
         ];
 
-        foreach ($shifts as $shiftData) {
-            Shift::create($shiftData);
+        $shiftModels = [];
+        foreach ($shifts as $name) {
+            $shiftModels[$name] = Shift::create(['name' => $name]);
         }
+
+        // Step 2: Set linked_shift_id according to your mapping
+        $shiftModels['A']->update(['linked_shift_id' => $shiftModels['C']->id]);
+        $shiftModels['B']->update(['linked_shift_id' => $shiftModels['D']->id]);
+        $shiftModels['C']->update(['linked_shift_id' => $shiftModels['A']->id]);
+        $shiftModels['D']->update(['linked_shift_id' => $shiftModels['B']->id]);
     }
 }

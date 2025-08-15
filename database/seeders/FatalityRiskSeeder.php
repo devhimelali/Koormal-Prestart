@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ReviewPreviousShiftSeeder extends Seeder
+class FatalityRiskSeeder extends Seeder
 {
     /**
      * Run the database seeds.
