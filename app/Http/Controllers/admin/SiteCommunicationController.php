@@ -122,7 +122,7 @@ class SiteCommunicationController extends Controller
             // Handle file upload
             if ($request->hasFile('pdf')) {
                 $file = $request->file('pdf');
-                $fileName = time().'_'.$file->getClientOriginalName();
+                $fileName = time().'-site-communication'.'.' . $file->getClientOriginalExtension();
                 $filePath = $file->storeAs('uploads', $fileName, 'public');
                 $data['path'] = $filePath;
             }
@@ -175,7 +175,7 @@ class SiteCommunicationController extends Controller
             }
 
             $file = $request->file('pdf');
-            $fileName = time().'_'.$file->getClientOriginalName();
+            $fileName = time().'-site-communication'.'.' . $file->getClientOriginalExtension();
             $filePath = $file->storeAs('uploads', $fileName, 'public');
             $data['path'] = $filePath;
         }

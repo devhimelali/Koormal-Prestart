@@ -66,11 +66,11 @@
                             </td>
                             <td style="width: 215px">
                                <div class="btn-group">
-                                   <a href="{{asset($siteCommunication->path)}}" class="btn btn-sm btn-secondary">
+                                   <a href="{{route('site-communications.show', $siteCommunication->id)}}" target="_blank" class="btn btn-sm btn-secondary">
                                        <i class="bi bi-eye"></i>
                                        View PDF
                                    </a>
-                                   <a href="{{asset($siteCommunication->path)}}" target="_blank" class="btn btn-sm btn-danger">
+                                   <a href="{{asset('storage/'.$siteCommunication->path)}}" target="_blank" class="btn btn-sm btn-danger">
                                        <i class="bi bi-download"></i>
                                        Download PDF
                                    </a>
