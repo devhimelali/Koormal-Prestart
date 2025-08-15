@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">Fatality Risk Control List</h3>
+                    <h3 class="card-title mb-0">Fatality Risk List</h3>
                     <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" data-bs-toggle="modal"
                             data-bs-target="#addFatalityRiskModal">
                         <i class="ph ph-plus"></i>

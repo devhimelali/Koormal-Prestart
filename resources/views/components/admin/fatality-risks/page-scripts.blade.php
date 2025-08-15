@@ -4,7 +4,7 @@
             let table = $('#fatalityRisksTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('fatality-risk-controls.index') }}",
+                ajax: "{{ route('fatality-risks.index') }}",
                 columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
