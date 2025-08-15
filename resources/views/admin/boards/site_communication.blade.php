@@ -27,7 +27,18 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered text-nowrap">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Crew</th>
+                        <th>Shift</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
                     <tbody>
                     @forelse ($siteCommunications as $siteCommunication)
                         @php
@@ -35,35 +46,40 @@
                             $isNotEditable = $siteCommunication->date !== $today;
                         @endphp
                         <tr class="align-middle">
-                            <td class="bg-light td-date">
-                                    <span>
-                                        {{ $siteCommunication->date }}
-                                        ({{ \Carbon\Carbon::parse($siteCommunication->date)->format('l') }})
-                                    </span>
+                            <td>
+                                {{$loop->iteration}}
                             </td>
-                            <td class="p-1 align-top w-auto">
-                                <div contenteditable="{{($disabled || $isNotEditable) ? 'false' : 'true'}}"
-                                     class="{{($disabled || $isNotEditable) ? '' : 'site-communication-note'}}"
-                                     data-date="{{$siteCommunication->date}}"
-                                     style="
-            border: 1px solid #ccc;
-                 padding: 6px 8px;
-                 min-height: 25px;
-                 width: 100%;
-                 box-sizing: border-box;
-                 word-break: break-word;
-                 overflow-wrap: break-word;
-                 white-space: normal;
-                 background-color: #fff;
-                 border-radius: 4px;
-        ">
-                                    {{ $siteCommunication->note }}
-                                </div>
+                            <td>
+                                {{$siteCommunication->title}}
+                            </td>
+                            <td>
+                                {{$siteCommunication->description}}
+                            </td>
+                            <td>
+                                {{$siteCommunication->shift?->name}}
+                            </td>
+                            <td>
+                                {{$siteCommunication->shift_type->value === 'day' ? 'Day Shift' : 'Night Shift'}}
+                            </td>
+                            <td>
+                                {{\Carbon\Carbon::parse($siteCommunication->date)->format('d-m-Y')}}
+                            </td>
+                            <td style="width: 215px">
+                               <div class="btn-group">
+                                   <a href="{{asset($siteCommunication->path)}}" class="btn btn-sm btn-secondary">
+                                       <i class="bi bi-eye"></i>
+                                       View PDF
+                                   </a>
+                                   <a href="{{asset($siteCommunication->path)}}" target="_blank" class="btn btn-sm btn-danger">
+                                       <i class="bi bi-download"></i>
+                                       Download PDF
+                                   </a>
+                               </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center">No data found</td>
+                            <td colspan="7" class="text-center">No Site Communications For {{$today}}</td>
                         </tr>
                     @endforelse
                     </tbody>
@@ -97,6 +113,5 @@
         $('#board-header').addClass('mb-1');
         $('#board-info').removeClass('d-none');
         updateBoard(currentStep, "Fatality Risk Management (FRM) Job Risk Control Board");
-        getSupervisorAndLabour();
     });
 </script>

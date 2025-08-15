@@ -176,30 +176,32 @@ class BoardController extends Controller
                 ])->render();
             }
         }
-//        elseif ($step == 7) {
-//            $siteCommunications = $this->boardService->getSiteCommunications($request);
-//
-//            if ($request->shift_type === 'day' && $isDayShiftTime) {
-//                return view('admin.boards.site_communication', [
-//                    'siteCommunications' => $siteCommunications,
-//                    'disabled' => false
-//                ])->render();
-//            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
-//                return view('admin.boards.site_communication', [
-//                    'siteCommunications' => $siteCommunications,
-//                    'disabled' => false
-//                ])->render();
-//            } else {
-//                return view('admin.boards.site_communication', [
-//                    'siteCommunications' => $siteCommunications,
-//                    'disabled' => true
-//                ])->render();
-//            }
-//        }
         elseif ($step == 7) {
+            $siteCommunications = $this->boardService->getSiteCommunications($request);
+
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.site_communication', [
+                    'siteCommunications' => $siteCommunications,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => false,
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.site_communication', [
+                    'siteCommunications' => $siteCommunications,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.site_communication', [
+                    'siteCommunications' => $siteCommunications,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => true
+                ])->render();
+            }
+        }
+        elseif ($step == 8) {
             $date = Carbon::now()->format('d-m-Y');
             $shiftLogs = $this->boardService->getShiftLog($request->shift_type, $date);
-//            dd($shiftLogs, $date, $request->shift_type);
             $fatalityRisks = FatalityRiskControl::orderBy('name', 'asc')->get();
             return view('admin.boards.fatality-risk-management', [
                 'shiftLogs' => $shiftLogs,

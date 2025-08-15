@@ -22,10 +22,9 @@
                             <h5 class="mb-1 text-center">Supervisor Name :</h5>
                             <p class="text-muted mb-0 text-center">{{ $supervisor?->name ?? 'N/A' }}</p>
                         </div>
-
                     </div>
                 </div>
-                <div class="col-md-3 mx-auto bg-white p-3 border mb-3 rounded shadow-sm text-center" id="board-header">
+                <div class="col-md-4 mx-auto bg-white p-3 border mb-3 rounded shadow-sm text-center" id="board-header">
                     <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Date: </strong> {{ $start_date }} to
                         {{ $end_date }}
                     </p>
@@ -35,7 +34,7 @@
                     <p class="mb-0 text-secondary" style="font-size: 16px;"><strong>Crew: </strong>{{ ucfirst($crew) }}
                     </p>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="card name-card border border-2 border-success mb-0 ms-auto">
                         <div class="name-card-body">
                             <h5 class="mb-1 text-center">Labour Name :</h5>
@@ -47,11 +46,6 @@
                     .name-card-body {
                         padding: 0.5rem;
                         border-radius: 0% 0% 4px 4px;
-                    }
-
-                    .name-card {
-                        min-width: 350px;
-                        max-width: 450px;
                     }
                 </style>
             </div>

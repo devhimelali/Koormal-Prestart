@@ -215,11 +215,8 @@
 
 <script>
     $('#previousStepBtn').on('click', function () {
-        currentStep = 6;
-        $('#board-header').removeClass('mb-1');
-        $('#board-header').addClass('mb-3');
-        $('#board-info').addClass('d-none');
-        updateBoard(currentStep, "Our Productivity");
+        currentStep = 7;
+        updateBoard(currentStep, "Site Communications");
     });
 
     $(".addFatalityRiskControlBtn").on('click', function () {
