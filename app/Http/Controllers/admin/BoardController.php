@@ -31,7 +31,9 @@ class BoardController extends Controller
 
     public function index(Request $request)
     {
-        return view('admin.boards.index');
+        $supervisor = $this->boardService->getSupervisorName($request->shift_type, Carbon::now()->format('d-m-Y'));
+        $labor = $this->boardService->getLaborName($request->shift_type, Carbon::now()->format('d-m-Y'));
+        return view('admin.boards.index', compact('supervisor', 'labor'));
     }
 
     public function updateSupervisorName(Request $request)

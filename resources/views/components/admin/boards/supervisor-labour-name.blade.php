@@ -12,14 +12,4 @@
     </div>
 </div>
 
-<style>
-    .name-card-body {
-        padding: 0.5rem;
-        border-radius: 0% 0% 4px 4px;
-    }
 
-    .name-card {
-        min-width: 350px;
-        max-width: 450px;
-    }
-</style>
