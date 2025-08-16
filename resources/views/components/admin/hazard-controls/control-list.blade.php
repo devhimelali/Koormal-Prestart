@@ -15,9 +15,15 @@
             </label>
         </div>
     @empty
+        <p>
+            There are no controls available. Please create one.<a href="{{route('fatality-controls.index')}}"
+                                                                  class="btn btn-link text-decoration-underline">Create a new control</a>
+        </p>
     @endforelse
     <x-slot name="buttons">
-        <button type="submit" id="assignFatalityControlSubmitBtn" class="btn btn-secondary">Save</button>
+        @if($fatalityControls->isNotEmpty())
+            <button type="submit" id="assignFatalityControlSubmitBtn" class="btn btn-secondary">Save</button>
+        @endif
         <button type="button" class="btn btn-subtle-danger" data-bs-dismiss="modal">Cancel</button>
     </x-slot>
 </x-form>
