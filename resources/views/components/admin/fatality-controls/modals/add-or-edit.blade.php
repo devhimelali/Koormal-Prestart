@@ -13,7 +13,7 @@
             <x-form.label for="description" text="Description"/>
             <x-form.text-area name="description"
                               placeholder="Write a short description about the fatality control..."
-                              :useCkeditor="true"/>
+                              :useCkeditor="false"/>
             <x-form.error :name="'description'"/>
         </div>
         <x-slot name="buttons">

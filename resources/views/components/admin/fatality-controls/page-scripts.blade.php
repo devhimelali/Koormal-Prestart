@@ -115,20 +115,10 @@
                             .replace(':id', id));
                     getAllFatalityRisks(response.data.fatality_risk_id);
                     //show description in CKEditor
-                    if (window.editors && window.editors['description']) {
-                        window.editors['description'].setData(response.data.description || '');
-                    }
-                    $('#old-image-preview').html('<img src="' + getImageUrl(response.data.image) +
-                        '" alt="Old Image" width="100" height="100">');
-                    $('#old-image-preview').removeClass('d-none');
-
+                    $('#addFatalityControlForm #description').val(response.data.description);
                     $('#addFatalityControlModal').modal('show');
                 });
             })
-
-            function getImageUrl(path) {
-                return "{{ asset('storage') }}/" + path;
-            }
 
             $('body').on('click', '.delete', function () {
                 let id = $(this).data('id');
