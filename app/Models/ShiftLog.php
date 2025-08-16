@@ -18,10 +18,10 @@ class ShiftLog extends Model
     public function getFatalityRiskControlsAttribute()
     {
         return DB::connection('mysql')
-            ->table('shift_log_fatality_risk_control as pivot')
-            ->join('fatality_risk_controls as frc', 'pivot.fatality_risk_control_id', '=', 'frc.id')
+            ->table('shift_log_fatality_risk as pivot')
+            ->join('fatality_risks as fr', 'pivot.fatality_risk_id', '=', 'fr.id')
             ->where('pivot.shift_log_id', $this->id)
-            ->select('frc.*') // or 'frc.field1', 'frc.field2' if you want specific columns
+            ->select('fr.*') // or 'frc.field1', 'frc.field2' if you want specific columns
             ->get();
     }
 }
