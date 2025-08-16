@@ -176,8 +176,7 @@ class BoardController extends Controller
                     'disabled' => true
                 ])->render();
             }
-        }
-        elseif ($step == 7) {
+        } elseif ($step == 7) {
             $siteCommunications = $this->boardService->getSiteCommunications($request);
 
             if ($request->shift_type === 'day' && $isDayShiftTime) {
@@ -199,8 +198,7 @@ class BoardController extends Controller
                     'disabled' => true
                 ])->render();
             }
-        }
-        elseif ($step == 8) {
+        } elseif ($step == 8) {
             $date = Carbon::now()->format('d-m-Y');
             $shiftLogs = $this->boardService->getShiftLog($request->shift_type, $date);
             $fatalityRisks = FatalityRisk::orderBy('name', 'asc')->get();
@@ -281,10 +279,12 @@ class BoardController extends Controller
         ]);
 
         $shiftLogId = $request->shift_log_id;
-        $hazardControls = $this->boardService->getHazardControlsByFatalityRisk($request->fatality_risk_id, $request->shift_log_id);
+        $hazardControls = $this->boardService->getHazardControlsByFatalityRisk($request->fatality_risk_id,
+            $request->shift_log_id);
         $fatalityRisk = FatalityRisk::find($request->fatality_risk_id);
 
-        return view('components.admin.hazard-controls.list', compact('hazardControls', 'fatalityRisk', 'shiftLogId'))->render();
+        return view('components.admin.hazard-controls.list',
+            compact('hazardControls', 'fatalityRisk', 'shiftLogId'))->render();
     }
 
     public function storeHazardControl(Request $request)
@@ -304,6 +304,52 @@ class BoardController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Control added successfully',
+        ]);
+    }
+
+    public function getFatalityControlList(Request $request)
+    {
+        $fatalityRiskId = $request->fatality_risk_id;
+        $shiftLogId = $request->shift_log_id;
+        $fatalityControls = $this->boardService->getFatalityControlsByFatalityRisk($fatalityRiskId);
+        $savedControls = \DB::table('hazard_controls')
+            ->where('shift_log_id', $shiftLogId)
+            ->where('fatality_risk_id', $fatalityRiskId)
+            ->pluck('description')
+            ->toArray();
+
+
+        return view('components.admin.hazard-controls.control-list',
+            compact('fatalityControls', 'savedControls', 'fatalityRiskId', 'shiftLogId'))->render();
+    }
+
+    public function storeFatalityControl(Request $request)
+    {
+        // Validate incoming request
+        $request->validate([
+            'fatality_risk_id' => 'required|exists:fatality_risks,id',
+            'shift_log_id' => 'required|integer',
+            'controls' => 'required|array',
+            'controls.*' => 'required|string',
+        ]);
+
+        $shiftLogId = $request->shift_log_id;
+        $fatalityRiskId = $request->fatality_risk_id;
+
+        // Loop through each control and update or create
+        foreach ($request->controls as $control) {
+            HazardControl::updateOrCreate(
+                [
+                    'shift_log_id' => $shiftLogId,
+                    'fatality_risk_id' => $fatalityRiskId,
+                    'description' => $control,
+                ]
+            );
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Controls added successfully',
         ]);
     }
 }

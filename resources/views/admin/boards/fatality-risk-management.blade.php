@@ -141,6 +141,7 @@
     @include('components.admin.boards.modal.add-or-edit-fatality-risk-management')
     @include('components.admin.hazard-controls.modals.hazard-control-list')
     @include('components.admin.hazard-controls.modals.create-new-hazard-control')
+    @include('components.admin.hazard-controls.modals.fatality-controls')
 </div>
 <style>
     th.th-sn {
@@ -347,9 +348,69 @@
     $(document).on('click', '#viewFatalityControlsBtn', function () {
         let fatalityRiskId = $(this).data('fatality-risk-id');
         let shiftLogId = $(this).data('shift-log-id');
-
-        alert("Fatality Risk ID: " + fatalityRiskId + "\nShift Log ID: " + shiftLogId + "\n\nThis is a sample alert message.");
+        $('#hazardControlListModal').modal('hide');
+        $.ajax({
+            url: "{{route('get-fatality-controls-list')}}",
+            type: 'GET',
+            data: {
+                fatality_risk_id: fatalityRiskId,
+                shift_log_id: shiftLogId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function () {
+                $('#loader').show();
+            },
+            success: function (response) {
+                $('#assignFatalityControlModal .modal-body').html(response);
+                $('#assignFatalityControlModal').modal('show');
+            },
+            error: function () {
+                alert('Failed to load the modal. Please try again.');
+            },
+            complete: function () {
+                $('#loader').hide();
+            }
+        })
+        // $('#assignFatalityControlModal').modal('show');
+        // // alert("Fatality Risk ID: " + fatalityRiskId + "\nShift Log ID: " + shiftLogId + "\n\nThis is a sample alert message.");
     })
+
+    $(document).on('submit', '#assignFatalityControlForm', function (e) {
+        e.preventDefault();
+
+        // Get form element
+        let formElement = document.getElementById('assignFatalityControlForm');
+        let formData = new FormData(formElement);
+
+        // Get specific values from form
+        let fatalityRiskId = formData.get('fatality_risk_id');
+        let shiftLogId = formData.get('shift_log_id');
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData, // sends all form data
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                ajaxBeforeSend('#assignFatalityControlForm', '#assignFatalityControlSubmitBtn');
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    $('#assignFatalityControlForm')[0].reset();
+                    notify('success', response.message);
+                    $('#assignFatalityControlModal').modal('hide');
+                }
+            },
+            error: handleAjaxErrors,
+            complete: function () {
+                ajaxComplete('#assignFatalityControlSubmitBtn', 'Save');
+            }
+        });
+
+        getHazardControlList(fatalityRiskId, shiftLogId);
+    });
+
 
     $(document).on('click', '#addHazardControlBtn', function () {
         let fatalityRiskId = $(this).data('fatality-risk-id');
@@ -369,7 +430,7 @@
 
         // Get specific values from form
         let fatalityRiskId = formData.get('fatality_risk_id');
-        let shiftLogId     = formData.get('shift_log_id');
+        let shiftLogId = formData.get('shift_log_id');
 
         $.ajax({
             url: $(this).attr('action'),
@@ -381,7 +442,7 @@
                 ajaxBeforeSend('#createHazardControlForm', '#createHazardControlSubmitBtn');
             },
             success: function (response) {
-                if(response.status == 'success'){
+                if (response.status == 'success') {
                     $('#createHazardControlForm')[0].reset();
                     notify('success', response.message);
                     $('#createHazardControlModal').modal('hide');

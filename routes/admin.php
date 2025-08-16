@@ -43,6 +43,10 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [BoardController::class, 'getHazardControlList'])->name('hazard-controls.index');
     Route::post('hazard-controls',
         [BoardController::class, 'storeHazardControl'])->name('hazard-controls.store');
+    Route::get('get-fatality-controls-list',
+        [BoardController::class, 'getFatalityControlList'])->name('get-fatality-controls-list');
+    Route::post('store-fatality-control',
+        [BoardController::class, 'storeFatalityControl'])->name('store-fatality-control');
 
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index');
     Route::post('update-supervisor-name',

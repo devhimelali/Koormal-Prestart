@@ -7,6 +7,7 @@ use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
+use App\Models\FatalityControl;
 use App\Models\HazardControl;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
@@ -279,6 +280,12 @@ class BoardService
     {
         return HazardControl::where('fatality_risk_id', $fatalityRiskId)
             ->where('shift_log_id', $shiftLogId)
+            ->get();
+    }
+
+    public function getFatalityControlsByFatalityRisk($fatalityRiskId)
+    {
+        return FatalityControl::where('fatality_risk_id', $fatalityRiskId)
             ->get();
     }
 
