@@ -20,8 +20,6 @@
                 Controls
             </button>
         </div>
-
-
     </div>
 </div>
 <x-table

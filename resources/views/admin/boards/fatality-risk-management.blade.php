@@ -84,7 +84,7 @@
                                 <button type="button" class="btn btn-sm btn-link hazardControlList"
                                         data-fatality-risk-id="{{$fatality_risk_control->id}}"
                                         data-shift-log-id="{{$shiftLog->id}}"
-                                   >
+                                >
                                     <img src="{{ $url }}" width="45" height="45"
                                          alt="{{$fatality_risk_control->name}}" loading="lazy">
                                     <span class="remove-image"
@@ -140,6 +140,7 @@
 
     @include('components.admin.boards.modal.add-or-edit-fatality-risk-management')
     @include('components.admin.hazard-controls.modals.hazard-control-list')
+    @include('components.admin.hazard-controls.modals.create-new-hazard-control')
 </div>
 <style>
     th.th-sn {
@@ -315,7 +316,10 @@
     $('.hazardControlList').on('click', function () {
         let fatalityRiskId = $(this).data('fatality-risk-id');
         let shiftLogId = $(this).data('shift-log-id');
-            // hazard-controls.index
+        getHazardControlList(fatalityRiskId, shiftLogId);
+    })
+
+    function getHazardControlList(fatalityRiskId, shiftLogId) {
         $.ajax({
             url: "{{route('hazard-controls.index')}}",
             type: 'GET',
@@ -334,11 +338,62 @@
             error: function () {
                 alert('Failed to load the modal. Please try again.');
             },
-            complete: function (){
+            complete: function () {
                 $('#loader').hide();
             }
         })
-        // $('#hazardControlListModal').modal('show');
+    }
+
+    $(document).on('click', '#viewFatalityControlsBtn', function () {
+        let fatalityRiskId = $(this).data('fatality-risk-id');
+        let shiftLogId = $(this).data('shift-log-id');
+
+        alert("Fatality Risk ID: " + fatalityRiskId + "\nShift Log ID: " + shiftLogId + "\n\nThis is a sample alert message.");
     })
+
+    $(document).on('click', '#addHazardControlBtn', function () {
+        let fatalityRiskId = $(this).data('fatality-risk-id');
+        let shiftLogId = $(this).data('shift-log-id');
+        $('#createHazardControlForm #fatality_risk_id').val(fatalityRiskId)
+        $('#createHazardControlForm #shift_log_id').val(shiftLogId)
+        $('#hazardControlListModal').modal('hide');
+        $('#createHazardControlModal').modal('show');
+    })
+
+    $('#createHazardControlForm').on('submit', function (e) {
+        e.preventDefault();
+
+        // Get form element
+        let formElement = document.getElementById('createHazardControlForm');
+        let formData = new FormData(formElement);
+
+        // Get specific values from form
+        let fatalityRiskId = formData.get('fatality_risk_id');
+        let shiftLogId     = formData.get('shift_log_id');
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData, // sends all form data
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                ajaxBeforeSend('#createHazardControlForm', '#createHazardControlSubmitBtn');
+            },
+            success: function (response) {
+                if(response.status == 'success'){
+                    $('#createHazardControlForm')[0].reset();
+                    notify('success', response.message);
+                    $('#createHazardControlModal').modal('hide');
+                }
+            },
+            error: handleAjaxErrors,
+            complete: function () {
+                ajaxComplete('#createHazardControlSubmitBtn', 'Save');
+            }
+        });
+
+        getHazardControlList(fatalityRiskId, shiftLogId);
+    });
 
 </script>

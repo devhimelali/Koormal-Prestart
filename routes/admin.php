@@ -41,6 +41,8 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [FatalityRiskController::class, 'getFatalityRisksList'])->name('fatality-risks.get-list');
     Route::get('hazard-controls',
         [BoardController::class, 'getHazardControlList'])->name('hazard-controls.index');
+    Route::post('hazard-controls',
+        [BoardController::class, 'storeHazardControl'])->name('hazard-controls.store');
 
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index');
     Route::post('update-supervisor-name',

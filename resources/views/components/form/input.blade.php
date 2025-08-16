@@ -7,6 +7,7 @@
     'required' => false,
     'placeholder' => '',
     'class' => 'form-control',
+    'readonly' => false
 ])
 
 @php
@@ -16,5 +17,5 @@
 @endphp
 
 <input type="{{ $type }}" name="{{ $name }}" id="{{ $inputId }}" value="{{ $inputValue }}"
-       placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }}
+       placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }} {{ $readonly ? 'readonly' : '' }}
     {{ $attributes->merge(['class' => $class . ($errors->has($name) ? ' is-invalid' : '')]) }}>

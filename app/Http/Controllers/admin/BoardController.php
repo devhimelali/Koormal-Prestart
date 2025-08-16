@@ -16,6 +16,7 @@ use App\Http\Requests\ShowBoardRequest;
 use App\Http\Requests\SiteCommunicationRequest;
 use App\Models\DailyShiftEntry;
 use App\Models\FatalityRisk;
+use App\Models\HazardControl;
 use App\Services\BoardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -283,7 +284,27 @@ class BoardController extends Controller
         $hazardControls = $this->boardService->getHazardControlsByFatalityRisk($request->fatality_risk_id, $request->shift_log_id);
         $fatalityRisk = FatalityRisk::find($request->fatality_risk_id);
 
-        return view('components.admin.hazard-controls.list', compact('hazardControls', 'fatalityRisk', 'shiftLogId'));
+        return view('components.admin.hazard-controls.list', compact('hazardControls', 'fatalityRisk', 'shiftLogId'))->render();
+    }
+
+    public function storeHazardControl(Request $request)
+    {
+        $request->validate([
+            'fatality_risk_id' => 'required|exists:fatality_risks,id',
+            'shift_log_id' => 'required',
+            'description' => 'required|string',
+        ]);
+
+        HazardControl::create([
+            'fatality_risk_id' => $request->fatality_risk_id,
+            'shift_log_id' => $request->shift_log_id,
+            'description' => $request->description,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Control added successfully',
+        ]);
     }
 }
 
