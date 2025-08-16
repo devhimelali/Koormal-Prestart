@@ -22,4 +22,9 @@ class FatalityRisk extends Model
     {
         return $this->belongsTo(ShiftLog::class, 'shift_log_id', 'id');
     }
+
+    public function hazardControls()
+    {
+        return $this->hasMany(HazardControl::class);
+    }
 }
