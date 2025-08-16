@@ -7,6 +7,7 @@ use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
+use App\Models\HazardControl;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
 use App\Models\Supervisor;
@@ -272,6 +273,13 @@ class BoardService
             'message' => 'Fatality Risk Control assigned successfully',
             'step' => 8
         ]);
+    }
+
+    public function getHazardControlsByFatalityRisk($fatalityRiskId, $shiftLogId)
+    {
+        return HazardControl::where('fatality_risk_id', $fatalityRiskId)
+            ->where('shift_log_id', $shiftLogId)
+            ->get();
     }
 
     private function storeFatalityRiskControlToShiftLog($validated)

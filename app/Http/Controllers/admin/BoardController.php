@@ -271,6 +271,20 @@ class BoardController extends Controller
             'message' => 'Fatality Risk Control image deleted successfully',
         ]);
     }
+
+    public function getHazardControlList(Request $request)
+    {
+        $request->validate([
+            'fatality_risk_id' => 'required|exists:fatality_risks,id',
+            'shift_log_id' => 'required'
+        ]);
+
+        $shiftLogId = $request->shift_log_id;
+        $hazardControls = $this->boardService->getHazardControlsByFatalityRisk($request->fatality_risk_id, $request->shift_log_id);
+        $fatalityRisk = FatalityRisk::find($request->fatality_risk_id);
+
+        return view('components.admin.hazard-controls.list', compact('hazardControls', 'fatalityRisk', 'shiftLogId'));
+    }
 }
 
 

@@ -81,8 +81,10 @@
                                 @php
                                     $url = asset('storage/'.$fatality_risk_control->image);
                                 @endphp
-                                <a href="{{ $url }}" class="glightbox" data-gallery="media-gallery"
-                                   data-glightbox="title:{{$fatality_risk_control->name}}; description:{{$fatality_risk_control->description}}; descPosition: left">
+                                <button type="button" class="btn btn-sm btn-link hazardControlList"
+                                        data-fatality-risk-id="{{$fatality_risk_control->id}}"
+                                        data-shift-log-id="{{$shiftLog->id}}"
+                                   >
                                     <img src="{{ $url }}" width="45" height="45"
                                          alt="{{$fatality_risk_control->name}}" loading="lazy">
                                     <span class="remove-image"
@@ -90,7 +92,7 @@
                                           data-shift-log-id="{{$shiftLog->id}}">
                                         <i class="ph ph-x"></i>
                                     </span>
-                                </a>
+                                </button>
                             </div>
                         @empty
                             N/A
@@ -137,6 +139,7 @@
     </div>
 
     @include('components.admin.boards.modal.add-or-edit-fatality-risk-management')
+    @include('components.admin.hazard-controls.modals.hazard-control-list')
 </div>
 <style>
     th.th-sn {
@@ -309,5 +312,33 @@
         });
     });
 
+    $('.hazardControlList').on('click', function () {
+        let fatalityRiskId = $(this).data('fatality-risk-id');
+        let shiftLogId = $(this).data('shift-log-id');
+            // hazard-controls.index
+        $.ajax({
+            url: "{{route('hazard-controls.index')}}",
+            type: 'GET',
+            data: {
+                fatality_risk_id: fatalityRiskId,
+                shift_log_id: shiftLogId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function () {
+                $('#loader').show();
+            },
+            success: function (response) {
+                $('#hazardControlListModal .modal-body').html(response);
+                $('#hazardControlListModal').modal('show');
+            },
+            error: function () {
+                alert('Failed to load the modal. Please try again.');
+            },
+            complete: function (){
+                $('#loader').hide();
+            }
+        })
+        // $('#hazardControlListModal').modal('show');
+    })
 
 </script>

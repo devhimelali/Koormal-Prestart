@@ -37,8 +37,10 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::resource('cross-criteria', CrossCriteriaController::class);
     Route::resource('fatality-risks', FatalityRiskController::class);
     Route::resource('fatality-controls', FatalityControlController::class);
-    Route::get('get-fatality-risk-list',[FatalityRiskController::class, 'getFatalityRisksList'])->name('fatality-risks.get-list');
-
+    Route::get('get-fatality-risk-list',
+        [FatalityRiskController::class, 'getFatalityRisksList'])->name('fatality-risks.get-list');
+    Route::get('hazard-controls',
+        [BoardController::class, 'getHazardControlList'])->name('hazard-controls.index');
 
     Route::get('boards', [BoardController::class, 'index'])->name('boards.index');
     Route::post('update-supervisor-name',
