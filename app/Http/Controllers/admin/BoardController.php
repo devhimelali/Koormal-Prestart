@@ -263,8 +263,8 @@ class BoardController extends Controller
 
     public function deleteFatalityRiskControlImage(Request $request)
     {
-        DB::table('shift_log_fatality_risk_control')->where('shift_log_id',
-            $request->shift_log_id)->where('fatality_risk_control_id', $request->fatality_risk_control_id)->delete();
+        DB::table('shift_log_fatality_risk')->where('shift_log_id',
+            $request->shift_log_id)->where('fatality_risk_id', $request->fatality_risk_control_id)->delete();
 
         return response()->json([
             'status' => 'success',

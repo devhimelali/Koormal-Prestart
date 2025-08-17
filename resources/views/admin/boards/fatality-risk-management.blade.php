@@ -294,22 +294,34 @@
         let fatalityRiskControlId = $(this).data('fatality-risk-control-id');
         let shiftLogId = $(this).data('shift-log-id');
 
-        $.ajax({
-            url: "{{route('fatality-risk-controls.delete-image')}}",
-            type: 'POST',
-            data: {
-                fatality_risk_control_id: fatalityRiskControlId,
-                shift_log_id: shiftLogId,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (response) {
-                if (response.status == 'success') {
-                    notify('success', response.message);
-                    $(`span[data-fatality-risk-control-id="${fatalityRiskControlId}"]`).closest('.image-container').remove();
-                }
-            },
-            error: function () {
-                alert('Failed to remove the image. Please try again.');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{route('fatality-risk-controls.delete-image')}}",
+                    type: 'POST',
+                    data: {
+                        fatality_risk_control_id: fatalityRiskControlId,
+                        shift_log_id: shiftLogId,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            notify('success', response.message);
+                            $(`span[data-fatality-risk-control-id="${fatalityRiskControlId}"]`).closest('.image-container').remove();
+                        }
+                    },
+                    error: function () {
+                        alert('Failed to remove the image. Please try again.');
+                    }
+                });
             }
         });
     });
