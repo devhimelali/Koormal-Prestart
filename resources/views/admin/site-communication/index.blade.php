@@ -8,16 +8,38 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">Site Communications</h4>
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="d-flex align-items-center gap-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-1">
+                            <label for="crew" class="form-label mb-0" style="min-width: fit-content;">Crew:</label>
+                            <select class="form-select form-select-sm" name="shift" id="shift">
+                                <option value="">All</option>
+                                @forelse($shifts as $shift)
+                                    <option value="{{ $shift->name }}">{{ $shift->name }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <label for="shift_type" class="form-label mb-0" style="min-width: fit-content;">Shift Type:</label>
+                            <select class="form-select form-select-sm" name="ft_shift_type" id="ft_shift_type">
+                                <option value="">All</option>
+                                @forelse($shiftTypes as $shiftType)
+                                    <option value="{{ $shiftType->value }}">{{ $shiftType->label() }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
                             <label for="date-range" class="form-label mb-0" style="width: 110px;">Date Range:</label>
                             <input type="text" name="date_range" class="form-control form-control-sm" id="date-range">
                         </div>
-                        <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" data-bs-toggle="modal"
-                                data-bs-target="#addSiteCommunication">
-                            <i class="ph ph-plus"></i>
-                            Add Site Communication
-                        </button>
+                        <div>
+                            <button class="btn btn-sm btn-secondary d-flex align-items-center gap-1" data-bs-toggle="modal"
+                                    data-bs-target="#addSiteCommunication">
+                                <i class="ph ph-plus"></i>
+                                Add Site Communication
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -82,6 +104,8 @@
                 data: function (d) {
                     d.start_date = startDate;
                     d.end_date = endDate;
+                    d.shift = $('#shift').val();
+                    d.shift_type = $('#ft_shift_type').val();
                 }
             },
             columns: [{
@@ -99,8 +123,8 @@
                     name: 'description'
                 },
                 {
-                    data: 'crew',
-                    name: 'crew'
+                    data: 'shift',
+                    name: 'shift'
                 },
                 {
                     data: 'shift_type',
@@ -117,6 +141,14 @@
                     searchable: false
                 },
             ]
+        });
+
+        $('#shift').on('change', function () {
+            table.ajax.reload();
+        });
+
+        $('#shift_type').on('change', function () {
+            table.ajax.reload();
         });
 
         flatpickr("#date-range", {
@@ -156,14 +188,22 @@
         })
 
         // after hide modal
-        $('#addFatalityRiskControlModal').on('hidden.bs.modal', function () {
-            $('#addFatalityRiskControlModal .modal-title').text('Edit site communication');
+        $('#addSiteCommunication').on('hidden.bs.modal', function () {
+            const form = $('#addSiteCommunicationForm');
+
+            // Reset form
+            form[0].reset();
+
+            // Reset title and action
+            $('#addSiteCommunication .modal-title').text('Edit site communication');
             $('#method').val('POST');
-            $('#addSiteCommunicationForm').attr('action', "{{ route('site-communications.store') }}");
-            $('#addSiteCommunicationForm #shift_type').val("{{request()->query('shift_type')}}");
-            $('#addSiteCommunicationForm')[0].reset();
-            $('#addSiteCommunicationForm').find('.is-invalid').removeClass('is-invalid');
-        })
+            form.attr('action', "{{ route('site-communications.store') }}");
+
+            // Remove validation errors
+            form.find('.is-invalid').removeClass('is-invalid');
+            form.find('.invalid-feedback').remove(); // if you add error messages dynamically
+        });
+
 
         $(document).on('click', '.edit', function () {
             let id = $(this).data('id');

@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('site_communications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('shift_id')->constrained('shifts')->cascadeOnDelete();
             $table->foreignId('shift_rotation_id')->constrained('shift_rotations')->cascadeOnDelete();
+            $table->string('shift');
             $table->date('start_date');
             $table->date('end_date');
             $table->string('shift_type');

@@ -14,7 +14,7 @@ class SiteCommunication extends Model
     use HasAttributes, HasQueryScopes, HasRelations;
 
     protected $fillable = [
-        'shift_id',
+        'shift',
         'shift_rotation_id',
         'start_date',
         'end_date',

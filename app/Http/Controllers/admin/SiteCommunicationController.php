@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Enums\ShiftTypeEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SiteCommunicationRequest;
 use App\Models\Shift;
 use App\Models\ShiftRotation;
 use App\Models\SiteCommunication;
@@ -15,25 +17,32 @@ class SiteCommunicationController extends Controller
 {
     public function index(Request $request)
     {
-        $shiftType = $request->shift_type == 'day_shift' ? 'day' : 'night';
-
         if ($request->ajax()) {
-            $data = SiteCommunication::with('shift', 'shiftRotation')
-                ->where('shift_type', $shiftType);
+            $data = SiteCommunication::with('shiftRotation')
+                ->when($request->filled('shift'), function ($query) use ($request) {
+                    $query->where('shift', $request->shift);
+                })
+                ->when($request->filled('shift_type'), function ($query) use ($request) {
+                    if ($enum = ShiftTypeEnum::tryFrom($request->shift_type)) {
+                        $query->where('shift_type', $enum);
+                    }
+                });
 
             $startDate = $request->start_date;
             $endDate = $request->end_date;
 
-            if (isset($startDate) && isset($endDate)) {
-                $data = $data->whereBetween('date', [$startDate, $endDate]);
+            if ($startDate && $endDate) {
+                $data->whereBetween('date', [$startDate, $endDate]);
             } else {
-                $today = Carbon::today()->format('Y-m-d');
-                $data = $data->where('date', $today);
+                $startDate = Carbon::today()->subDays(7)->format('Y-m-d');
+                $endDate = Carbon::today()->format('Y-m-d');
+                $data->whereBetween('date', [$startDate, $endDate]);
             }
+
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('crew', function ($row) {
-                    return $row->shift?->name;
+                ->addColumn('shift', function ($row) {
+                    return $row->shift;
                 })
                 ->addColumn('shift_type', function ($row) {
                     return $row->shift_type->value === 'day' ? 'Day Shift' : 'Night Shift';
@@ -44,48 +53,40 @@ class SiteCommunicationController extends Controller
                     if ($row->path) {
                         $viewUrl = route('site-communications.show', $row->id);
                         $pdfUrl = asset('storage/'.$row->path);
+
                         $buttons .= '<a href="'.$viewUrl.'" target="_blank" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
-                                        <i class="bi bi-file-earmark-pdf"></i>
-                                        View PDF
+                                        <i class="bi bi-file-earmark-pdf"></i> View PDF
                                      </a>';
                         $buttons .= '<a href="'.$pdfUrl.'" target="_blank" class="btn btn-secondary btn-sm d-flex align-items-center gap-1">
-                                        <i class="bi bi-download"></i>
-                                        Download PDF
+                                        <i class="bi bi-download"></i> Download PDF
                                      </a>';
                     }
+
                     $buttons .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="edit btn btn-warning btn-sm d-flex align-items-center gap-1">
-                                    <i class="bi bi-pencil"></i>
-                                    Edit
+                                    <i class="bi bi-pencil"></i> Edit
                                   </a>';
                     $buttons .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm d-flex align-items-center gap-1">
-                                    <i class="bi bi-trash"></i>
-                                    Delete
+                                    <i class="bi bi-trash"></i> Delete
                                   </a>';
+
                     $buttons .= '</div>';
                     return $buttons;
                 })
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-        return view('admin.site-communication.index');
+
+        $shifts = Shift::all();
+        $shiftTypes = ShiftTypeEnum::cases();
+
+        return view('admin.site-communication.index', compact('shifts', 'shiftTypes'));
     }
 
-    public function store(Request $request)
+    public function store(SiteCommunicationRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'dates' => [
-                'required',
-                'regex:/^(\d{2}-\d{2}-\d{4})(,\s*\d{2}-\d{2}-\d{4})*$/'
-            ],
-            'pdf' => ['required', 'file', 'mimes:pdf'],
-            'shift_type' => ['required', Rule::in(['day_shift', 'night_shift'])]
-        ]);
-
         $rotation = ShiftRotation::where('is_active', true)->firstOrFail();
         $dates = explode(',', $request->dates);
-        $shiftType = $request->shift_type === 'day_shift' ? 'day' : 'night';
+        $shiftType = $request->shift_type === 'day' ? 'day_shift' : 'night_shift';
 
         foreach ($dates as $date) {
             $parsedDate = Carbon::createFromFormat('d-m-Y', trim($date));
@@ -93,27 +94,22 @@ class SiteCommunicationController extends Controller
             $shiftDetails = $rotation->getShiftBlocks($parsedDate, $parsedDate)->first();
 
             if (!$shiftDetails) {
-                continue; // Skip if no shift found for that date
+                continue;
             }
 
-            $shiftName = $shiftDetails[$request->shift_type] ?? null;
+            $shiftName = $shiftDetails[$shiftType] ?? null;
 
             if (!$shiftName) {
                 continue; // Skip if shift name not found
             }
 
-            $shift = Shift::where('name', $shiftName)->first();
-
-            if (!$shift) {
-                continue; // Skip if no matching shift record
-            }
 
             $data = [
-                'shift_id' => $shift->id,
+                'shift' => $shiftName,
                 'shift_rotation_id' => $rotation->id,
                 'start_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['start_date'])->format('Y-m-d'),
                 'end_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['end_date'])->format('Y-m-d'),
-                'shift_type' => $shiftType,
+                'shift_type' => $request->shift_type,
                 'date' => $parsedDate->format('Y-m-d'),
                 'title' => $request->title,
                 'description' => $request->description,
@@ -122,7 +118,7 @@ class SiteCommunicationController extends Controller
             // Handle file upload
             if ($request->hasFile('pdf')) {
                 $file = $request->file('pdf');
-                $fileName = time().'-site-communication'.'.' . $file->getClientOriginalExtension();
+                $fileName = time().'-site-communication'.'.'.$file->getClientOriginalExtension();
                 $filePath = $file->storeAs('uploads', $fileName, 'public');
                 $data['path'] = $filePath;
             }
@@ -175,7 +171,7 @@ class SiteCommunicationController extends Controller
             }
 
             $file = $request->file('pdf');
-            $fileName = time().'-site-communication'.'.' . $file->getClientOriginalExtension();
+            $fileName = time().'-site-communication'.'.'.$file->getClientOriginalExtension();
             $filePath = $file->storeAs('uploads', $fileName, 'public');
             $data['path'] = $filePath;
         }

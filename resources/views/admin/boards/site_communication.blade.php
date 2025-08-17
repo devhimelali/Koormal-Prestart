@@ -56,7 +56,7 @@
                                 {{$siteCommunication->description}}
                             </td>
                             <td>
-                                {{$siteCommunication->shift?->name}}
+                                {{$siteCommunication->shift}}
                             </td>
                             <td>
                                 {{$siteCommunication->shift_type->value === 'day' ? 'Day Shift' : 'Night Shift'}}

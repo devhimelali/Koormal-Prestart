@@ -99,8 +99,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript:void(0)"
-                       id="siteCommunicationBtn"
+                    <a href="{{route('site-communications.index')}}"
                        class="nav-link menu-link @if (Route::current()->getName() == 'site-communications.index') active @endif"
                        aria-expanded="false">
                         <i class="ph ph-chat-circle-dots"></i>
@@ -114,35 +113,5 @@
 
     <div class="sidebar-background"></div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        $('#siteCommunicationBtn').on('click', function () {
-            Swal.fire({
-                title: 'Select Shift Type',
-                icon: 'question',
-                html: `
-                    <button class="swal2-confirm btn-option btn btn-sm btn-primary" data-value="day_shift">Day Shift</button>
-                    <button class="swal2-confirm btn-option btn btn-sm btn-secondary" data-value="night_shift">Night Shift</button>
-                  `,
-                showConfirmButton: false,
-                didOpen: () => {
-                    document.querySelectorAll('.btn-option').forEach(button => {
-                        button.addEventListener('click', () => {
-                            const selected = button.getAttribute('data-value');
-                            Swal.close();
-
-                            if (selected === 'day_shift') {
-                                window.location.href = "{{ route('site-communications.index', ['shift_type' => 'day_shift']) }}";
-                            } else if (selected === 'night_shift') {
-                                window.location.href = "{{ route('site-communications.index', ['shift_type' => 'night_shift']) }}";
-                            }
-                        });
-                    });
-                }
-            });
-        });
-    });
-</script>
 
 

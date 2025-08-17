@@ -24,13 +24,14 @@ class SiteCommunicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shift_id' => ['required', Rule::exists('shifts', 'id')],
-            'shift_rotation_id' => ['required', Rule::exists('shift_rotations', 'id')],
-            'start_date' => ['required', Rule::date()->format('d-m-Y')],
-            'end_date' => ['required', Rule::date()->format('d-m-Y')->afterOrEqual('start_date')],
+            'title' => ['required', 'string', 'max:255'],
             'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
-            'note' => ['nullable', 'string'],
-            'date' => ['nullable', Rule::date()->format('d-m-Y')],
+            'description' => ['required', 'string'],
+            'dates' => [
+                'required',
+                'regex:/^(\d{2}-\d{2}-\d{4})(,\s*\d{2}-\d{2}-\d{4})*$/'
+            ],
+            'pdf' => ['required', 'file', 'mimes:pdf'],
         ];
     }
 }
