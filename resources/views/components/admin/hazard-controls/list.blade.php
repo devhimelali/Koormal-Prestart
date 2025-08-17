@@ -37,18 +37,27 @@
             [
                 'label' => 'Control',
                 'class' => 'th-description',
-            ]
+            ],
+            [
+                'label' => 'Actions',
+                'class' => 'th-hazard-control-actions',
+            ],
         ]">
     @forelse($hazardControls as $hazardControl)
         <tr>
-            <td class="th-sn py-2">
+            <td class="th-sn">
                 {{ $loop->iteration }}
             </td>
-            <td class="th-name py-2">
+            <td class="th-name">
                 {{ $hazardControl->fatalityRisk?->name }}
             </td>
-            <td class="th-description py-2">
+            <td class="th-description">
                 {{ $hazardControl->description }}
+            </td>
+            <td class="th-actions">
+                <button class="btn btn-sm btn-danger deleteHazardControlBtn" data-hazard-control-id="{{ $hazardControl->id }}">
+                    <i class="bi bi-trash"></i>
+                </button>
             </td>
         </tr>
     @empty
@@ -57,3 +66,9 @@
         </tr>
     @endforelse
 </x-table>
+<style>
+    th.th-hazard-control-actions{
+        min-width: 70px !important;
+        width: 70px;
+    }
+</style>

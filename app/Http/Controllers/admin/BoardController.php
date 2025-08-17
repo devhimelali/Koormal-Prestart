@@ -307,6 +307,17 @@ class BoardController extends Controller
         ]);
     }
 
+    public function destroyHazardControl(Request $request)
+    {
+          $hazard = HazardControl::findOrFail($request->id);
+          $hazard->delete();
+
+          return response()->json([
+              'status' => 'success',
+              'message' => 'Hazard Control deleted successfully',
+          ]);
+    }
+
     public function getFatalityControlList(Request $request)
     {
         $fatalityRiskId = $request->fatality_risk_id;

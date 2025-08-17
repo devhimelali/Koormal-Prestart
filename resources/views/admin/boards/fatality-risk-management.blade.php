@@ -457,4 +457,36 @@
         getHazardControlList(fatalityRiskId, shiftLogId);
     });
 
+    $(document).on('click', '.deleteHazardControlBtn', function () {
+        let id = $(this).data('hazard-control-id');
+        $('#hazardControlListModal').modal('hide');
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('hazard-controls.destroy') }}",
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            notify('success', response.message);
+                        }
+                    },
+                    error: handleAjaxErrors,
+                });
+            }
+        });
+    });
+
 </script>
