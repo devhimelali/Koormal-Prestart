@@ -10,6 +10,7 @@ class HazardControl extends Model
         'shift_log_id',
         'fatality_risk_id',
         'description',
+        'is_manual_entry'
     ];
 
     public function fatalityRisk()

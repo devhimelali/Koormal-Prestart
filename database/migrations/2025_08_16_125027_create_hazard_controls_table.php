@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('shift_log_id');
             $table->foreignId('fatality_risk_id')->constrained('fatality_risks')->cascadeOnDelete();
             $table->longText('description');
+            $table->boolean('is_manual_entry')->default(false);
             $table->timestamps();
 
             $table->index('shift_log_id');

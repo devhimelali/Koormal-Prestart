@@ -15,6 +15,7 @@ use App\Http\Requests\ReviewOfPreviousShiftRequest;
 use App\Http\Requests\ShowBoardRequest;
 use App\Http\Requests\SiteCommunicationRequest;
 use App\Models\DailyShiftEntry;
+use App\Models\FatalityControl;
 use App\Models\FatalityRisk;
 use App\Models\HazardControl;
 use App\Services\BoardService;
@@ -299,6 +300,7 @@ class BoardController extends Controller
             'fatality_risk_id' => $request->fatality_risk_id,
             'shift_log_id' => $request->shift_log_id,
             'description' => $request->description,
+            'is_manual_entry' => 1
         ]);
 
         return response()->json([
@@ -347,13 +349,23 @@ class BoardController extends Controller
         $shiftLogId = $request->shift_log_id;
         $fatalityRiskId = $request->fatality_risk_id;
 
-        // Loop through each control and update or create
+        // Delete hazard controls not in the current request
+        HazardControl::where('shift_log_id', $shiftLogId)
+            ->where('fatality_risk_id', $fatalityRiskId)
+            ->whereNotIn('description', $request->controls)
+            ->where('is_manual_entry', 0)
+            ->delete();
+
+        // Add or keep requested controls
         foreach ($request->controls as $control) {
             HazardControl::updateOrCreate(
                 [
-                    'shift_log_id' => $shiftLogId,
+                    'shift_log_id'     => $shiftLogId,
                     'fatality_risk_id' => $fatalityRiskId,
-                    'description' => $control,
+                    'description'      => $control,
+                ],
+                [
+                    'is_manual_entry' => 0,
                 ]
             );
         }

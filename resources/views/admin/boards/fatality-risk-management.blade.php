@@ -408,7 +408,9 @@
             }
         });
 
-        getHazardControlList(fatalityRiskId, shiftLogId);
+        setTimeout(function () {
+            getHazardControlList(fatalityRiskId, shiftLogId);
+        }, 500);
     });
 
 
@@ -454,7 +456,9 @@
             }
         });
 
-        getHazardControlList(fatalityRiskId, shiftLogId);
+        setTimeout(function () {
+            getHazardControlList(fatalityRiskId, shiftLogId);
+        }, 500);
     });
 
     $(document).on('click', '.deleteHazardControlBtn', function () {
