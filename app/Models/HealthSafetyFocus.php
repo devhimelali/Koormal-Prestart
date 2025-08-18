@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Enums\ShiftTypeEnum;
-use App\Models\Concerns\ImproveOurPerformance\HasAttributes;
-use App\Models\Concerns\ImproveOurPerformance\HasQueryScopes;
-use App\Models\Concerns\ImproveOurPerformance\HasRelations;
+use App\Models\Concerns\HealthSafetyFocus\HasAttributes;
+use App\Models\Concerns\HealthSafetyFocus\HasQueryScopes;
+use App\Models\Concerns\HealthSafetyFocus\HasRelations;
 use Illuminate\Database\Eloquent\Model;
 
-class ImproveOurPerformance extends Model
+class HealthSafetyFocus extends Model
 {
     use HasAttributes, HasQueryScopes, HasRelations;
 
@@ -19,8 +19,7 @@ class ImproveOurPerformance extends Model
         'end_date',
         'shift_type',
         'date',
-        'issues',
-        'who',
+        'note',
     ];
 
     protected function casts(): array
