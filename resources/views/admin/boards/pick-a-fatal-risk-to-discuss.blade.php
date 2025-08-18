@@ -18,17 +18,40 @@
     </div>
 
     <div class="row mb-4">
-        <!-- Question 1 -->
         <div class="col-12">
-            <div class="d-flex justify-content-end align-items-center flex-wrap mb-2">
-
-            </div>
-
-            <div class="table-responsive">
-
+            <div class="row g-3">
+                @forelse($fatalityRisks as $fatalityRisk)
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                        <div class="card h-100 shadow-sm border-0 rounded-3 risk-card hover-shadow"
+                             data-risk-id="{{ $fatalityRisk->id }}" style="cursor: pointer;">
+                            <div class="card-body bg-white text-center p-3 border shadow">
+                                <img src="{{ asset('storage/'.$fatalityRisk->image) }}"
+                                     class="img-fluid rounded"
+                                     alt="{{ $fatalityRisk->name }}"
+                                     style="max-height: 120px; object-fit: contain;">
+                                <h6 class="mt-3 mb-0 " title="{{ $fatalityRisk->name }}">
+                                    {{ $fatalityRisk->name }}
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12 text-center text-muted">
+                        No fatality risks available.
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
+
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            transition: all 0.3s ease;
+        }
+    </style>
+
 
     <!-- Navigation Buttons -->
     <div class="d-flex align-items-center justify-content-between">
@@ -52,4 +75,12 @@
         currentStep = 11;
         updateBoard(currentStep, "Health and safety focus");
     })
+
+    $(document).on('click', '.risk-card', function () {
+        $('.risk-card').removeClass('border-primary');
+        $(this).addClass('border-primary');
+
+        let riskId = $(this).data('risk-id');
+        let riskName = $(this).find('h6').text();
+    });
 </script>

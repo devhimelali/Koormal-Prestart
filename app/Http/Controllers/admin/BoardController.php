@@ -235,7 +235,11 @@ class BoardController extends Controller
                 ])->render();
             }
         } elseif ($step == 10) {
-            return view('admin.boards.pick-a-fatal-risk-to-discuss');
+            $fatalityRisks = FatalityRisk::orderBy('name')->get();
+
+            return view('admin.boards.pick-a-fatal-risk-to-discuss', [
+                'fatalityRisks' => $fatalityRisks,
+            ]);
         } elseif ($step == 11) {
             $safetyFocuses = $this->boardService->getSafetyFocuses($request);
 
