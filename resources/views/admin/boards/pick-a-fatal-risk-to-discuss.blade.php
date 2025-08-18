@@ -50,6 +50,11 @@
             transform: translateY(-3px);
             transition: all 0.3s ease;
         }
+
+        .selected-risk {
+            border: 3px solid #2ecc71 !important;
+            transform: scale(1.05);
+        }
     </style>
 
 
@@ -77,10 +82,13 @@
     })
 
     $(document).on('click', '.risk-card', function () {
-        $('.risk-card').removeClass('border-primary');
-        $(this).addClass('border-primary');
+        $('.risk-card').removeClass('selected-risk');
+        $(this).addClass('selected-risk');
 
         let riskId = $(this).data('risk-id');
         let riskName = $(this).find('h6').text();
+        let riskImage = $(this).find('img').attr('src');
+
+
     });
 </script>
