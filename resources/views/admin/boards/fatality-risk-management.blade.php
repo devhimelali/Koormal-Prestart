@@ -136,7 +136,12 @@
             <i class="bi bi-caret-left-fill"></i>
             Previous
         </button>
+        <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1" id="nextStepBtn">
+            Next
+            <i class="bi bi-caret-right-fill"></i>
+        </button>
     </div>
+
 
     @include('components.admin.boards.modal.add-or-edit-fatality-risk-management')
     @include('components.admin.hazard-controls.modals.hazard-control-list')
@@ -223,6 +228,11 @@
         currentStep = 7;
         updateBoard(currentStep, "Site Communications");
     });
+
+    $('#nextStepBtn').on('click', function () {
+        currentStep = 9;
+        updateBoard(currentStep, "Improve our performance");
+    })
 
     $(".addFatalityRiskControlBtn").on('click', function () {
         let shiftLogId = $(this).data('shift-log-id');

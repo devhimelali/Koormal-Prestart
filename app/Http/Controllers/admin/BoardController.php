@@ -5,12 +5,14 @@ namespace App\Http\Controllers\admin;
 use App\DTOs\CelebrateSuccessDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
+use App\DTOs\ImproveOurPerformanceDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CelebrateSuccessRequest;
 use App\Http\Requests\HealthSafetyReviewCrossCriteriaRequest;
 use App\Http\Requests\HealthSafetyReviewRequest;
+use App\Http\Requests\ImproveOurPerformanceRequest;
 use App\Http\Requests\ReviewOfPreviousShiftRequest;
 use App\Http\Requests\ShowBoardRequest;
 use App\Http\Requests\SiteCommunicationRequest;
@@ -208,6 +210,28 @@ class BoardController extends Controller
                 'shift' => $request->shift_type,
                 'fatalityRisks' => $fatalityRisks
             ])->render();
+        }elseif ($step == 9){
+            $improvePerformances = $this->boardService->getImprovePerformances($request);
+
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.improve-our-performance', [
+                    'improvePerformances' => $improvePerformances,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => false,
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.improve-our-performance', [
+                    'improvePerformances' => $improvePerformances,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.improve-our-performance', [
+                    'improvePerformances' => $improvePerformances,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => true
+                ])->render();
+            }
         }
     }
 
@@ -374,6 +398,11 @@ class BoardController extends Controller
             'status' => 'success',
             'message' => 'Controls added successfully',
         ]);
+    }
+
+    public function storeImprovePerformance(ImproveOurPerformanceRequest $request)
+    {
+        return $this->boardService->storeImprovePerformance(ImproveOurPerformanceDto::fromArray($request->validated()));
     }
 }
 

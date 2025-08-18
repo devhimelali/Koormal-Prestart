@@ -24,7 +24,7 @@ class ShowBoardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'step' => ['required', Rule::numeric()->min(1)->max(8)],
+            'step' => ['required', Rule::numeric()->min(1)->max(11)],
             'shift_id' => ['required', Rule::exists('shifts', 'id')],
             'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
             'start_date' => ['required', Rule::date()->format('d-m-Y')],

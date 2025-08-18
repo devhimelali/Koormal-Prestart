@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->date('end_date');
             $table->string('shift_type');
             $table->date('date');
-            $table->text('issues');
-            $table->string('who');
+            $table->text('issues')->nullable();
+            $table->string('who')->nullable();
             $table->timestamps();
         });
     }

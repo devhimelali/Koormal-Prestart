@@ -473,6 +473,58 @@
             });
             // ============= Site Communications End  =============
 
+            // ============= Improve our performance Start  =============
+            function addBlankImprovePerformance(issues = null, who = null, date = null) {
+                $.ajax({
+                    url: "{{ route('boards.store.improve-performance') }}",
+                    method: 'POST',
+                    data: {
+                        issues: issues,
+                        who: who,
+                        date: date,
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
+                        _token: '{{ csrf_token() }}'
+                    },
+                    beforeSend: function () {
+                        $('#loader').show();
+                    },
+                    success: function (response) {
+                        notify('success', response.message);
+                        setTimeout(() => {
+                            updateBoard(response.step);
+                        }, 500);
+                    },
+                    error: handleAjaxErrors,
+                    complete: function () {
+                        $('#loader').hide();
+                    }
+                });
+            }
+
+            // Add new blank performance entry
+            $(document).on('click', '#addImprovePerformanceBtn', function () {
+                let issuesEl = $('.issues').last();
+                if (issuesEl.length && issuesEl.text().trim() != '' && issuesEl.data('date') === getTodaysDate()) {
+                    showAlreadySubmittedWarning("You have already submitted today's improve our performance! You can only submit one improve our performance per day.");
+                    return;
+                }
+                addBlankImprovePerformance();
+            });
+
+            // Save changes on blur
+            $(document).on('blur', '.issues, .who', function () {
+                let row = $(this).closest('tr');
+                let issues = row.find('.issues').text().trim();
+                let who = row.find('.who').text().trim();
+                let date = row.find('.issues').data('date');
+                addBlankImprovePerformance(issues, who, date);
+            });
+            // ============= Improve our performance End  =============
+
 
             {{--$(document).on('click', '#resetLegendBtn', function () {--}}
             {{--    Swal.fire({--}}

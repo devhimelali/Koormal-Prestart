@@ -73,6 +73,8 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [BoardController::class, 'assignFatalityRiskControl'])->name('fatality-risk-controls.assign');
     Route::post('delete-fatality-risk-control-image',
         [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
+    Route::post('store-improve-performance',
+        [BoardController::class, 'storeImprovePerformance'])->name('boards.store.improve-performance');
 
     Route::resource('site-communications', SiteCommunicationController::class);
     Route::get('preview-site-communication/{path}',

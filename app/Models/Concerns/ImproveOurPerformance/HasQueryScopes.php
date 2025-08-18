@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 trait HasQueryScopes
 {
-    public function scopeFilterCommunication(Builder $query, Request $request): Builder
+    public function scopeFilterImproveOurPerformance(Builder $query, Request $request): Builder
     {
         return $query->where('shift_type', $request->shift_type)
             ->where('shift_id', $request->shift_id)

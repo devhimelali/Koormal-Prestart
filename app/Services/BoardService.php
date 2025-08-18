@@ -5,10 +5,12 @@ namespace App\Services;
 use App\DTOs\CelebrateSuccessDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
+use App\DTOs\ImproveOurPerformanceDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Models\FatalityControl;
 use App\Models\HazardControl;
+use App\Models\ImproveOurPerformance;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
 use App\Models\Supervisor;
@@ -287,6 +289,38 @@ class BoardService
     {
         return FatalityControl::where('fatality_risk_id', $fatalityRiskId)
             ->get();
+    }
+
+    public function getImprovePerformances($request)
+    {
+        return ImproveOurPerformance::filterImproveOurPerformance($request)
+            ->get();
+    }
+
+    public function storeImprovePerformance(ImproveOurPerformanceDto $dto)
+    {
+        $shiftDate = $this->getShiftDate();
+
+        ImproveOurPerformance::updateOrCreate(
+            [
+                'shift_id' => $dto->shift_id,
+                'shift_rotation_id' => $dto->shift_rotation_id,
+                'start_date' => $dto->start_date,
+                'end_date' => $dto->end_date,
+                'shift_type' => $dto->shift_type,
+                'date' => $dto->date ? $dto->date : $shiftDate,
+            ],
+            [
+                'issues' => $dto->issues,
+                'who' => $dto->who,
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Improve Performance saved successfully',
+            'step' => 9
+        ]);
     }
 
     private function storeFatalityRiskControlToShiftLog($validated)
