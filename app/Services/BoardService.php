@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\CelebrateSuccessDto;
+use App\DTOs\FatalRiskToDiscussDto;
 use App\DTOs\HealthSafetyFocusDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
@@ -10,6 +11,7 @@ use App\DTOs\ImproveOurPerformanceDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Models\FatalityControl;
+use App\Models\FatalRiskToDiscuss;
 use App\Models\HazardControl;
 use App\Models\HealthSafetyFocus;
 use App\Models\ImproveOurPerformance;
@@ -353,6 +355,29 @@ class BoardService
             'status' => 'success',
             'message' => 'Health and Safety Focus saved successfully',
             'step' => 11
+        ]);
+    }
+
+    public function storeFatalRiskToDiscuss(FatalRiskToDiscussDto $dto)
+    {
+        $shiftDate = $this->getShiftDate();
+
+        FatalRiskToDiscuss::updateOrCreate(
+            [
+                'shift_id' => $dto->shift_id,
+                'shift_rotation_id' => $dto->shift_rotation_id,
+                'fatality_risk_id' => $dto->fatality_risk_id,
+                'start_date' => $dto->start_date,
+                'end_date' => $dto->end_date,
+                'shift_type' => $dto->shift_type,
+                'date' => $shiftDate,
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fatal Risk to Discuss saved successfully',
+            'step' => 10
         ]);
     }
 

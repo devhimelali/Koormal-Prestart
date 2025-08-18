@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\DTOs\CelebrateSuccessDto;
+use App\DTOs\FatalRiskToDiscussDto;
 use App\DTOs\HealthSafetyFocusDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
@@ -11,6 +12,7 @@ use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CelebrateSuccessRequest;
+use App\Http\Requests\FatalRiskToDiscussRequest;
 use App\Http\Requests\HealthSafetyFocusRequest;
 use App\Http\Requests\HealthSafetyReviewCrossCriteriaRequest;
 use App\Http\Requests\HealthSafetyReviewRequest;
@@ -438,6 +440,11 @@ class BoardController extends Controller
     public function storeSafetyFocuses(HealthSafetyFocusRequest $request)
     {
         return $this->boardService->storeSafetyFocuses(HealthSafetyFocusDto::fromArray($request->validated()));
+    }
+
+    public function storeFatalRiskToDiscuss(FatalRiskToDiscussRequest $request)
+    {
+        $this->boardService->storeFatalRiskToDiscuss(FatalRiskToDiscussDto::fromArray($request->validated()));
     }
 }
 

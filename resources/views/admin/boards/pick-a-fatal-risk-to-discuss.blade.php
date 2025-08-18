@@ -89,6 +89,16 @@
         let riskName = $(this).find('h6').text();
         let riskImage = $(this).find('img').attr('src');
 
+        Swal.fire({
+            title: 'Under development',
+            text: "We are working on this feature. Please check back later.",
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok'
+        }).then((result) => {
 
+        })
     });
 </script>
