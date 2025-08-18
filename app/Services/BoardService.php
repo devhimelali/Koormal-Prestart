@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\CelebrateSuccessDto;
+use App\DTOs\HealthSafetyFocusDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ImproveOurPerformanceDto;
@@ -10,6 +11,7 @@ use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Models\FatalityControl;
 use App\Models\HazardControl;
+use App\Models\HealthSafetyFocus;
 use App\Models\ImproveOurPerformance;
 use App\Models\LabourShift;
 use App\Models\ShiftLog;
@@ -320,6 +322,37 @@ class BoardService
             'status' => 'success',
             'message' => 'Improve Performance saved successfully',
             'step' => 9
+        ]);
+    }
+
+    public function getSafetyFocuses($request)
+    {
+        return HealthSafetyFocus::filterHealthSafetyFocus($request)
+            ->get();
+    }
+
+    public function storeSafetyFocuses(HealthSafetyFocusDto $dto)
+    {
+        $shiftDate = $this->getShiftDate();
+
+        HealthSafetyFocus::updateOrCreate(
+            [
+                'shift_id' => $dto->shift_id,
+                'shift_rotation_id' => $dto->shift_rotation_id,
+                'start_date' => $dto->start_date,
+                'end_date' => $dto->end_date,
+                'shift_type' => $dto->shift_type,
+                'date' => $dto->date ? $dto->date : $shiftDate,
+            ],
+            [
+                'note' => $dto->note,
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Health and Safety Focus saved successfully',
+            'step' => 11
         ]);
     }
 

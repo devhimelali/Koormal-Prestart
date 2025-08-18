@@ -525,6 +525,56 @@
             });
             // ============= Improve our performance End  =============
 
+            // ============= Health and safety focus Start  =============
+            function addBlankHealthAndSafety(note = null, date = null) {
+                $.ajax({
+                    url: "{{ route('boards.store.health-safety-focus') }}",
+                    method: 'POST',
+                    data: {
+                        note: note,
+                        date: date,
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
+                        _token: '{{ csrf_token() }}'
+                    },
+                    beforeSend: function () {
+                        $('#loader').show();
+                    },
+                    success: function (response) {
+                        notify('success', response.message);
+                        setTimeout(() => {
+                            updateBoard(response.step);
+                        }, 500);
+                    },
+                    error: handleAjaxErrors,
+                    complete: function () {
+                        $('#loader').hide();
+                    }
+                });
+            }
+
+            // Add new blank performance entry
+            $(document).on('click', '#addSafetyFocusBtn', function () {
+                let noteEl = $('.safety-focus').last();
+                if (noteEl.length && noteEl.text().trim() != '' && noteEl.data('date') === getTodaysDate()) {
+                    showAlreadySubmittedWarning("You have already submitted today's health and safety focus! You can only submit one health and safety focus per day.");
+                    return;
+                }
+                addBlankHealthAndSafety();
+            });
+
+            // Save changes on blur
+            $(document).on('blur', '.safety-focus', function () {
+                let row = $(this).closest('tr');
+                let note = row.find('.safety-focus').text().trim();
+                let date = row.find('.safety-focus').data('date');
+                addBlankHealthAndSafety(note, date);
+            });
+            // ============= Health and safety focus End  =============
+
 
             {{--$(document).on('click', '#resetLegendBtn', function () {--}}
             {{--    Swal.fire({--}}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\DTOs\CelebrateSuccessDto;
+use App\DTOs\HealthSafetyFocusDto;
 use App\DTOs\HealthSafetyReviewCrossCriteriaDto;
 use App\DTOs\HealthSafetyReviewDto;
 use App\DTOs\ImproveOurPerformanceDto;
@@ -10,6 +11,7 @@ use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CelebrateSuccessRequest;
+use App\Http\Requests\HealthSafetyFocusRequest;
 use App\Http\Requests\HealthSafetyReviewCrossCriteriaRequest;
 use App\Http\Requests\HealthSafetyReviewRequest;
 use App\Http\Requests\ImproveOurPerformanceRequest;
@@ -210,7 +212,7 @@ class BoardController extends Controller
                 'shift' => $request->shift_type,
                 'fatalityRisks' => $fatalityRisks
             ])->render();
-        }elseif ($step == 9){
+        } elseif ($step == 9) {
             $improvePerformances = $this->boardService->getImprovePerformances($request);
 
             if ($request->shift_type === 'day' && $isDayShiftTime) {
@@ -232,8 +234,30 @@ class BoardController extends Controller
                     'disabled' => true
                 ])->render();
             }
-        }elseif ($step == 10){
+        } elseif ($step == 10) {
             return view('admin.boards.pick-a-fatal-risk-to-discuss');
+        } elseif ($step == 11) {
+            $safetyFocuses = $this->boardService->getSafetyFocuses($request);
+
+            if ($request->shift_type === 'day' && $isDayShiftTime) {
+                return view('admin.boards.health-and-safety-focus', [
+                    'safetyFocuses' => $safetyFocuses,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => false,
+                ])->render();
+            } elseif ($request->shift_type === 'night' && $isNightShiftTime) {
+                return view('admin.boards.health-and-safety-focus', [
+                    'safetyFocuses' => $safetyFocuses,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => false
+                ])->render();
+            } else {
+                return view('admin.boards.health-and-safety-focus', [
+                    'safetyFocuses' => $safetyFocuses,
+                    'today' => Carbon::now()->format('d-m-Y'),
+                    'disabled' => true
+                ])->render();
+            }
         }
     }
 
@@ -337,13 +361,13 @@ class BoardController extends Controller
 
     public function destroyHazardControl(Request $request)
     {
-          $hazard = HazardControl::findOrFail($request->id);
-          $hazard->delete();
+        $hazard = HazardControl::findOrFail($request->id);
+        $hazard->delete();
 
-          return response()->json([
-              'status' => 'success',
-              'message' => 'Hazard Control deleted successfully',
-          ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Hazard Control deleted successfully',
+        ]);
     }
 
     public function getFatalityControlList(Request $request)
@@ -386,9 +410,9 @@ class BoardController extends Controller
         foreach ($request->controls as $control) {
             HazardControl::updateOrCreate(
                 [
-                    'shift_log_id'     => $shiftLogId,
+                    'shift_log_id' => $shiftLogId,
                     'fatality_risk_id' => $fatalityRiskId,
-                    'description'      => $control,
+                    'description' => $control,
                 ],
                 [
                     'is_manual_entry' => 0,
@@ -405,6 +429,11 @@ class BoardController extends Controller
     public function storeImprovePerformance(ImproveOurPerformanceRequest $request)
     {
         return $this->boardService->storeImprovePerformance(ImproveOurPerformanceDto::fromArray($request->validated()));
+    }
+
+    public function storeSafetyFocuses(HealthSafetyFocusRequest $request)
+    {
+        return $this->boardService->storeSafetyFocuses(HealthSafetyFocusDto::fromArray($request->validated()));
     }
 }
 

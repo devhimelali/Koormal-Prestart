@@ -75,6 +75,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
     Route::post('store-improve-performance',
         [BoardController::class, 'storeImprovePerformance'])->name('boards.store.improve-performance');
+    Route::post('store-health-safety-focus', [BoardController::class, 'storeSafetyFocuses'])->name('boards.store.health-safety-focus');
 
     Route::resource('site-communications', SiteCommunicationController::class);
     Route::get('preview-site-communication/{path}',
