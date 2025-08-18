@@ -315,7 +315,7 @@
                     success: function (response) {
                         if (response.status == 'success') {
                             notify('success', response.message);
-                            $(`span[data-fatality-risk-control-id="${fatalityRiskControlId}"]`).closest('.image-container').remove();
+                            $(e.currentTarget).closest('.image-container').remove();
                         }
                     },
                     error: function () {
