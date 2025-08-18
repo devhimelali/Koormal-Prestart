@@ -232,6 +232,8 @@ class BoardController extends Controller
                     'disabled' => true
                 ])->render();
             }
+        }elseif ($step == 10){
+            return view('admin.boards.pick-a-fatal-risk-to-discuss');
         }
     }
 
