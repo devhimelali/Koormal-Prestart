@@ -11,6 +11,10 @@
                     (Circle and Discuss)
                 </span>
             </h5>
+            <button class="btn btn-sm btn-secondary mt-2 mx-auto d-flex align-items-center gap-1" id="viewAllDiscussListBtn">
+                <i class="bi bi-list-ul"></i>
+                View All Discuss List
+            </button>
         </div>
         <div class="col-2 col-md-2 text-end text-md-center">
             <img src="{{ asset('assets/logos/koormal-logo.png') }}" class="img-fluid header-logo float-end">
@@ -84,6 +88,12 @@
 
     <x-modal id="controlListModal" title="Control List" :staticBackdrop="true"
              size="modal-lg"
+    >
+
+    </x-modal>
+
+    <x-modal id="viewAllDiscussListModal" title="Fatal Risk to Discuss" :staticBackdrop="true"
+             size="modal-xl"
     >
 
     </x-modal>

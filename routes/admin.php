@@ -82,6 +82,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('get-control-list-for-fatal-risk-to-discuss', [
         BoardController::class, 'getControlListForFatalRiskToDiscuss'
     ])->name('get-control-list-for-fatal-risk-to-discuss');
+    Route::get('view-all-discuss-list', [BoardController::class, 'getAllDiscussList'])->name('boards.view-all-discuss-list');
 
     Route::resource('site-communications', SiteCommunicationController::class);
     Route::get('preview-site-communication/{path}',

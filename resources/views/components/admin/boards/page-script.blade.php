@@ -659,6 +659,33 @@
                 })
             });
 
+            $(document).on('click', '#viewAllDiscussListBtn', function () {
+                $.ajax({
+                    url: "{{ route('boards.view-all-discuss-list') }}",
+                    method: 'GET',
+                    data: {
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
+                        _token: '{{ csrf_token() }}'
+                    },
+                    beforeSend: function () {
+                        $('#loader').show();
+                    },
+                    success: function (response) {
+                        $('#viewAllDiscussListModal .modal-body').html(response);
+                        $('#viewAllDiscussListModal').modal('show');
+
+                    },
+                    error: handleAjaxErrors,
+                    complete:function (){
+                        $('#loader').hide();
+                    }
+                })
+            })
+
             {{--$(document).on('click', '#resetLegendBtn', function () {--}}
             {{--    Swal.fire({--}}
             {{--        title: 'Are you sure?',--}}

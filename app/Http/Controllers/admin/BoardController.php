@@ -464,6 +464,11 @@ class BoardController extends Controller
         return view('components.admin.pick-a-fatal-risk-to-discuss.control-list',
             compact('fatalityRisk', 'controls', 'shiftId', 'ShiftRotationId', 'startDate', 'endDate', 'shiftType'));
     }
+
+    public function getAllDiscussList(Request $request)
+    {
+        return $this->boardService->getAllDiscussList($request);
+    }
 }
 
 

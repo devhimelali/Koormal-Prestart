@@ -400,6 +400,22 @@ class BoardService
         ]);
     }
 
+    public function getAllDiscussList($request)
+    {
+        $date = $this->getShiftDate();
+
+        $discusses = FatalRiskToDiscuss::with('fatalityRisk', 'fatalToDiscussControls')
+            ->where('shift_id', $request->shift_id)
+            ->where('shift_rotation_id', $request->shift_rotation_id)
+            ->where('start_date', Carbon::parse($request->start_date)->format('Y-m-d'))
+            ->where('end_date', Carbon::parse($request->end_date)->format('Y-m-d'))
+            ->where('shift_type', $request->shift_type)
+            ->where('date', $date)
+            ->get();
+
+        return view('components.admin.pick-a-fatal-risk-to-discuss.discuss-list', compact('discusses'));
+    }
+
     private function storeFatalityRiskControlToShiftLog($validated)
     {
         foreach ($validated['fatality_risk_control'] as $fatalityRiskControlId) {

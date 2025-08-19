@@ -8,8 +8,7 @@
 
     <div class="mb-2">
         <x-form.label text="Control" for="control"/>
-        <select name="controls[]" id="control" class="form-select" multiple>
-            <option value="">Select Control</option>
+        <select name="controls[]" id="control" class="form-select" multiple placeholder="Select or add control">
             @forelse($controls as $control)
                 <option value="{{$control->description}}">{{$control->description}}</option>
             @empty
