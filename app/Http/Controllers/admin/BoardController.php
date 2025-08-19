@@ -446,6 +446,16 @@ class BoardController extends Controller
     {
         $this->boardService->storeFatalRiskToDiscuss(FatalRiskToDiscussDto::fromArray($request->validated()));
     }
+
+    public function getControlListForFatalRiskToDiscuss(Request $request)
+    {
+        $fatalityRiskId = $request->risk_id;
+        $fatalityRisk = FatalityRisk::findOrFail($fatalityRiskId);
+        $controls = FatalityControl::where('fatality_risk_id', $fatalityRiskId)->get();
+
+        return view('components.admin.pick-a-fatal-risk-to-discuss.control-list',
+            compact('fatalityRisk', 'controls'));
+    }
 }
 
 

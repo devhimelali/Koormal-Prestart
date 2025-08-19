@@ -75,9 +75,13 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         [BoardController::class, 'deleteFatalityRiskControlImage'])->name('fatality-risk-controls.delete-image');
     Route::post('store-improve-performance',
         [BoardController::class, 'storeImprovePerformance'])->name('boards.store.improve-performance');
-    Route::post('store-health-safety-focus', [BoardController::class, 'storeSafetyFocuses'])->name('boards.store.health-safety-focus');
-    Route::post('store-fatal-risk-to-discuss', [BoardController::class, 'storeFatalRiskToDiscuss'])->name('boards.store.fatal-risk-to-discuss');
-
+    Route::post('store-health-safety-focus',
+        [BoardController::class, 'storeSafetyFocuses'])->name('boards.store.health-safety-focus');
+    Route::post('store-fatal-risk-to-discuss',
+        [BoardController::class, 'storeFatalRiskToDiscuss'])->name('boards.store.fatal-risk-to-discuss');
+    Route::get('get-control-list-for-fatal-risk-to-discuss', [
+        BoardController::class, 'getControlListForFatalRiskToDiscuss'
+    ])->name('get-control-list-for-fatal-risk-to-discuss');
 
     Route::resource('site-communications', SiteCommunicationController::class);
     Route::get('preview-site-communication/{path}',

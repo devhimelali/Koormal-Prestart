@@ -69,6 +69,12 @@
             <i class="bi bi-caret-right-fill"></i>
         </button>
     </div>
+
+    <x-modal id="controlListModal" title="Control List" :staticBackdrop="true"
+             size="modal-lg"
+             :scrollable="true">
+
+    </x-modal>
 </div>
 <script>
     $('#previousStepBtn').on('click', function () {
@@ -89,16 +95,32 @@
         let riskName = $(this).find('h6').text();
         let riskImage = $(this).find('img').attr('src');
 
-        Swal.fire({
-            title: 'Under development',
-            text: "We are working on this feature. Please check back later.",
-            icon: 'warning',
-            showCancelButton: false,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ok'
-        }).then((result) => {
-
+        $.ajax({
+            url: "{{ route('get-control-list-for-fatal-risk-to-discuss') }}",
+            type: "get",
+            data: {
+                _token: "{{ csrf_token() }}",
+                risk_id: riskId,
+            },
+            success: function (response) {
+                $('#controlListModal .modal-title').html(`
+                    <div class="d-flex align-items-center gap-2">
+                        <div>
+                            <img src="${riskImage}" alt="${riskName}" width="35"
+                                 class="img-fluid">
+                        </div>
+                        <div>
+                            <h5 class="mb-0">${riskName}</h5>
+                        </div>
+                    </div>
+                `);
+                $('#controlListModal .modal-body').html(response);
+                $('#controlListModal').modal('show');
+            }
         })
+    });
+
+    $(document).on('change', '#control', function () {
+        $('#discussNoteDiv').removeClass('d-none');
     });
 </script>
