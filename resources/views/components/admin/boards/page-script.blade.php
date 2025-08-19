@@ -576,7 +576,6 @@
             // ============= Health and safety focus End  =============
             // ============= Fatal risk to discuss start  =============
             $(document).on('click', '.risk-card', function () {
-                $('.risk-card').removeClass('selected-risk');
                 $(this).addClass('selected-risk');
 
                 let riskId = $(this).data('risk-id');

@@ -21,8 +21,11 @@
         <div class="col-12">
             <div class="row g-3">
                 @forelse($fatalityRisks as $fatalityRisk)
+                    @php
+                        $isActive = $discusses->contains('fatality_risk_id', $fatalityRisk->id);
+                    @endphp
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                        <div class="card h-100 shadow-sm border-0 rounded-3 risk-card hover-shadow"
+                        <div class="card h-100 shadow-sm border-0 rounded-3 risk-card hover-shadow {{$isActive ? 'selected-risk' : ''}}"
                              data-risk-id="{{ $fatalityRisk->id }}" style="cursor: pointer;">
                             <div class="card-body bg-white text-center p-3 border shadow">
                                 <img src="{{ asset('storage/'.$fatalityRisk->image) }}"

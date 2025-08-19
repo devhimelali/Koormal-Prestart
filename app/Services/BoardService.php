@@ -359,6 +359,13 @@ class BoardService
         ]);
     }
 
+    public function getFatalRiskToDiscuss($request)
+    {
+        return FatalRiskToDiscuss::with('fatalityRisk', 'fatalToDiscussControls')
+            ->filterFatalRiskToDiscuss($request)
+            ->get();
+    }
+
     public function storeFatalRiskToDiscuss(FatalRiskToDiscussDto $dto)
     {
         $shiftDate = $this->getShiftDate();
