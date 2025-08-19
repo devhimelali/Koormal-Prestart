@@ -52,8 +52,17 @@
         }
 
         .selected-risk {
-            border: 3px solid #2ecc71 !important;
+            border: 3px solid #f1c40f !important;   /* golden yellow */
+            background-color: #f9e79f !important;   /* light yellow */
             transform: scale(1.05);
+        }
+
+        .selected-risk .card-body {
+            background-color: #444 !important;      /* neutral gray */
+        }
+
+        .selected-risk h6 {
+            color: #fff !important;
         }
     </style>
 
@@ -72,10 +81,12 @@
 
     <x-modal id="controlListModal" title="Control List" :staticBackdrop="true"
              size="modal-lg"
-             :scrollable="true">
+    >
 
     </x-modal>
 </div>
+{{--<link rel="stylesheet" href="{{asset('assets/libs/choices.js/public/assets/styles/choices.min.css')}}">--}}
+<script src="{{asset('assets/libs/choices.js/public/assets/scripts/choices.min.js')}}"></script>
 <script>
     $('#previousStepBtn').on('click', function () {
         currentStep = 9;
@@ -87,40 +98,5 @@
         updateBoard(currentStep, "Health and safety focus");
     })
 
-    $(document).on('click', '.risk-card', function () {
-        $('.risk-card').removeClass('selected-risk');
-        $(this).addClass('selected-risk');
 
-        let riskId = $(this).data('risk-id');
-        let riskName = $(this).find('h6').text();
-        let riskImage = $(this).find('img').attr('src');
-
-        $.ajax({
-            url: "{{ route('get-control-list-for-fatal-risk-to-discuss') }}",
-            type: "get",
-            data: {
-                _token: "{{ csrf_token() }}",
-                risk_id: riskId,
-            },
-            success: function (response) {
-                $('#controlListModal .modal-title').html(`
-                    <div class="d-flex align-items-center gap-2">
-                        <div>
-                            <img src="${riskImage}" alt="${riskName}" width="35"
-                                 class="img-fluid">
-                        </div>
-                        <div>
-                            <h5 class="mb-0">${riskName}</h5>
-                        </div>
-                    </div>
-                `);
-                $('#controlListModal .modal-body').html(response);
-                $('#controlListModal').modal('show');
-            }
-        })
-    });
-
-    $(document).on('change', '#control', function () {
-        $('#discussNoteDiv').removeClass('d-none');
-    });
 </script>

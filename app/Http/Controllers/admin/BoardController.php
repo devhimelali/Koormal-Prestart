@@ -444,17 +444,23 @@ class BoardController extends Controller
 
     public function storeFatalRiskToDiscuss(FatalRiskToDiscussRequest $request)
     {
-        $this->boardService->storeFatalRiskToDiscuss(FatalRiskToDiscussDto::fromArray($request->validated()));
+        return $this->boardService->storeFatalRiskToDiscuss(FatalRiskToDiscussDto::fromArray($request->validated()));
     }
 
     public function getControlListForFatalRiskToDiscuss(Request $request)
     {
         $fatalityRiskId = $request->risk_id;
+        $shiftId = $request->shift_id;
+        $ShiftRotationId = $request->shift_rotation_id;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        $shiftType = $request->shift_type;
+
         $fatalityRisk = FatalityRisk::findOrFail($fatalityRiskId);
         $controls = FatalityControl::where('fatality_risk_id', $fatalityRiskId)->get();
 
         return view('components.admin.pick-a-fatal-risk-to-discuss.control-list',
-            compact('fatalityRisk', 'controls'));
+            compact('fatalityRisk', 'controls', 'shiftId', 'ShiftRotationId', 'startDate', 'endDate', 'shiftType'));
     }
 }
 

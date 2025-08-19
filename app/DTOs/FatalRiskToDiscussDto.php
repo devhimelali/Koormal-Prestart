@@ -16,6 +16,8 @@ class FatalRiskToDiscussDto
      * @param  DateTimeImmutable  $start_date  Shift start date
      * @param  DateTimeImmutable  $end_date  Shift end date
      * @param  ShiftTypeEnum  $shift_type  Type of shift (enum)
+     * @param  string  $discuss_note  Discuss note
+     * @param  array  $controls  Controls
      */
     public function __construct(
         public int $fatality_risk_id,
@@ -24,6 +26,8 @@ class FatalRiskToDiscussDto
         public DateTimeImmutable $start_date,
         public DateTimeImmutable $end_date,
         public ShiftTypeEnum $shift_type,
+        public string $discuss_note,
+        public array $controls
     ) {
         //
     }
@@ -37,6 +41,8 @@ class FatalRiskToDiscussDto
             start_date: new DateTimeImmutable($data['start_date']),
             end_date: new DateTimeImmutable($data['end_date']),
             shift_type: ShiftTypeEnum::from($data['shift_type']),
+            discuss_note: $data['discuss_note'],
+            controls: $data['controls']
         );
     }
 }

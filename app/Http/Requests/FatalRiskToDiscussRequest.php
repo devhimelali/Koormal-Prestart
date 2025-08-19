@@ -30,6 +30,9 @@ class FatalRiskToDiscussRequest extends FormRequest
             'start_date' => ['required', Rule::date()->format('d-m-Y')],
             'end_date' => ['required', Rule::date()->format('d-m-Y')->afterOrEqual('start_date')],
             'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
+            'discuss_note' => ['required', 'string'],
+            'controls' => ['required', 'array'],
+            'controls.*' => ['required', 'string'],
         ];
     }
 }

@@ -574,7 +574,91 @@
                 addBlankHealthAndSafety(note, date);
             });
             // ============= Health and safety focus End  =============
+            // ============= Fatal risk to discuss start  =============
+            $(document).on('click', '.risk-card', function () {
+                $('.risk-card').removeClass('selected-risk');
+                $(this).addClass('selected-risk');
 
+                let riskId = $(this).data('risk-id');
+                let riskName = $(this).find('h6').text();
+                let riskImage = $(this).find('img').attr('src');
+
+                $.ajax({
+                    url: "{{ route('get-control-list-for-fatal-risk-to-discuss') }}",
+                    type: "get",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        risk_id: riskId,
+                        shift_id: "{{$shift_id}}",
+                        shift_rotation_id: "{{$rotation_id}}",
+                        start_date: "{{$start_date}}",
+                        end_date: "{{$end_date}}",
+                        shift_type: "{{$shift_type}}",
+                    },
+                    beforeSend: function () {
+                        $('#loader').show();
+                    },
+                    success: function (response) {
+                        $('#controlListModal .modal-title').html(`
+                    <div class="d-flex align-items-center gap-2">
+                        <div>
+                            <img src="${riskImage}" alt="${riskName}" width="35"
+                                 class="img-fluid">
+                        </div>
+                        <div>
+                            <h5 class="mb-0">${riskName}</h5>
+                        </div>
+                    </div>
+                `);
+                        $('#controlListModal .modal-body').html(response);
+                        new Choices("#control", {
+                            removeItemButton: true,
+                            searchEnabled: true
+                        });
+                        $('#controlListModal').modal('show');
+                    },
+                    error: handleAjaxErrors,
+                    complete: function () {
+                        $('#loader').hide();
+                    }
+                })
+            });
+
+            $(document).on('change', '#control', function () {
+                $('#discussNoteDiv').removeClass('d-none');
+            });
+
+            $(document).on('submit', '#controlListForm', function (e) {
+                e.preventDefault();
+
+                let form = this;
+                let formData = new FormData(form);
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function () {
+                        ajaxBeforeSend('#controlListForm',
+                            '#controlListSubmitBtn');
+                    },
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            $('#controlListModal').modal('hide');
+                            notify('success', response.message);
+                            setTimeout(() => {
+                                updateBoard(response.step);
+                            }, 500);
+                        }
+                    },
+                    error: handleAjaxErrors,
+                    complete: function () {
+                        ajaxComplete('#controlListSubmitBtn', 'Save');
+                    }
+                })
+            });
 
             {{--$(document).on('click', '#resetLegendBtn', function () {--}}
             {{--    Swal.fire({--}}

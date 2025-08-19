@@ -12,6 +12,7 @@ use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Models\FatalityControl;
 use App\Models\FatalRiskToDiscuss;
+use App\Models\FatalRiskToDiscussControl;
 use App\Models\HazardControl;
 use App\Models\HealthSafetyFocus;
 use App\Models\ImproveOurPerformance;
@@ -362,7 +363,7 @@ class BoardService
     {
         $shiftDate = $this->getShiftDate();
 
-        FatalRiskToDiscuss::updateOrCreate(
+        $discuss = FatalRiskToDiscuss::updateOrCreate(
             [
                 'shift_id' => $dto->shift_id,
                 'shift_rotation_id' => $dto->shift_rotation_id,
@@ -371,8 +372,19 @@ class BoardService
                 'end_date' => $dto->end_date,
                 'shift_type' => $dto->shift_type,
                 'date' => $shiftDate,
+            ],
+            [
+                'discuss_note' => $dto->discuss_note,
             ]
         );
+
+        foreach ($dto->controls as $control) {
+            FatalRiskToDiscussControl::create([
+                'fatal_risk_to_discuss_id' => $discuss->id,
+                'description' => $control,
+                'is_manual_entry' => false,
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',

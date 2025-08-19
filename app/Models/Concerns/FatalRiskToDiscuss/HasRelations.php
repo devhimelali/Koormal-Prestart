@@ -3,9 +3,11 @@
 namespace App\Models\Concerns\FatalRiskToDiscuss;
 
 use App\Models\FatalityRisk;
+use App\Models\FatalRiskToDiscussControl;
 use App\Models\Shift;
 use App\Models\ShiftRotation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasRelations
 {
@@ -38,5 +40,14 @@ trait HasRelations
     public function fatalityRisk(): BelongsTo
     {
         return $this->belongsTo(FatalityRisk::class);
+    }
+
+    /**
+     * Get the fatality risk that this Fatality to discuss belongs to.
+     * @return HasMany
+     */
+    public function fatalToDiscussControls(): HasMany
+    {
+        return $this->hasMany(FatalRiskToDiscussControl::class);
     }
 }
