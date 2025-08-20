@@ -386,9 +386,10 @@ class BoardService
             ]
         );
 
+        $discuss->fatalToDiscussControls()->delete();
+
         foreach ($dto->controls as $control) {
-            FatalRiskToDiscussControl::create([
-                'fatal_risk_to_discuss_id' => $discuss->id,
+            $discuss->fatalToDiscussControls()->create([
                 'description' => $control,
                 'is_manual_entry' => false,
             ]);
