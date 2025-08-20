@@ -140,7 +140,8 @@
                     orderable: false,
                     searchable: false
                 },
-            ]
+            ],
+            order: [[5, 'desc']],
         });
 
         $('#shift').on('change', function () {

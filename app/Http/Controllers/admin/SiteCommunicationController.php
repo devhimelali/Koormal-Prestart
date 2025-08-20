@@ -34,8 +34,8 @@ class SiteCommunicationController extends Controller
             if ($startDate && $endDate) {
                 $data->whereBetween('date', [$startDate, $endDate]);
             } else {
-                $startDate = Carbon::today()->subDays(7)->format('Y-m-d');
-                $endDate = Carbon::today()->format('Y-m-d');
+                $startDate = Carbon::today()->subDays(7)->startOfDay();
+                $endDate = Carbon::today()->endOfDay();
                 $data->whereBetween('date', [$startDate, $endDate]);
             }
 
