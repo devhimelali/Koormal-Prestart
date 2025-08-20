@@ -26,6 +26,8 @@ use App\Models\FatalityRisk;
 use App\Models\FatalRiskToDiscuss;
 use App\Models\FatalRiskToDiscussControl;
 use App\Models\HazardControl;
+use App\Models\LabourShift;
+use App\Models\Supervisor;
 use App\Services\BoardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -464,6 +466,23 @@ class BoardController extends Controller
     public function deleteTodayDiscussList(Request $request)
     {
         return $this->boardService->deleteTodayDiscussList($request);
+    }
+
+    public function loadSupervisorAndLabourName(Request $request)
+    {
+        $date = Carbon::now()->format('d-m-Y');
+        $supervisor = Supervisor::where('shift', $request->shift_type)
+            ->where('date', $date)
+            ->first();
+
+        $labour = LabourShift::where('shift', $request->shift_type)
+            ->where('date', $date)
+            ->first();
+
+        return response()->json([
+            'supervisor_name' => $supervisor->name ?? 'N/A',
+            'labor_name' => $labour->name ?? 'N/A',
+        ]);
     }
 }
 

@@ -7,7 +7,6 @@
         $shift_type = request()->query('shift_type');
         $crew = request()->query('crew');
         $shift_id = \App\Models\Shift::where('name', $crew)->first()->id;
-//        dd($shift_id);
         $rotation_id = \App\Models\ShiftRotation::where('is_active', true)->value('id');
     @endphp
     <x-common.breadcrumb :title="'Boards'"
@@ -20,7 +19,7 @@
                     <div class="card name-card border border-2 border-success mb-0">
                         <div class="name-card-body">
                             <h5 class="mb-1 text-center">Supervisor Name :</h5>
-                            <p class="text-muted mb-0 text-center">{{ $supervisor?->name ?? 'N/A' }}</p>
+                            <p class="text-muted mb-0 text-center" id="supervisor-name">{{ $supervisor?->name ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>
@@ -38,7 +37,7 @@
                     <div class="card name-card border border-2 border-success mb-0 ms-auto">
                         <div class="name-card-body">
                             <h5 class="mb-1 text-center">Labour Name :</h5>
-                            <p class="text-muted mb-0 text-center">{{ $labor->name ?? 'N/A' }}</p>
+                            <p class="text-muted mb-0 text-center" id="labour-name">{{ $labor->name ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>

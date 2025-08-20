@@ -82,9 +82,12 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('get-control-list-for-fatal-risk-to-discuss', [
         BoardController::class, 'getControlListForFatalRiskToDiscuss'
     ])->name('get-control-list-for-fatal-risk-to-discuss');
-    Route::get('view-all-discuss-list', [BoardController::class, 'getAllDiscussList'])->name('boards.view-all-discuss-list');
-    Route::post('delete-today-discuss-list', [BoardController::class, 'deleteTodayDiscussList'])->name('boards.delete-today-discuss-list');
-
+    Route::get('view-all-discuss-list',
+        [BoardController::class, 'getAllDiscussList'])->name('boards.view-all-discuss-list');
+    Route::post('delete-today-discuss-list',
+        [BoardController::class, 'deleteTodayDiscussList'])->name('boards.delete-today-discuss-list');
+    Route::get('load-supervisor-and-labour-name',
+        [BoardController::class, 'loadSupervisorAndLabourName'])->name('boards.load-supervisor-and-labour-name');
     Route::resource('site-communications', SiteCommunicationController::class);
     Route::get('preview-site-communication/{path}',
         [SiteCommunicationController::class, 'preview'])->name('site-communications.preview');

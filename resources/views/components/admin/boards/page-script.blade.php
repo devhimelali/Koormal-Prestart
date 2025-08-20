@@ -733,6 +733,26 @@
                     }
                 })
             })
+
+            function loadSupervisorAndLabourName()
+            {
+                $.ajax({
+                    url: "{{ route('boards.load-supervisor-and-labour-name') }}",
+                    method: 'GET',
+                    data: {
+                        shift_type: "{{$shift_type}}",
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        $('#supervisor-name').text(response.supervisor_name);
+                        $('#labour-name').text(response.labor_name);
+                    }
+                });
+            }
+
+            loadSupervisorAndLabourName();
+
+            setInterval(loadSupervisorAndLabourName, 30000);
         });
     </script>
 @endsection
