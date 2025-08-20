@@ -460,6 +460,11 @@ class BoardController extends Controller
     {
         return $this->boardService->getAllDiscussList($request);
     }
+
+    public function deleteTodayDiscussList(Request $request)
+    {
+        return $this->boardService->deleteTodayDiscussList($request);
+    }
 }
 
 

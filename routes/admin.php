@@ -83,6 +83,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         BoardController::class, 'getControlListForFatalRiskToDiscuss'
     ])->name('get-control-list-for-fatal-risk-to-discuss');
     Route::get('view-all-discuss-list', [BoardController::class, 'getAllDiscussList'])->name('boards.view-all-discuss-list');
+    Route::post('delete-today-discuss-list', [BoardController::class, 'deleteTodayDiscussList'])->name('boards.delete-today-discuss-list');
 
     Route::resource('site-communications', SiteCommunicationController::class);
     Route::get('preview-site-communication/{path}',

@@ -11,10 +11,18 @@
                     (Circle and Discuss)
                 </span>
             </h5>
-            <button class="btn btn-sm btn-secondary mt-2 mx-auto d-flex align-items-center gap-1" id="viewAllDiscussListBtn">
-                <i class="bi bi-list-ul"></i>
-                View All Discuss List
-            </button>
+            <div class="d-flex align-items-center justify-content-center gap-2 mt-2">
+                <button class="btn btn-sm btn-secondary mt-2 d-flex align-items-center gap-1"
+                        id="viewAllDiscussListBtn">
+                    <i class="bi bi-list-ul"></i>
+                    View All Discuss List
+                </button>
+                <button class="btn btn-sm btn-danger mt-2 d-flex align-items-center gap-1"
+                        id="deleteTodayDiscussListBtn">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Reset Today Discuss List
+                </button>
+            </div>
         </div>
         <div class="col-2 col-md-2 text-end text-md-center">
             <img src="{{ asset('assets/logos/koormal-logo.png') }}" class="img-fluid header-logo float-end">
@@ -29,8 +37,9 @@
                         $isActive = $discusses->contains('fatality_risk_id', $fatalityRisk->id);
                     @endphp
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                        <div class="card h-100 shadow-sm border-0 rounded-3 risk-card hover-shadow {{$isActive ? 'selected-risk' : ''}}"
-                             data-risk-id="{{ $fatalityRisk->id }}" style="cursor: pointer;">
+                        <div
+                            class="card h-100 shadow-sm border-0 rounded-3 risk-card hover-shadow {{$isActive ? 'selected-risk' : ''}}"
+                            data-risk-id="{{ $fatalityRisk->id }}" style="cursor: pointer;">
                             <div class="card-body bg-white text-center p-3 border shadow">
                                 <img src="{{ asset('storage/'.$fatalityRisk->image) }}"
                                      class="img-fluid rounded"
@@ -59,13 +68,13 @@
         }
 
         .selected-risk {
-            border: 3px solid #f1c40f !important;   /* golden yellow */
-            background-color: #f9e79f !important;   /* light yellow */
+            border: 3px solid #f1c40f !important; /* golden yellow */
+            background-color: #f9e79f !important; /* light yellow */
             transform: scale(1.05);
         }
 
         .selected-risk .card-body {
-            background-color: #444 !important;      /* neutral gray */
+            background-color: #444 !important; /* neutral gray */
         }
 
         .selected-risk h6 {

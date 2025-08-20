@@ -691,6 +691,48 @@
                     }
                 })
             })
+
+            $(document).on('click', '#deleteTodayDiscussListBtn', function () {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will delete all entries made today. This action cannot be undone.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, reset today’s entries!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('boards.delete-today-discuss-list') }}",
+                            method: 'POST',
+                            data: {
+                                shift_id: "{{$shift_id}}",
+                                shift_rotation_id: "{{$rotation_id}}",
+                                start_date: "{{$start_date}}",
+                                end_date: "{{$end_date}}",
+                                shift_type: "{{$shift_type}}",
+                                _token: '{{ csrf_token() }}'
+                            },
+                            beforeSend: function () {
+                                $('#loader').show();
+                            },
+                            success: function (response) {
+                                if (response.status === 'success') {
+                                    notify('success', response.message);
+                                    setTimeout(() => {
+                                        updateBoard(response.step);
+                                    }, 500);
+                                }
+                            },
+                            error: handleAjaxErrors,
+                            complete: function () {
+                                $('#loader').hide();
+                            }
+                        })
+                    }
+                })
+            })
         });
     </script>
 @endsection
