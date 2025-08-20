@@ -23,6 +23,11 @@ class SiteCommunicationRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('post')) {
+            $fileRule = ['required', 'file', 'mimes:pdf'];
+        }else{
+            $fileRule = ['nullable', 'file', 'mimes:pdf'];
+        }
         return [
             'title' => ['required', 'string', 'max:255'],
             'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
@@ -31,7 +36,7 @@ class SiteCommunicationRequest extends FormRequest
                 'required',
                 'regex:/^(\d{2}-\d{2}-\d{4})(,\s*\d{2}-\d{2}-\d{4})*$/'
             ],
-            'pdf' => ['required', 'file', 'mimes:pdf'],
+            'pdf' => $fileRule,
         ];
     }
 }

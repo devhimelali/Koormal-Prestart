@@ -147,42 +147,68 @@ class SiteCommunicationController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(SiteCommunicationRequest $request, $id)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'pdf' => ['nullable', 'file', 'mimes:pdf'],
-            'shift_type' => ['required', Rule::in(['day', 'night'])]
-        ]);
-
         $siteCommunication = SiteCommunication::findOrFail($id);
+        $oldFilePath = $siteCommunication->path;
 
-        $data = [
-            'shift_type' => $request->shift_type,
-            'date' => Carbon::createFromFormat('d-m-Y', $request->dates)->format('Y-m-d'),
-            'title' => $request->title,
-            'description' => $request->description,
-        ];
+        // Delete the old record
+        $siteCommunication->delete();
 
-        if ($request->hasFile('pdf')) {
-            if ($siteCommunication->path && file_exists(public_path('storage/'.$siteCommunication->path))) {
-                unlink(public_path('storage/'.$siteCommunication->path));
+        $rotation = ShiftRotation::where('is_active', true)->firstOrFail();
+
+        $dates = explode(',', $request->dates);
+        $shiftType = $request->shift_type === 'day' ? 'day_shift' : 'night_shift';
+
+        foreach ($dates as $date) {
+            $parsedDate = Carbon::createFromFormat('d-m-Y', trim($date));
+
+            $shiftDetails = $rotation->getShiftBlocks($parsedDate, $parsedDate)->first();
+
+            // Skip if no shift details found
+            if (!$shiftDetails) {
+                continue;
             }
 
-            $file = $request->file('pdf');
-            $fileName = time().'-site-communication'.'.'.$file->getClientOriginalExtension();
-            $filePath = $file->storeAs('uploads', $fileName, 'public');
-            $data['path'] = $filePath;
-        }
+            $shiftName = $shiftDetails[$shiftType] ?? null;
+            // Skip if shift name not found
+            if (!$shiftName) {
+                continue;
+            }
 
-        $siteCommunication->update($data);
+            $data = [
+                'shift' => $shiftName,
+                'shift_rotation_id' => $rotation->id,
+                'start_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['start_date'])->format('Y-m-d'),
+                'end_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['end_date'])->format('Y-m-d'),
+                'shift_type' => $request->shift_type,
+                'date' => $parsedDate->format('Y-m-d'),
+                'title' => $request->title,
+                'description' => $request->description,
+                'path' => $oldFilePath
+            ];
+
+            // Handle new PDF upload
+            if ($request->hasFile('pdf')) {
+                if ($oldFilePath && file_exists(public_path('storage/'.$oldFilePath))) {
+                    unlink(public_path('storage/'.$oldFilePath));
+                }
+
+                $file = $request->file('pdf');
+                $fileName = time().'-site-communication.'.$file->getClientOriginalExtension();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
+                $data['path'] = $filePath;
+            }
+
+            SiteCommunication::create($data);
+        }
 
         return response()->json([
             'status' => 'success',
             'message' => 'Site Communication updated successfully'
         ]);
     }
+
 
     public function destroy($id)
     {
