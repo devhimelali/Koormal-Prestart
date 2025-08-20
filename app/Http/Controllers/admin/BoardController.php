@@ -23,6 +23,8 @@ use App\Http\Requests\SiteCommunicationRequest;
 use App\Models\DailyShiftEntry;
 use App\Models\FatalityControl;
 use App\Models\FatalityRisk;
+use App\Models\FatalRiskToDiscuss;
+use App\Models\FatalRiskToDiscussControl;
 use App\Models\HazardControl;
 use App\Services\BoardService;
 use Carbon\Carbon;
@@ -451,18 +453,7 @@ class BoardController extends Controller
 
     public function getControlListForFatalRiskToDiscuss(Request $request)
     {
-        $fatalityRiskId = $request->risk_id;
-        $shiftId = $request->shift_id;
-        $ShiftRotationId = $request->shift_rotation_id;
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
-        $shiftType = $request->shift_type;
-
-        $fatalityRisk = FatalityRisk::findOrFail($fatalityRiskId);
-        $controls = FatalityControl::where('fatality_risk_id', $fatalityRiskId)->get();
-
-        return view('components.admin.pick-a-fatal-risk-to-discuss.control-list',
-            compact('fatalityRisk', 'controls', 'shiftId', 'ShiftRotationId', 'startDate', 'endDate', 'shiftType'));
+        return $this->boardService->getControlListForFatalRiskToDiscuss($request);
     }
 
     public function getAllDiscussList(Request $request)

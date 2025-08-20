@@ -10,14 +10,15 @@
         <x-form.label text="Control" for="control"/>
         <select name="controls[]" id="control" class="form-select" multiple placeholder="Select or add control">
             @forelse($controls as $control)
-                <option value="{{$control->description}}">{{$control->description}}</option>
+                <option
+                    {{ in_array($control->description, $selectedControls) ? 'selected' : '' }} value="{{$control->description}}">{{$control->description}}</option>
             @empty
             @endforelse
         </select>
     </div>
-    <div class="mb-2 d-none" id="discussNoteDiv">
+    <div id="discussNoteDiv" class="mb-2 @empty($discussNote) d-none @endempty">
         <x-form.label text="Discuss Note" for="discuss_note"/>
-        <textarea name="discuss_note" id="discuss_note" class="form-control" rows="6"></textarea>
+        <textarea name="discuss_note" id="discuss_note" class="form-control" rows="6">{{ $discussNote }}</textarea>
     </div>
 
     <x-slot name="buttons">

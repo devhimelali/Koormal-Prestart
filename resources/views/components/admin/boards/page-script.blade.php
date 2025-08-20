@@ -659,6 +659,12 @@
                 })
             });
 
+            $(document).on('hidden.bs.modal', '#controlListModal', function () {
+                if (typeof updateBoard === 'function') {
+                    updateBoard(10, 'Pick a Fatal Risk to discuss');
+                }
+            });
+
             $(document).on('click', '#viewAllDiscussListBtn', function () {
                 $.ajax({
                     url: "{{ route('boards.view-all-discuss-list') }}",
@@ -680,47 +686,11 @@
 
                     },
                     error: handleAjaxErrors,
-                    complete:function (){
+                    complete: function () {
                         $('#loader').hide();
                     }
                 })
             })
-
-            {{--$(document).on('click', '#resetLegendBtn', function () {--}}
-            {{--    Swal.fire({--}}
-            {{--        title: 'Are you sure?',--}}
-            {{--        text: "This will reset the safety calendar to its default state.",--}}
-            {{--        icon: 'warning',--}}
-            {{--        showCancelButton: true,--}}
-            {{--        confirmButtonText: 'Yes, reset it!',--}}
-            {{--        confirmButtonColor: '#d33',--}}
-            {{--    }).then((result) => {--}}
-            {{--        if (result.isConfirmed) {--}}
-            {{--            $.ajax({--}}
-            {{--                url: "{{ route('boards.reset.safety-calendar') }}",--}}
-            {{--                method: 'POST',--}}
-            {{--                data: {--}}
-            {{--                    daily_shift_entry_id: 1,--}}
-            {{--                    _token: '{{ csrf_token() }}'--}}
-            {{--                },--}}
-            {{--                beforeSend: function () {--}}
-            {{--                    $('#loader').show();--}}
-            {{--                },--}}
-            {{--                success: function (response) {--}}
-            {{--                    notify('success', response.message);--}}
-            {{--                    setTimeout(() => {--}}
-            {{--                        updateBoard(response.step);--}}
-            {{--                    }, 500);--}}
-            {{--                },--}}
-            {{--                error: handleAjaxErrors,--}}
-            {{--                complete: function () {--}}
-            {{--                    $('#loader').hide();--}}
-            {{--                }--}}
-            {{--            });--}}
-            {{--        }--}}
-            {{--    });--}}
-            {{--});--}}
-
         });
     </script>
 @endsection

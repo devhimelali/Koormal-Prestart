@@ -11,6 +11,7 @@ use App\DTOs\ImproveOurPerformanceDto;
 use App\DTOs\ReviewOfPreviousShiftDto;
 use App\DTOs\SiteCommunicationDto;
 use App\Models\FatalityControl;
+use App\Models\FatalityRisk;
 use App\Models\FatalRiskToDiscuss;
 use App\Models\FatalRiskToDiscussControl;
 use App\Models\HazardControl;
@@ -414,6 +415,43 @@ class BoardService
             ->get();
 
         return view('components.admin.pick-a-fatal-risk-to-discuss.discuss-list', compact('discusses'));
+    }
+
+    public function getControlListForFatalRiskToDiscuss($request)
+    {
+        $date = $this->getShiftDate();
+
+        $fatalityRiskId = $request->risk_id;
+        $shiftId = $request->shift_id;
+        $ShiftRotationId = $request->shift_rotation_id;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        $shiftType = $request->shift_type;
+        $parseStartDate = Carbon::parse($startDate)->format('Y-m-d');
+        $parseEndDate = Carbon::parse($endDate)->format('Y-m-d');
+
+        $fatalityRisk = FatalityRisk::findOrFail($fatalityRiskId);
+        $controls = FatalityControl::where('fatality_risk_id', $fatalityRiskId)->get();
+
+        $fatalRiskToDiscuss = FatalRiskToDiscuss::with('fatalToDiscussControls')
+            ->where('fatality_risk_id', $fatalityRiskId)
+            ->where('shift_id', $shiftId)
+            ->where('shift_rotation_id', $ShiftRotationId)
+            ->where('start_date', $parseStartDate)
+            ->where('end_date', $parseEndDate)
+            ->where('shift_type', $shiftType)
+            ->where('date', $date)
+            ->first();
+
+        $selectedControls = $fatalRiskToDiscuss
+            ? $fatalRiskToDiscuss->fatalToDiscussControls->pluck('description')->toArray()
+            : [];
+
+        $discussNote = $fatalRiskToDiscuss->discuss_note ?? null;
+
+        return view('components.admin.pick-a-fatal-risk-to-discuss.control-list',
+            compact('fatalityRisk', 'controls', 'shiftId', 'ShiftRotationId', 'startDate', 'endDate', 'shiftType',
+                'selectedControls', 'discussNote'));
     }
 
     private function storeFatalityRiskControlToShiftLog($validated)
