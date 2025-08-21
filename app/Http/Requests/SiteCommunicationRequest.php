@@ -30,7 +30,7 @@ class SiteCommunicationRequest extends FormRequest
         }
         return [
             'title' => ['required', 'string', 'max:255'],
-            'shift_type' => ['required', Rule::enum(ShiftTypeEnum::class)],
+            'shift_type' => ['required', 'in:day,night,both'],
             'description' => ['required', 'string'],
             'dates' => [
                 'required',

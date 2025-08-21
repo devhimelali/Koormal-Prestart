@@ -19,7 +19,7 @@ class ShiftRotation extends Model
 
     /**
      * Accessor and mutator for the start date attribute.
-     * 
+     *
      * Formats the date from the database format 'Y-m-d' to 'd-m-Y' when retrieving,
      * and from 'd-m-Y' to 'Y-m-d' when storing in the database.
      *
@@ -29,8 +29,8 @@ class ShiftRotation extends Model
     protected function startDate(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => Carbon::parse($value)->format('d-m-Y'),
-            set: fn($value) => Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d'),
+            get: fn ($value) => Carbon::parse($value)->format('d-m-Y'),
+            set: fn ($value) => Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d'),
         );
     }
 
@@ -51,17 +51,25 @@ class ShiftRotation extends Model
      */
     public function getShiftBlocks(?Carbon $filterStart = null, ?Carbon $filterEnd = null): Collection
     {
-        $startDate = Carbon::parse($this->start_date);
+        $startDate = Carbon::parse($this->start_date)->startOfDay(); // Normalize to start of day
         $rotationDays = $this->rotation_days;
 
         if (!$rotationDays || $rotationDays <= 0) {
-            return collect(); // Invalid config
+            return collect();
+        }
+
+        // Normalize filter dates
+        if ($filterStart) {
+            $filterStart = $filterStart->copy()->startOfDay();
+        }
+        if ($filterEnd) {
+            $filterEnd = $filterEnd->copy()->endOfDay(); // Use endOfDay for inclusive end date
         }
 
         // Load shifts and map by name
         $shiftNames = ['A', 'B', 'C', 'D'];
         $shiftsByName = Shift::whereIn('name', $shiftNames)->get()->keyBy('name');
-        $getShift = fn($name) => $shiftsByName->get($name);
+        $getShift = fn ($name) => $shiftsByName->get($name);
 
         $rotationOrder = [
             ['day_shift' => $getShift('A'), 'night_shift' => $getShift('C')],
@@ -75,9 +83,9 @@ class ShiftRotation extends Model
 
         while (true) {
             $blockStart = $startDate->copy()->addDays($i * $rotationDays);
-            $blockEnd = $blockStart->copy()->addDays($rotationDays - 1);
+            $blockEnd = $blockStart->copy()->addDays($rotationDays - 1)->endOfDay(); // Normalize to end of day
 
-            // 1. Stop if filterEnd is set and this block is completely after it
+            // 1. Stop if filterEnd is set and this block starts after it
             if ($filterEnd && $blockStart->gt($filterEnd)) {
                 break;
             }
@@ -87,7 +95,6 @@ class ShiftRotation extends Model
                 $i++;
                 continue;
             }
-
             // 3. Add block
             $index = $i % 4;
             $blocks->push([
@@ -106,6 +113,11 @@ class ShiftRotation extends Model
         }
 
         return $blocks;
+    }
+
+    public function getShiftBlockForDate(Carbon $date)
+    {
+        return $this->getShiftBlocks($date, $date)->first();
     }
 
 

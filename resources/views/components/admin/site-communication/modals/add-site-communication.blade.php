@@ -25,6 +25,9 @@
                                 <option value="{{ $shiftType->value }}">{{ $shiftType->label() }}</option>
                             @empty
                             @endforelse
+                            @if($shiftTypes)
+                                <option value="both">Both Shift</option>
+                            @endif
                         </select>
                     </div>
                     <div class="col-md-6 mb-2">

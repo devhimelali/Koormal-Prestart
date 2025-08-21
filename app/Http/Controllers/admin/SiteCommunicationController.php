@@ -84,47 +84,7 @@ class SiteCommunicationController extends Controller
 
     public function store(SiteCommunicationRequest $request)
     {
-        $rotation = ShiftRotation::where('is_active', true)->firstOrFail();
-        $dates = explode(',', $request->dates);
-        $shiftType = $request->shift_type === 'day' ? 'day_shift' : 'night_shift';
-
-        foreach ($dates as $date) {
-            $parsedDate = Carbon::createFromFormat('d-m-Y', trim($date));
-
-            $shiftDetails = $rotation->getShiftBlocks($parsedDate, $parsedDate)->first();
-
-            if (!$shiftDetails) {
-                continue;
-            }
-
-            $shiftName = $shiftDetails[$shiftType] ?? null;
-
-            if (!$shiftName) {
-                continue; // Skip if shift name not found
-            }
-
-
-            $data = [
-                'shift' => $shiftName,
-                'shift_rotation_id' => $rotation->id,
-                'start_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['start_date'])->format('Y-m-d'),
-                'end_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['end_date'])->format('Y-m-d'),
-                'shift_type' => $request->shift_type,
-                'date' => $parsedDate->format('Y-m-d'),
-                'title' => $request->title,
-                'description' => $request->description,
-            ];
-
-            // Handle file upload
-            if ($request->hasFile('pdf')) {
-                $file = $request->file('pdf');
-                $fileName = time().'-site-communication'.'.'.$file->getClientOriginalExtension();
-                $filePath = $file->storeAs('uploads', $fileName, 'public');
-                $data['path'] = $filePath;
-            }
-
-            SiteCommunication::create($data);
-        }
+        $this->processSiteCommunications($request);
 
         return response()->json([
             'status' => 'success',
@@ -152,56 +112,16 @@ class SiteCommunicationController extends Controller
         $siteCommunication = SiteCommunication::findOrFail($id);
         $oldFilePath = $siteCommunication->path;
 
+        // Process new records
+        $this->processSiteCommunications($request, $oldFilePath);
+
+        // Delete the old file if the new file was uploaded
+        if ($request->hasFile('pdf') && $oldFilePath) {
+            $this->deleteFileIfExists($oldFilePath);
+        }
+
         // Delete the old record
         $siteCommunication->delete();
-
-        $rotation = ShiftRotation::where('is_active', true)->firstOrFail();
-
-        $dates = explode(',', $request->dates);
-        $shiftType = $request->shift_type === 'day' ? 'day_shift' : 'night_shift';
-
-        foreach ($dates as $date) {
-            $parsedDate = Carbon::createFromFormat('d-m-Y', trim($date));
-
-            $shiftDetails = $rotation->getShiftBlocks($parsedDate, $parsedDate)->first();
-
-            // Skip if no shift details found
-            if (!$shiftDetails) {
-                continue;
-            }
-
-            $shiftName = $shiftDetails[$shiftType] ?? null;
-            // Skip if shift name not found
-            if (!$shiftName) {
-                continue;
-            }
-
-            $data = [
-                'shift' => $shiftName,
-                'shift_rotation_id' => $rotation->id,
-                'start_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['start_date'])->format('Y-m-d'),
-                'end_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['end_date'])->format('Y-m-d'),
-                'shift_type' => $request->shift_type,
-                'date' => $parsedDate->format('Y-m-d'),
-                'title' => $request->title,
-                'description' => $request->description,
-                'path' => $oldFilePath
-            ];
-
-            // Handle new PDF upload
-            if ($request->hasFile('pdf')) {
-                if ($oldFilePath && file_exists(public_path('storage/'.$oldFilePath))) {
-                    unlink(public_path('storage/'.$oldFilePath));
-                }
-
-                $file = $request->file('pdf');
-                $fileName = time().'-site-communication.'.$file->getClientOriginalExtension();
-                $filePath = $file->storeAs('uploads', $fileName, 'public');
-                $data['path'] = $filePath;
-            }
-
-            SiteCommunication::create($data);
-        }
 
         return response()->json([
             'status' => 'success',
@@ -229,5 +149,81 @@ class SiteCommunicationController extends Controller
     public function preview($path)
     {
         return response()->file(public_path('storage/uploads/'.$path));
+    }
+
+    /**
+     * Process site communication records for multiple dates and shift types
+     */
+    private function processSiteCommunications(SiteCommunicationRequest $request, ?string $existingFilePath = null)
+    {
+        $rotation = ShiftRotation::where('is_active', true)->firstOrFail();
+        $dates = explode(',', $request->dates);
+
+        // Determine which shift types to process
+        $shiftTypesToProcess = [];
+
+        if ($request->shift_type === 'both') {
+            $shiftTypesToProcess = ['day', 'night'];
+        } else {
+            $shiftTypesToProcess = [$request->shift_type];
+        }
+
+        $filePath = $existingFilePath;
+        $createdRecords = [];
+
+        foreach ($dates as $date) {
+            $parsedDate = Carbon::createFromFormat('d-m-Y', trim($date));
+            $shiftDetails = $rotation->getShiftBlocks($parsedDate, $parsedDate)->first();
+
+            if (!$shiftDetails) {
+                continue;
+            }
+
+            foreach ($shiftTypesToProcess as $shiftType) {
+                $shiftField = $shiftType === 'day' ? 'day_shift' : 'night_shift';
+                $shiftName = $shiftDetails[$shiftField] ?? null;
+
+                if (!$shiftName) {
+                    continue;
+                }
+
+                $data = [
+                    'shift' => $shiftName,
+                    'shift_rotation_id' => $rotation->id,
+                    'start_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['start_date'])->format('Y-m-d'),
+                    'end_date' => Carbon::createFromFormat('d-m-Y', $shiftDetails['end_date'])->format('Y-m-d'),
+                    'shift_type' => $shiftType,
+                    'date' => $parsedDate->format('Y-m-d'),
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'path' => $filePath
+                ];
+
+                // Handle file upload - only upload once
+                if ($request->hasFile('pdf')) {
+                    if (!$filePath) {
+                        $file = $request->file('pdf');
+                        $fileName = time().'-site-communication'.'.'.$file->getClientOriginalExtension();
+                        $filePath = $file->storeAs('uploads', $fileName, 'public');
+                        $data['path'] = $filePath;
+                    }
+                }
+
+                $createdRecords[] = SiteCommunication::create($data);
+            }
+        }
+
+        return $createdRecords;
+    }
+
+
+    /**
+     * Handle file deletion if needed
+     */
+    private function deleteFileIfExists(?string $filePath): void
+    {
+        if ($filePath && file_exists(public_path('storage/'.$filePath))) {
+            unlink(public_path('storage/'.$filePath));
+        }
     }
 }
