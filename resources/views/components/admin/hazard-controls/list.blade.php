@@ -62,7 +62,7 @@
         </tr>
     @empty
         <tr>
-            <td colspan="3" class="text-center py-2">No hazard controls found</td>
+            <td colspan="4" class="text-center py-2">No hazard controls found</td>
         </tr>
     @endforelse
 </x-table>

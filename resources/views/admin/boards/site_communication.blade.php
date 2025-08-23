@@ -18,12 +18,12 @@
         <!-- Question 1 -->
         <div class="col-12">
             <div class="d-flex justify-content-end align-items-center flex-wrap mb-2">
-                @if(!$disabled)
-                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"
-                            id="addSiteCommunicationBtn">
-                        <i class="ph ph-plus"></i>
-                    </button>
-                @endif
+{{--                @if(!$disabled)--}}
+{{--                    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1"--}}
+{{--                            id="addSiteCommunicationBtn">--}}
+{{--                        <i class="ph ph-plus"></i>--}}
+{{--                    </button>--}}
+{{--                @endif--}}
             </div>
 
             <div class="table-responsive">
