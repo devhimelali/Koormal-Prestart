@@ -106,6 +106,33 @@
                         <span data-key="t-site-communications">Site Communications</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#sidebarReports"
+                       data-bs-toggle="collapse" role="button"
+                       class="nav-link menu-link {{in_array(Route::current()->getName(), ['fatality-risks.index', 'fatality-controls.index']) ? 'active' : 'collapsed'}}"
+                       aria-expanded="{{ in_array(Route::current()->getName(), ['fatality-risks.index', 'fatality-controls.index']) ? 'true' : 'false' }}"
+                       aria-controls="sidebarReports"
+                    >
+                        <i class="ph ph-chart-bar"></i>
+                        <span data-key="t-fatality-risk-and-controls">Report</span>
+                    </a>
+                    <div
+                        class="menu-dropdown collapse {{ in_array(Route::current()->getName(), ['fatality-risks.index', 'fatality-controls.index']) ? 'show' : '' }}"
+                        id="sidebarReports" style="">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('fatality-risks.index') }}"
+                                   class="nav-link {{ Route::current()->getName() == 'fatality-risks.index' ? 'active' : '' }}"
+                                   data-key="t-fatality-risks">Fatality Risks</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('fatality-controls.index') }}"
+                                   class="nav-link {{ Route::current()->getName() == 'fatality-controls.index' ? 'active' : '' }}"
+                                   data-key="t-fatality-controls">Fatality Controls</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->
