@@ -12,4 +12,14 @@ class HazardControlArchive extends Model
         'description',
         'is_manual_entry',
     ];
+
+    public function fatalityRiskArchive()
+    {
+        return $this->belongsTo(FatalityRiskArchive::class);
+    }
+
+    public function shiftLogArchive()
+    {
+        return $this->belongsTo(ShiftLogArchive::class);
+    }
 }

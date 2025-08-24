@@ -11,4 +11,19 @@ class FatalityRiskArchive extends Model
         'description',
         'image',
     ];
+
+    public function fatalityControlArchives()
+    {
+        return $this->hasMany(FatalityControlArchive::class);
+    }
+
+    public function fatalRiskToDiscussArchives()
+    {
+        return $this->hasMany(FatalRiskToDiscussArchive::class);
+    }
+
+    public function hazardControlArchives()
+    {
+        return $this->hasMany(HazardControlArchive::class);
+    }
 }

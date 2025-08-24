@@ -10,4 +10,9 @@ class FatalityControlArchive extends Model
         'fatality_risk_archive_id',
         'description',
     ];
+
+    public function fatalityRiskArchive()
+    {
+        return $this->belongsTo(FatalityRiskArchive::class);
+    }
 }

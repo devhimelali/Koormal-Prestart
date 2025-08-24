@@ -11,4 +11,9 @@ class FatalRiskToDiscussControlArchive extends Model
         'description',
         'is_manual_entry',
     ];
+
+    public function fatalRiskToDiscussArchive()
+    {
+        return $this->belongsTo(FatalRiskToDiscussArchive::class);
+    }
 }

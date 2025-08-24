@@ -36,4 +36,9 @@ class ShiftLogArchive extends Model
         'scheduled',
         'critical_work',
     ];
+
+    public function hazardControlArchives()
+    {
+        return $this->hasMany(HazardControlArchive::class);
+    }
 }

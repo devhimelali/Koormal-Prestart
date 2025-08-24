@@ -39,4 +39,14 @@ class FatalRiskToDiscussArchive extends Model
             get: fn ($value) => Carbon::parse($value)->format('d-m-Y')
         );
     }
+
+    public function fatalityRiskArchive()
+    {
+        return $this->belongsTo(FatalityRiskArchive::class);
+    }
+
+    public function fatalRiskToDiscussControlArchives()
+    {
+        return $this->hasMany(FatalRiskToDiscussControlArchive::class);
+    }
 }
