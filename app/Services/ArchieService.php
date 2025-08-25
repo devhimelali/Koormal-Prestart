@@ -14,7 +14,11 @@ use App\Models\ReviewPreviousShift;
 use App\Models\ReviewPreviousShiftArchive;
 use App\Models\Shift;
 use App\Models\ShiftRotation;
+use App\Models\SiteCommunication;
+use App\Models\SiteCommunicationArchive;
 use App\Models\Supervisor;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ArchieService
 {
@@ -124,6 +128,44 @@ class ArchieService
                     'shift_type' => $successNote->shift_type,
                     'date' => $successNote->date,
                     'note' => $successNote->note,
+                    'supervisor_name' => $supervisor,
+                    'labour_name' => $labour,
+                ]);
+            }
+        }
+    }
+
+    public function ArchivedSiteCommunication($dates)
+    {
+        $siteCommunications = SiteCommunication::whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
+
+        foreach ($siteCommunications as $date => $communications) {
+            foreach ($communications as $siteCommunication) {
+                $crew = $this->getShiftName($siteCommunication->shift_id);
+                $shiftRotation = $this->getShiftRotationDay($siteCommunication->shift_rotation_id);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $siteCommunication->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $siteCommunication->shift_type);
+
+                $newPath = null;
+                if ($siteCommunication->path && Storage::disk('public')->exists($siteCommunication->path)) {
+                    $newPath = "archie/{$date}/".basename($siteCommunication->path);
+                    Storage::disk('public')->makeDirectory("archie/{$date}");
+                    Storage::disk('public')->copy($siteCommunication->path, $newPath);
+                }
+
+                SiteCommunicationArchive::create([
+                    'crew' => $crew,
+                    'shift_rotation' => $shiftRotation,
+                    'start_date' => $siteCommunication->start_date,
+                    'end_date' => $siteCommunication->end_date,
+                    'shift_type' => $siteCommunication->shift_type,
+                    'date' => $siteCommunication->date,
+                    'path' => $newPath,
                     'supervisor_name' => $supervisor,
                     'labour_name' => $labour,
                 ]);
