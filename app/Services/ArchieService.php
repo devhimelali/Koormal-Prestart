@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\CelebrateSuccess;
+use App\Models\CelebrateSuccessArchive;
 use App\Models\CrossCriteria;
 use App\Models\HealthSafetyCrossCriteria;
 use App\Models\HealthSafetyCrossCriteriaArchive;
@@ -96,6 +98,32 @@ class ArchieService
                     'date' => $previousShift->date,
                     'question_number' => $previousShift->question_number,
                     'answer' => $previousShift->answer,
+                    'supervisor_name' => $supervisor,
+                    'labour_name' => $labour,
+                ]);
+            }
+        }
+    }
+
+    public function archivedCelebrateSuccess($dates)
+    {
+        foreach ($dates as $date) {
+            $successNotes = CelebrateSuccess::where('date', $date)->get();
+
+            foreach ($successNotes as $successNote) {
+                $crew = $this->getShiftName($successNote->shift_id);
+                $shiftRotation = $this->getShiftRotationDay($successNote->shift_rotation_id);
+                $supervisor = $this->getSupervisorName($date, $successNote->shift_type);
+                $labour = $this->getLabourNames($date, $successNote->shift_type);
+
+                CelebrateSuccessArchive::create([
+                    'crew' => $crew,
+                    'shift_rotation' => $shiftRotation,
+                    'start_date' => $successNote->start_date,
+                    'end_date' => $successNote->end_date,
+                    'shift_type' => $successNote->shift_type,
+                    'date' => $successNote->date,
+                    'note' => $successNote->note,
                     'supervisor_name' => $supervisor,
                     'labour_name' => $labour,
                 ]);
