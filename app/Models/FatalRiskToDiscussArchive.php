@@ -16,7 +16,9 @@ class FatalRiskToDiscussArchive extends Model
         'end_date',
         'shift_type',
         'date',
-        'discuss_note'
+        'discuss_note',
+        'supervisor_name',
+        'labour_name',
     ];
 
     protected function startDate(): Attribute

@@ -9,6 +9,8 @@ use App\Models\FatalityControl;
 use App\Models\FatalityControlArchive;
 use App\Models\FatalityRisk;
 use App\Models\FatalityRiskArchive;
+use App\Models\FatalRiskToDiscuss;
+use App\Models\FatalRiskToDiscussArchive;
 use App\Models\HazardControl;
 use App\Models\HazardControlArchive;
 use App\Models\HealthSafetyCrossCriteria;
@@ -402,6 +404,44 @@ class ArchieService
                     'note' => $focus->note,
                     'supervisor_name' => $supervisor,
                     'labour_name' => $labour,
+                ]);
+            }
+        }
+    }
+
+    public function archivedFatalRiskToDiscuss($dates)
+    {
+        $fatalRiskToDiscuss = FatalRiskToDiscuss::with('fatalToDiscussControls')->whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
+
+        foreach ($fatalRiskToDiscuss as $date => $fatalRisks) {
+            foreach ($fatalRisks as $fatalRisk) {
+                $crew = $this->getShiftName($fatalRisk->shift_id);
+                $shiftRotation = $this->getShiftRotationDay($fatalRisk->shift_rotation_id);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $fatalRisk->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $fatalRisk->shift_type);
+                $fatalityRiskArchiveId = $this->getFatalityRiskArchivedId($fatalRisk->fatality_risk_id);
+
+                $fatal = FatalRiskToDiscussArchive::create([
+                    'crew' => $crew,
+                    'shift_rotation' => $shiftRotation,
+                    'fatality_risk_archive_id' => $fatalityRiskArchiveId,
+                    'start_date' => $fatalRisk->start_date,
+                    'end_date' => $fatalRisk->end_date,
+                    'shift_type' => $fatalRisk->shift_type,
+                    'date' => $fatalRisk->date,
+                    'discuss_note' => $fatalRisk->discuss_note,
+                    'supervisor_name' => $supervisor,
+                    'labour_name' => $labour,
+                ]);
+
+                $fatal->fatalRiskToDiscussControlArchives::create([
+                    'description' => $fatalRisk->fatalToDiscussControls->description,
+                    'is_manual_entry' => $fatalRisk->fatalToDiscussControls->is_manual_entry,
                 ]);
             }
         }
