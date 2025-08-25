@@ -91,4 +91,6 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::resource('site-communications', SiteCommunicationController::class);
     Route::get('preview-site-communication/{path}',
         [SiteCommunicationController::class, 'preview'])->name('site-communications.preview');
+
+    Route::get('board-history', [BoardController::class, 'history'])->name('boards.history');
 });

@@ -27,6 +27,7 @@ use App\Models\FatalRiskToDiscuss;
 use App\Models\FatalRiskToDiscussControl;
 use App\Models\HazardControl;
 use App\Models\LabourShift;
+use App\Models\Shift;
 use App\Models\Supervisor;
 use App\Services\BoardService;
 use Carbon\Carbon;
@@ -482,6 +483,13 @@ class BoardController extends Controller
         return response()->json([
             'supervisor_name' => $supervisor->name ?? 'N/A',
             'labor_name' => $labour->name ?? 'N/A',
+        ]);
+    }
+
+    public function history()
+    {
+        return view('admin.boards-history.index', [
+            'crews' => Shift::orderBy('name')->get()
         ]);
     }
 }
