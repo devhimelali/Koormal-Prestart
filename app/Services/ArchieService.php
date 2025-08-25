@@ -9,6 +9,8 @@ use App\Models\FatalityControl;
 use App\Models\FatalityControlArchive;
 use App\Models\FatalityRisk;
 use App\Models\FatalityRiskArchive;
+use App\Models\HazardControl;
+use App\Models\HazardControlArchive;
 use App\Models\HealthSafetyCrossCriteria;
 use App\Models\HealthSafetyCrossCriteriaArchive;
 use App\Models\HealthSafetyReview;
@@ -307,6 +309,37 @@ class ArchieService
         }
     }
 
+    public function ArchivedHazardControl($id)
+    {
+        $hazardControl = HazardControl::find($id);
+
+        if (!$hazardControl) {
+            return null;
+        }
+
+        $shiftLog = ShiftLog::find($hazardControl->shift_log_id);
+        $fatalityRiskArchivedId = $this->getFatalityRiskArchivedId($hazardControl->fatality_risk_id);
+
+        if (!$shiftLog) {
+            return null;
+        }
+
+        $shiftLogArchived = ShiftLogArchive::where('wo_number', $shiftLog->wo_number)
+            ->where('asset_no', $shiftLog->asset_no)
+            ->first();
+
+        if (!$shiftLogArchived) {
+            return null;
+        }
+
+        HazardControlArchive::create([
+            'shift_log_archive_id' => $shiftLogArchived->id,
+            'fatality_risk_archive_id' => $fatalityRiskArchivedId,
+            'description' => $hazardControl->description,
+            'is_manual_entry' => $hazardControl->is_manual_entry,
+        ]);
+    }
+
     /**
      * Get the shift name by id
      * @param $id
@@ -378,5 +411,15 @@ class ArchieService
             ->table('notes')
             ->where('id', $id)
             ->value('note');
+    }
+
+    private function getFatalityRiskArchivedId($id)
+    {
+        $fatalityRisk = FatalityRisk::find($id);
+        if (!$fatalityRisk) {
+            return null;
+        }
+        $fatalityRiskArchive = FatalityRiskArchive::where('name', $fatalityRisk->name)->first();
+        return $fatalityRiskArchive->id;
     }
 }
