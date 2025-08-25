@@ -8,6 +8,8 @@ use App\Models\HealthSafetyCrossCriteriaArchive;
 use App\Models\HealthSafetyReview;
 use App\Models\HealthSafetyReviewArchive;
 use App\Models\LabourShift;
+use App\Models\ReviewPreviousShift;
+use App\Models\ReviewPreviousShiftArchive;
 use App\Models\Shift;
 use App\Models\ShiftRotation;
 use App\Models\Supervisor;
@@ -68,6 +70,32 @@ class ArchieService
                     'shift_type' => $criteria->shift_type,
                     'date' => $criteria->date,
                     'cell_number' => $criteria->cell_number,
+                    'supervisor_name' => $supervisor,
+                    'labour_name' => $labour,
+                ]);
+            }
+        }
+    }
+
+    public function archivedReviewPreviousShift($dates)
+    {
+        foreach ($dates as $date) {
+            $previousShifts = ReviewPreviousShift::where('date', $date)->get();
+            foreach ($previousShifts as $previousShift) {
+                $crew = $this->getShiftName($previousShift->shift_id);
+                $shiftRotation = $this->getShiftRotationDay($previousShift->shift_rotation_id);
+                $supervisor = $this->getSupervisorName($date, $previousShift->shift_type);
+                $labour = $this->getLabourNames($date, $previousShift->shift_type);
+
+                ReviewPreviousShiftArchive::create([
+                    'crew' => $crew,
+                    'shift_rotation' => $shiftRotation,
+                    'start_date' => $previousShift->start_date,
+                    'end_date' => $previousShift->end_date,
+                    'shift_type' => $previousShift->shift_type,
+                    'date' => $previousShift->date,
+                    'question_number' => $previousShift->question_number,
+                    'answer' => $previousShift->answer,
                     'supervisor_name' => $supervisor,
                     'labour_name' => $labour,
                 ]);
