@@ -17,6 +17,8 @@ class ImproveOurPerformanceArchive extends Model
         'date',
         'issues',
         'who',
+        'supervisor_name',
+        'labour_name',
     ];
 
     protected function startDate(): Attribute

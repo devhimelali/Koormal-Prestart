@@ -15,6 +15,8 @@ use App\Models\HealthSafetyCrossCriteria;
 use App\Models\HealthSafetyCrossCriteriaArchive;
 use App\Models\HealthSafetyReview;
 use App\Models\HealthSafetyReviewArchive;
+use App\Models\ImproveOurPerformance;
+use App\Models\ImproveOurPerformanceArchive;
 use App\Models\LabourShift;
 use App\Models\ReviewPreviousShift;
 use App\Models\ReviewPreviousShiftArchive;
@@ -167,7 +169,7 @@ class ArchieService
         }
     }
 
-    public function ArchivedSiteCommunication($dates)
+    public function archivedSiteCommunication($dates)
     {
         $siteCommunications = SiteCommunication::whereIn('date', $dates)
             ->orderBy('date')
@@ -291,7 +293,7 @@ class ArchieService
         return $fatalityRiskArchive;
     }
 
-    public function ArchivedFatalityControl($id)
+    public function archivedFatalityControl($id)
     {
         $fatalityControl = FatalityControl::find($id);
 
@@ -309,7 +311,7 @@ class ArchieService
         }
     }
 
-    public function ArchivedHazardControl($id)
+    public function archivedHazardControl($id)
     {
         $hazardControl = HazardControl::find($id);
 
@@ -338,6 +340,38 @@ class ArchieService
             'description' => $hazardControl->description,
             'is_manual_entry' => $hazardControl->is_manual_entry,
         ]);
+    }
+
+    public function archivedImprovedOurPerformance($dates)
+    {
+        $improvedOurPerformances = ImproveOurPerformance::whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
+
+        foreach ($improvedOurPerformances as $date => $improvedPerformances) {
+            foreach ($improvedPerformances as $improvedPerformance) {
+                $crew = $this->getShiftName($improvedPerformance->shift_id);
+                $shiftRotation = $this->getShiftRotationDay($improvedPerformance->shift_rotation_id);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $improvedPerformance->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $improvedPerformance->shift_type);
+
+                ImproveOurPerformanceArchive::create([
+                    'crew' => $crew,
+                    'shift_rotation' => $shiftRotation,
+                    'start_date' => $improvedPerformance->start_date,
+                    'end_date' => $improvedPerformance->end_date,
+                    'shift_type' => $improvedPerformance->shift_type,
+                    'date' => $improvedPerformance->date,
+                    'issues' => $improvedPerformance->question_number,
+                    'who' => $improvedPerformance->answer,
+                    'supervisor_name' => $supervisor,
+                    'labour_name' => $labour,
+                ]);
+            }
+        }
     }
 
     /**
