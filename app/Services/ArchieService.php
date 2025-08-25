@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\CelebrateSuccess;
 use App\Models\CelebrateSuccessArchive;
 use App\Models\CrossCriteria;
+use App\Models\FatalityRisk;
+use App\Models\FatalityRiskArchive;
 use App\Models\HealthSafetyCrossCriteria;
 use App\Models\HealthSafetyCrossCriteriaArchive;
 use App\Models\HealthSafetyReview;
@@ -240,6 +242,40 @@ class ArchieService
                     'critical_work' => $log->critical_work,
                 ]);
             }
+        }
+    }
+
+    public function archivedFatalityRisk($id)
+    {
+        $fatalityRisk = FatalityRisk::find($id);
+
+        $fatalityRiskArchive = FatalityRiskArchive::where('name', $fatalityRisk->name)
+            ->first();
+
+        // copy image
+        $newPath = null;
+        if ($fatalityRisk->image && Storage::disk('public')->exists($fatalityRisk->image)) {
+            if ($fatalityRiskArchive->image && Storage::disk('public')->exists($fatalityRiskArchive->image)) {
+                Storage::disk('public')->delete($fatalityRiskArchive->image);
+            }
+
+            $newPath = "archie/fatality-risk/{$fatalityRisk->name}/".basename($fatalityRisk->image);
+            Storage::disk('public')->makeDirectory("archie/fatality-risk/{$fatalityRisk->name}");
+            Storage::disk('public')->copy($fatalityRisk->image, $newPath);
+        }
+
+        if ($fatalityRiskArchive) {
+            $fatalityRiskArchive->update([
+                'name' => $fatalityRisk->name,
+                'description' => $fatalityRisk->description,
+                'image' => $newPath,
+            ]);
+        } else {
+            FatalityRiskArchive::create([
+                'name' => $fatalityRisk->name,
+                'description' => $fatalityRisk->description,
+                'image' => $newPath,
+            ]);
         }
     }
 
