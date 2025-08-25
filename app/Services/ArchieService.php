@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\CelebrateSuccess;
 use App\Models\CelebrateSuccessArchive;
 use App\Models\CrossCriteria;
+use App\Models\FatalityControl;
+use App\Models\FatalityControlArchive;
 use App\Models\FatalityRisk;
 use App\Models\FatalityRiskArchive;
 use App\Models\HealthSafetyCrossCriteria;
@@ -249,13 +251,19 @@ class ArchieService
     {
         $fatalityRisk = FatalityRisk::find($id);
 
-        $fatalityRiskArchive = FatalityRiskArchive::where('name', $fatalityRisk->name)
-            ->first();
+        if (!$fatalityRisk) {
+            return null;
+        }
+
+        $fatalityRiskArchive = FatalityRiskArchive::where('name', $fatalityRisk->name)->first();
 
         // copy image
-        $newPath = null;
+        $newPath = $fatalityRiskArchive->image ?? null;
+
+        // copy image if exists
         if ($fatalityRisk->image && Storage::disk('public')->exists($fatalityRisk->image)) {
-            if ($fatalityRiskArchive->image && Storage::disk('public')->exists($fatalityRiskArchive->image)) {
+            // delete old archive image if exists
+            if ($fatalityRiskArchive && $fatalityRiskArchive->image && Storage::disk('public')->exists($fatalityRiskArchive->image)) {
                 Storage::disk('public')->delete($fatalityRiskArchive->image);
             }
 
@@ -271,10 +279,30 @@ class ArchieService
                 'image' => $newPath,
             ]);
         } else {
-            FatalityRiskArchive::create([
+            $fatalityRiskArchive = FatalityRiskArchive::create([
                 'name' => $fatalityRisk->name,
                 'description' => $fatalityRisk->description,
                 'image' => $newPath,
+            ]);
+        }
+
+        return $fatalityRiskArchive;
+    }
+
+    public function ArchivedFatalityControl($id)
+    {
+        $fatalityControl = FatalityControl::find($id);
+
+        if (!$fatalityControl) {
+            return null;
+        }
+
+        $fatalityRiskArchive = $this->archivedFatalityRisk($fatalityControl->fatality_risk_id);
+
+        if ($fatalityRiskArchive) {
+            FatalityControlArchive::create([
+                'fatality_risk_archive_id' => $fatalityRiskArchive->id,
+                'description' => $fatalityControl->description,
             ]);
         }
     }
@@ -351,5 +379,4 @@ class ArchieService
             ->where('id', $id)
             ->value('note');
     }
-
 }
