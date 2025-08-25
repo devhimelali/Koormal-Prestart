@@ -29,13 +29,19 @@ class ArchieService
      */
     public function archivedHealthAndSafetyReview($dates)
     {
-        foreach ($dates as $date) {
-            $reviews = HealthSafetyReview::where('date', $date)->get();
+        $HealthSafetyReviews = HealthSafetyReview::whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
+
+        foreach ($HealthSafetyReviews as $date => $reviews) {
             foreach ($reviews as $review) {
                 $crew = $this->getShiftName($review->shift_id);
                 $shiftRotation = $this->getShiftRotationDay($review->shift_rotation_id);
-                $supervisor = $this->getSupervisorName($date, $review->shift_type);
-                $labour = $this->getLabourNames($date, $review->shift_type);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $review->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $review->shift_type);
 
                 HealthSafetyReviewArchive::create([
                     'crew' => $crew,
@@ -55,14 +61,20 @@ class ArchieService
 
     public function archivedHealthAndSafetyCrossCriteria($dates)
     {
-        foreach ($dates as $date) {
-            $crossCriteria = HealthSafetyCrossCriteria::where('date', $date)->get();
-            foreach ($crossCriteria as $criteria) {
+        $healthSafetyCrossCriteria = HealthSafetyCrossCriteria::whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
+
+        foreach ($healthSafetyCrossCriteria as $date => $crossCriterion) {
+            foreach ($crossCriterion as $criteria) {
                 $crew = $this->getShiftName($criteria->shift_id);
                 $shiftRotation = $this->getShiftRotationDay($criteria->shift_rotation_id);
                 $criteriaDetail = $this->getCrossCriteria($criteria->cross_criteria_id);
-                $supervisor = $this->getSupervisorName($date, $criteria->shift_type);
-                $labour = $this->getLabourNames($date, $criteria->shift_type);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $criteria->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $criteria->shift_type);
 
                 HealthSafetyCrossCriteriaArchive::create([
                     'criteria_name' => $criteriaDetail->name,
@@ -85,13 +97,19 @@ class ArchieService
 
     public function archivedReviewPreviousShift($dates)
     {
-        foreach ($dates as $date) {
-            $previousShifts = ReviewPreviousShift::where('date', $date)->get();
+        $reviewPreviousShifts = ReviewPreviousShift::whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
+
+        foreach ($reviewPreviousShifts as $date => $previousShifts) {
             foreach ($previousShifts as $previousShift) {
                 $crew = $this->getShiftName($previousShift->shift_id);
                 $shiftRotation = $this->getShiftRotationDay($previousShift->shift_rotation_id);
-                $supervisor = $this->getSupervisorName($date, $previousShift->shift_type);
-                $labour = $this->getLabourNames($date, $previousShift->shift_type);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $previousShift->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $previousShift->shift_type);
 
                 ReviewPreviousShiftArchive::create([
                     'crew' => $crew,
@@ -111,14 +129,19 @@ class ArchieService
 
     public function archivedCelebrateSuccess($dates)
     {
-        foreach ($dates as $date) {
-            $successNotes = CelebrateSuccess::where('date', $date)->get();
+        $celebrateSuccesses = CelebrateSuccess::whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
 
+        foreach ($celebrateSuccesses as $date => $successNotes) {
             foreach ($successNotes as $successNote) {
                 $crew = $this->getShiftName($successNote->shift_id);
                 $shiftRotation = $this->getShiftRotationDay($successNote->shift_rotation_id);
-                $supervisor = $this->getSupervisorName($date, $successNote->shift_type);
-                $labour = $this->getLabourNames($date, $successNote->shift_type);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $successNote->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $successNote->shift_type);
 
                 CelebrateSuccessArchive::create([
                     'crew' => $crew,
