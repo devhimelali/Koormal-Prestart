@@ -13,11 +13,14 @@ use App\Models\LabourShift;
 use App\Models\ReviewPreviousShift;
 use App\Models\ReviewPreviousShiftArchive;
 use App\Models\Shift;
+use App\Models\ShiftLog;
+use App\Models\ShiftLogArchive;
 use App\Models\ShiftRotation;
 use App\Models\SiteCommunication;
 use App\Models\SiteCommunicationArchive;
 use App\Models\Supervisor;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ArchieService
@@ -196,6 +199,50 @@ class ArchieService
         }
     }
 
+    public function archivedShiftLog($dates)
+    {
+        $shiftLogs = ShiftLog::whereIn('log_date', $dates)
+            ->orderBy('log_date')
+            ->orderBy('shift_name')
+            ->get()
+            ->groupBy('log_date');
+
+        foreach ($shiftLogs as $log_date => $logs) {
+            foreach ($logs as $log) {
+                $note = $this->getShiftLogNote($log->note_id);
+                ShiftLogArchive::create([
+                    'shift_name' => $log->shift_name,
+                    'wo_number' => $log->wo_number,
+                    'asset_no' => $log->asset_no,
+                    'asset_description' => $log->asset_description,
+                    'work_description' => $log->work_description,
+                    'labour' => $log->labour,
+                    'duration' => $log->duration,
+                    'trades' => $log->trades,
+                    'due_start' => $log->due_start,
+                    'status' => $log->status,
+                    'raised' => $log->raised,
+                    'start_date' => $log->start_date,
+                    'priority' => $log->priority,
+                    'job_type' => $log->job_type,
+                    'department' => $log->department,
+                    'material_cost' => $log->material_cost,
+                    'labor_cost' => $log->labor_cost,
+                    'other_cost' => $log->other_cost,
+                    'is_excel_upload' => $log->is_excel_upload,
+                    'position' => $log->position,
+                    'supervisor_notes' => $log->supervisor_notes,
+                    'mark_as_complete' => $log->mark_as_complete,
+                    'progress' => $log->progress,
+                    'requisition' => $log->requisition,
+                    'log_date' => $log->log_date,
+                    'note' => $note,
+                    'critical_work' => $log->critical_work,
+                ]);
+            }
+        }
+    }
+
     /**
      * Get the shift name by id
      * @param $id
@@ -251,4 +298,22 @@ class ArchieService
             ->where('shift', $shift)
             ->value('name');
     }
+
+    /**
+     * Get the shift log note by id
+     * @param $id
+     * @return mixed|null
+     */
+    private function getShiftLogNote($id = null)
+    {
+        if (is_null($id)) {
+            return null;
+        }
+
+        return DB::connection('mysql1')
+            ->table('notes')
+            ->where('id', $id)
+            ->value('note');
+    }
+
 }
