@@ -13,6 +13,8 @@ use App\Models\HazardControl;
 use App\Models\HazardControlArchive;
 use App\Models\HealthSafetyCrossCriteria;
 use App\Models\HealthSafetyCrossCriteriaArchive;
+use App\Models\HealthSafetyFocus;
+use App\Models\HealthSafetyFocusArchive;
 use App\Models\HealthSafetyReview;
 use App\Models\HealthSafetyReviewArchive;
 use App\Models\ImproveOurPerformance;
@@ -365,8 +367,39 @@ class ArchieService
                     'end_date' => $improvedPerformance->end_date,
                     'shift_type' => $improvedPerformance->shift_type,
                     'date' => $improvedPerformance->date,
-                    'issues' => $improvedPerformance->question_number,
-                    'who' => $improvedPerformance->answer,
+                    'issues' => $improvedPerformance->issues,
+                    'who' => $improvedPerformance->who,
+                    'supervisor_name' => $supervisor,
+                    'labour_name' => $labour,
+                ]);
+            }
+        }
+    }
+
+    public function archivedHealthSafetyFocus($dates)
+    {
+        $healthSafetyFocus = HealthSafetyFocus::whereIn('date', $dates)
+            ->orderBy('date')
+            ->orderBy('shift_type')
+            ->get()
+            ->groupBy('date');
+
+        foreach ($healthSafetyFocus as $date => $focuses) {
+            foreach ($focuses as $focus) {
+                $crew = $this->getShiftName($focus->shift_id);
+                $shiftRotation = $this->getShiftRotationDay($focus->shift_rotation_id);
+                $formatedDate = Carbon::parse($date)->format('d-m-Y');
+                $supervisor = $this->getSupervisorName($formatedDate, $focus->shift_type);
+                $labour = $this->getLabourNames($formatedDate, $focus->shift_type);
+
+                HealthSafetyFocusArchive::create([
+                    'crew' => $crew,
+                    'shift_rotation' => $shiftRotation,
+                    'start_date' => $focus->start_date,
+                    'end_date' => $focus->end_date,
+                    'shift_type' => $focus->shift_type,
+                    'date' => $focus->date,
+                    'note' => $focus->note,
                     'supervisor_name' => $supervisor,
                     'labour_name' => $labour,
                 ]);

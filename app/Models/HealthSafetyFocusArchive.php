@@ -16,6 +16,8 @@ class HealthSafetyFocusArchive extends Model
         'shift_type',
         'date',
         'note',
+        'supervisor_name',
+        'labour_name',
     ];
 
     protected function startDate(): Attribute
