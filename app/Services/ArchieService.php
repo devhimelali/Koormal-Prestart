@@ -44,7 +44,9 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->get();
 
-        if(!$healthSafetyReviews) return;
+        if (!$healthSafetyReviews) {
+            return;
+        }
 
         foreach ($healthSafetyReviews as $review) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
@@ -73,7 +75,9 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->first();
 
-        if(!$healthSafetyCrossCriteria) return;
+        if (!$healthSafetyCrossCriteria) {
+            return;
+        }
 
         foreach ($healthSafetyCrossCriteria as $criteria) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
@@ -105,7 +109,9 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->get();
 
-        if(!$reviewPreviousShifts) return;
+        if (!$reviewPreviousShifts) {
+            return;
+        }
 
         foreach ($reviewPreviousShifts as $previousShift) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
@@ -134,7 +140,9 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->first();
 
-        if(!$celebrateSuccesses) return;
+        if (!$celebrateSuccesses) {
+            return;
+        }
 
         foreach ($celebrateSuccesses as $successNote) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
@@ -162,9 +170,11 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->get();
 
-        if(!$siteCommunications) return;
+        if (!$siteCommunications) {
+            return;
+        }
 
-        foreach ($siteCommunications as $siteCommunication){
+        foreach ($siteCommunications as $siteCommunication) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
             $supervisor = $this->getSupervisorName($formatedDate, $siteCommunication->shift_type);
             $labour = $this->getLabourNames($formatedDate, $siteCommunication->shift_type);
@@ -190,47 +200,49 @@ class ArchieService
         }
     }
 
-    public function archivedShiftLog($dates)
+    public function archivedShiftLog($date, $shift_type)
     {
-        $shiftLogs = ShiftLog::whereIn('log_date', $dates)
-            ->orderBy('log_date')
-            ->orderBy('shift_name')
-            ->get()
-            ->groupBy('log_date');
+        $formatedDate = Carbon::parse($date)->format('d-m-Y');
+        $shiftLogs = ShiftLog::where('log_date', $formatedDate)
+            ->where('shift_name', $shift_type)
+            ->get();
 
-        foreach ($shiftLogs as $log_date => $logs) {
-            foreach ($logs as $log) {
-                $note = $this->getShiftLogNote($log->note_id);
-                ShiftLogArchive::create([
-                    'shift_name' => $log->shift_name,
-                    'wo_number' => $log->wo_number,
-                    'asset_no' => $log->asset_no,
-                    'asset_description' => $log->asset_description,
-                    'work_description' => $log->work_description,
-                    'labour' => $log->labour,
-                    'duration' => $log->duration,
-                    'trades' => $log->trades,
-                    'due_start' => $log->due_start,
-                    'status' => $log->status,
-                    'raised' => $log->raised,
-                    'start_date' => $log->start_date,
-                    'priority' => $log->priority,
-                    'job_type' => $log->job_type,
-                    'department' => $log->department,
-                    'material_cost' => $log->material_cost,
-                    'labor_cost' => $log->labor_cost,
-                    'other_cost' => $log->other_cost,
-                    'is_excel_upload' => $log->is_excel_upload,
-                    'position' => $log->position,
-                    'supervisor_notes' => $log->supervisor_notes,
-                    'mark_as_complete' => $log->mark_as_complete,
-                    'progress' => $log->progress,
-                    'requisition' => $log->requisition,
-                    'log_date' => $log->log_date,
-                    'note' => $note,
-                    'critical_work' => $log->critical_work,
-                ]);
-            }
+        if (!$shiftLogs) {
+            return;
+        }
+
+        foreach ($shiftLogs as $i => $log) {
+            $note = $this->getShiftLogNote($log->note_id);
+
+            ShiftLogArchive::create([
+                'shift_name' => $log->shift_name,
+                'wo_number' => $log->wo_number,
+                'asset_no' => $log->asset_no,
+                'asset_description' => $log->asset_description,
+                'work_description' => $log->work_description,
+                'labour' => $log->labour,
+                'duration' => $log->duration,
+                'trades' => $log->trades,
+                'due_start' => $log->due_start,
+                'status' => $log->status,
+                'raised' => $log->raised,
+                'start_date' => $log->start_date,
+                'priority' => $log->priority,
+                'job_type' => $log->job_type,
+                'department' => $log->department,
+                'material_cost' => $log->material_cost,
+                'labor_cost' => $log->labor_cost,
+                'other_cost' => $log->other_cost,
+                'is_excel_upload' => $log->is_excel_upload,
+                'position' => $log->position,
+                'supervisor_notes' => $log->supervisor_notes,
+                'mark_as_complete' => $log->mark_as_complete,
+                'progress' => $log->progress,
+                'requisition' => $log->requisition,
+                'log_date' => $log->log_date,
+                'note' => $note,
+                'critical_work' => $log->critical_work,
+            ]);
         }
     }
 
