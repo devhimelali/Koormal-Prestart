@@ -424,36 +424,34 @@ class ArchieService
         ]);
     }
 
-    public function archivedFatalRiskToDiscuss($dates)
+    public function archivedFatalRiskToDiscuss($date, $shift_type)
     {
-        $fatalRiskToDiscuss = FatalRiskToDiscuss::with('fatalToDiscussControls')->whereIn('date', $dates)
-            ->orderBy('date')
-            ->orderBy('shift_type')
-            ->get()
-            ->groupBy('date');
+        $fatalRiskToDiscuss = FatalRiskToDiscuss::with('shift', 'shiftRotation', 'fatalityRisk',
+            'fatalToDiscussControls')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->get();
 
-        foreach ($fatalRiskToDiscuss as $date => $fatalRisks) {
-            foreach ($fatalRisks as $fatalRisk) {
-                $crew = $this->getShiftName($fatalRisk->shift_id);
-                $shiftRotation = $this->getShiftRotationDay($fatalRisk->shift_rotation_id);
-                $formatedDate = Carbon::parse($date)->format('d-m-Y');
-                $supervisor = $this->getSupervisorName($formatedDate, $fatalRisk->shift_type);
-                $labour = $this->getLabourNames($formatedDate, $fatalRisk->shift_type);
-                $fatalityRiskArchiveId = $this->getFatalityRiskArchivedId($fatalRisk->fatality_risk_id);
+        foreach ($fatalRiskToDiscuss as $fatalRisk) {
+            $formatedDate = Carbon::parse($date)->format('d-m-Y');
+            $supervisor = $this->getSupervisorName($formatedDate, $fatalRisk->shift_type);
+            $labour = $this->getLabourNames($formatedDate, $fatalRisk->shift_type);
+            $fatalityRiskArchive = $this->archivedFatalityRisk($fatalRisk->fatality_risk_id);
 
-                $fatal = FatalRiskToDiscussArchive::create([
-                    'crew' => $crew,
-                    'shift_rotation' => $shiftRotation,
-                    'fatality_risk_archive_id' => $fatalityRiskArchiveId,
-                    'start_date' => $fatalRisk->start_date,
-                    'end_date' => $fatalRisk->end_date,
-                    'shift_type' => $fatalRisk->shift_type,
-                    'date' => $fatalRisk->date,
-                    'discuss_note' => $fatalRisk->discuss_note,
-                    'supervisor_name' => $supervisor,
-                    'labour_name' => $labour,
-                ]);
+            $fatal = FatalRiskToDiscussArchive::create([
+                'crew' => $fatalRisk->shift->name,
+                'shift_rotation' => $fatalRisk->shiftRotation->rotation_days,
+                'fatality_risk_archive_id' => $fatalityRiskArchive->id,
+                'start_date' => $fatalRisk->start_date,
+                'end_date' => $fatalRisk->end_date,
+                'shift_type' => $fatalRisk->shift_type,
+                'date' => $fatalRisk->date,
+                'discuss_note' => $fatalRisk->discuss_note,
+                'supervisor_name' => $supervisor,
+                'labour_name' => $labour,
+            ]);
 
+            if($fatalRisk->fatalToDiscussControls){
                 $fatal->fatalRiskToDiscussControlArchives::create([
                     'description' => $fatalRisk->fatalToDiscussControls->description,
                     'is_manual_entry' => $fatalRisk->fatalToDiscussControls->is_manual_entry,
