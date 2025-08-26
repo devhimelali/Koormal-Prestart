@@ -211,10 +211,10 @@ class ArchieService
             return;
         }
 
-        foreach ($shiftLogs as $i => $log) {
+        foreach ($shiftLogs as $log) {
             $note = $this->getShiftLogNote($log->note_id);
 
-            ShiftLogArchive::create([
+            $shiftLog = ShiftLogArchive::create([
                 'shift_name' => $log->shift_name,
                 'wo_number' => $log->wo_number,
                 'asset_no' => $log->asset_no,
@@ -243,6 +243,24 @@ class ArchieService
                 'note' => $note,
                 'critical_work' => $log->critical_work,
             ]);
+
+            if ($log->fatalityRiskControls) {
+                foreach ($log->fatalityRiskControls as $risk) {
+                    $fatalityRisk = FatalityRisk::with('hazardControls')->find($risk->id);
+                    $fatalRisk = $this->archivedFatalityRisk($risk->id);
+                    $shiftLog->fatalityRisks()->attach($fatalRisk->id);
+                    if ($fatalityRisk->hazardControls) {
+                        foreach ($fatalityRisk->hazardControls as $hazard) {
+                            HazardControlArchive::create([
+                                'shift_log_archive_id' => $shiftLog->id,
+                                'fatality_risk_archive_id' => $fatalRisk->id,
+                                'description' => $hazard->description,
+                                'is_manual_entry' => $hazard->is_manual_entry,
+                            ]);
+                        }
+                    }
+                }
+            }
         }
     }
 

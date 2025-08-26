@@ -41,4 +41,14 @@ class ShiftLogArchive extends Model
     {
         return $this->hasMany(HazardControlArchive::class);
     }
+
+    public function fatalityRisks()
+    {
+        return $this->belongsToMany(
+            FatalityRiskArchive::class,
+            'table_shift_log_fatality_risk_archive',
+            'shift_log_archive_id',
+            'fatality_risk_archive_id'
+        )->withTimestamps();
+    }
 }
