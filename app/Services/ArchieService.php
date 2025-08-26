@@ -37,76 +37,64 @@ use Illuminate\Support\Facades\Storage;
 
 class ArchieService
 {
-    /**
-     * Archive the health and safety review
-     * @param $dates
-     * @return void
-     */
-    public function archivedHealthAndSafetyReview($dates)
+    public function archivedHealthAndSafetyReview($date, $shift_type)
     {
-        $HealthSafetyReviews = HealthSafetyReview::whereIn('date', $dates)
-            ->orderBy('date')
-            ->orderBy('shift_type')
-            ->get()
-            ->groupBy('date');
+        $healthSafetyReviews = HealthSafetyReview::where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->get();
 
-        foreach ($HealthSafetyReviews as $date => $reviews) {
-            foreach ($reviews as $review) {
-                $crew = $this->getShiftName($review->shift_id);
-                $shiftRotation = $this->getShiftRotationDay($review->shift_rotation_id);
-                $formatedDate = Carbon::parse($date)->format('d-m-Y');
-                $supervisor = $this->getSupervisorName($formatedDate, $review->shift_type);
-                $labour = $this->getLabourNames($formatedDate, $review->shift_type);
+        foreach ($healthSafetyReviews as $review)
+        {
+            $crew = $this->getShiftName($review->shift_id);
+            $shiftRotation = $this->getShiftRotationDay($review->shift_rotation_id);
+            $formatedDate = Carbon::parse($date)->format('d-m-Y');
+            $supervisor = $this->getSupervisorName($formatedDate, $review->shift_type);
+            $labour = $this->getLabourNames($formatedDate, $review->shift_type);
 
-                HealthSafetyReviewArchive::create([
-                    'crew' => $crew,
-                    'shift_rotation' => $shiftRotation,
-                    'start_date' => $review->start_date,
-                    'end_date' => $review->end_date,
-                    'shift_type' => $review->shift_type,
-                    'date' => $review->date,
-                    'question_number' => $review->question_number,
-                    'answer' => $review->answer,
-                    'supervisor_name' => $supervisor,
-                    'labour_name' => $labour,
-                ]);
-            }
+            HealthSafetyReviewArchive::create([
+                'crew' => $crew,
+                'shift_rotation' => $shiftRotation,
+                'start_date' => $review->start_date,
+                'end_date' => $review->end_date,
+                'shift_type' => $review->shift_type,
+                'date' => $review->date,
+                'question_number' => $review->question_number,
+                'answer' => $review->answer,
+                'supervisor_name' => $supervisor,
+                'labour_name' => $labour,
+            ]);
         }
     }
 
-    public function archivedHealthAndSafetyCrossCriteria($dates)
+    public function archivedHealthAndSafetyCrossCriteria($date, $shift_type)
     {
-        $healthSafetyCrossCriteria = HealthSafetyCrossCriteria::whereIn('date', $dates)
-            ->orderBy('date')
-            ->orderBy('shift_type')
-            ->get()
-            ->groupBy('date');
+        $healthSafetyCrossCriteria = HealthSafetyCrossCriteria::with('crossCriteria')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
 
-        foreach ($healthSafetyCrossCriteria as $date => $crossCriterion) {
-            foreach ($crossCriterion as $criteria) {
-                $crew = $this->getShiftName($criteria->shift_id);
-                $shiftRotation = $this->getShiftRotationDay($criteria->shift_rotation_id);
-                $criteriaDetail = $this->getCrossCriteria($criteria->cross_criteria_id);
-                $formatedDate = Carbon::parse($date)->format('d-m-Y');
-                $supervisor = $this->getSupervisorName($formatedDate, $criteria->shift_type);
-                $labour = $this->getLabourNames($formatedDate, $criteria->shift_type);
+        foreach ($healthSafetyCrossCriteria as $criteria) {
+            $crew = $this->getShiftName($criteria->shift_id);
+            $shiftRotation = $this->getShiftRotationDay($criteria->shift_rotation_id);
+            $formatedDate = Carbon::parse($date)->format('d-m-Y');
+            $supervisor = $this->getSupervisorName($formatedDate, $criteria->shift_type);
+            $labour = $this->getLabourNames($formatedDate, $criteria->shift_type);
 
-                HealthSafetyCrossCriteriaArchive::create([
-                    'criteria_name' => $criteriaDetail->name,
-                    'criteria_description' => $criteriaDetail->description,
-                    'criteria_color' => $criteriaDetail->color,
-                    'criteria_bg_color' => $criteriaDetail->bg_color,
-                    'crew' => $crew,
-                    'shift_rotation' => $shiftRotation,
-                    'start_date' => $criteria->start_date,
-                    'end_date' => $criteria->end_date,
-                    'shift_type' => $criteria->shift_type,
-                    'date' => $criteria->date,
-                    'cell_number' => $criteria->cell_number,
-                    'supervisor_name' => $supervisor,
-                    'labour_name' => $labour,
-                ]);
-            }
+            HealthSafetyCrossCriteriaArchive::create([
+                'criteria_name' => $criteria->crossCriteria->name,
+                'criteria_description' => $criteria->crossCriteria->description,
+                'criteria_color' => $criteria->crossCriteria->color,
+                'criteria_bg_color' => $criteria->crossCriteria->bg_color,
+                'crew' => $crew,
+                'shift_rotation' => $shiftRotation,
+                'start_date' => $criteria->start_date,
+                'end_date' => $criteria->end_date,
+                'shift_type' => $criteria->shift_type,
+                'date' => $criteria->date,
+                'cell_number' => $criteria->cell_number,
+                'supervisor_name' => $supervisor,
+                'labour_name' => $labour,
+            ]);
         }
     }
 
@@ -464,7 +452,7 @@ class ArchieService
      */
     private function getShiftRotationDay($id): string
     {
-        return ShiftRotation::find($id)?->day;
+        return ShiftRotation::find($id)?->rotation_days;
     }
 
     /**

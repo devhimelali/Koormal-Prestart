@@ -3,18 +3,24 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ArchieService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
 class ArchiveController extends Controller
 {
+    public function __construct(public ArchieService $archieService)
+    {
+        //
+    }
+
     public function archivedAllBoards(Request $request)
     {
-        [ $date, $hour ] = $this->currentDateAndHour();
-        if($hour > 18){
-
-        }
+        $date = $this->getShiftDate();
+        $shift_type = $request->header('shift-type') ?? 'day';
+        $data = $this->archieService->archivedHealthAndSafetyCrossCriteria($date, $shift_type);
+        return response()->json($data);
     }
 
     private function getShiftDate()

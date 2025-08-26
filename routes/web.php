@@ -29,6 +29,4 @@ Route::get('storage-link', function () {
     return redirect()->back()->with('status', 'Storage linked successfully! Output: '.$output);
 });
 
-Route::get('/archived-board', function(\Illuminate\Http\Request $request){
-    return $request->header('shift-type');
-});
+Route::get('/archived-board', [\App\Http\Controllers\admin\ArchiveController::class, 'archivedAllBoards'])->name('archived-board');
