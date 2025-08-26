@@ -400,35 +400,28 @@ class ArchieService
         ]);
     }
 
-    public function archivedHealthSafetyFocus($dates)
+    public function archivedHealthSafetyFocus($date, $shift_type)
     {
-        $healthSafetyFocus = HealthSafetyFocus::whereIn('date', $dates)
-            ->orderBy('date')
-            ->orderBy('shift_type')
-            ->get()
-            ->groupBy('date');
+        $focus = HealthSafetyFocus::with('shift', 'shiftRotation')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
 
-        foreach ($healthSafetyFocus as $date => $focuses) {
-            foreach ($focuses as $focus) {
-                $crew = $this->getShiftName($focus->shift_id);
-                $shiftRotation = $this->getShiftRotationDay($focus->shift_rotation_id);
-                $formatedDate = Carbon::parse($date)->format('d-m-Y');
-                $supervisor = $this->getSupervisorName($formatedDate, $focus->shift_type);
-                $labour = $this->getLabourNames($formatedDate, $focus->shift_type);
+        $formatedDate = Carbon::parse($date)->format('d-m-Y');
+        $supervisor = $this->getSupervisorName($formatedDate, $focus->shift_type);
+        $labour = $this->getLabourNames($formatedDate, $focus->shift_type);
 
-                HealthSafetyFocusArchive::create([
-                    'crew' => $crew,
-                    'shift_rotation' => $shiftRotation,
-                    'start_date' => $focus->start_date,
-                    'end_date' => $focus->end_date,
-                    'shift_type' => $focus->shift_type,
-                    'date' => $focus->date,
-                    'note' => $focus->note,
-                    'supervisor_name' => $supervisor,
-                    'labour_name' => $labour,
-                ]);
-            }
-        }
+        HealthSafetyFocusArchive::create([
+            'crew' => $focus->shift->name,
+            'shift_rotation' => $focus->shiftRotation->rotation_days,
+            'start_date' => $focus->start_date,
+            'end_date' => $focus->end_date,
+            'shift_type' => $focus->shift_type,
+            'date' => $focus->date,
+            'note' => $focus->note,
+            'supervisor_name' => $supervisor,
+            'labour_name' => $labour,
+        ]);
     }
 
     public function archivedFatalRiskToDiscuss($dates)
