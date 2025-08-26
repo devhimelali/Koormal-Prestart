@@ -214,41 +214,24 @@ class ArchieService
         foreach ($shiftLogs as $log) {
             $note = $this->getShiftLogNote($log->note_id);
 
-            $shiftLog = ShiftLogArchive::create([
-                'shift_name' => $log->shift_name,
-                'wo_number' => $log->wo_number,
-                'asset_no' => $log->asset_no,
-                'asset_description' => $log->asset_description,
-                'work_description' => $log->work_description,
-                'labour' => $log->labour,
-                'duration' => $log->duration,
-                'trades' => $log->trades,
-                'due_start' => $log->due_start,
-                'status' => $log->status,
-                'raised' => $log->raised,
-                'start_date' => $log->start_date,
-                'priority' => $log->priority,
-                'job_type' => $log->job_type,
-                'department' => $log->department,
-                'material_cost' => $log->material_cost,
-                'labor_cost' => $log->labor_cost,
-                'other_cost' => $log->other_cost,
-                'is_excel_upload' => $log->is_excel_upload,
-                'position' => $log->position,
-                'supervisor_notes' => $log->supervisor_notes,
-                'mark_as_complete' => $log->mark_as_complete,
-                'progress' => $log->progress,
-                'requisition' => $log->requisition,
-                'log_date' => $log->log_date,
-                'note' => $note,
-                'critical_work' => $log->critical_work,
-            ]);
+            $shiftLog = $this->storeShiftLogArchive($log, $note);
 
             if ($log->fatalityRiskControls) {
                 foreach ($log->fatalityRiskControls as $risk) {
-                    $fatalityRisk = FatalityRisk::with('hazardControls')->find($risk->id);
+                    $fatalityRisk = FatalityRisk::with('hazardControls', 'fatalityControls')->find($risk->id);
+
                     $fatalRisk = $this->archivedFatalityRisk($risk->id);
                     $shiftLog->fatalityRisks()->attach($fatalRisk->id);
+
+                    if ($fatalityRisk->fatalityControls) {
+                        foreach ($fatalityRisk->fatalityControls as $control) {
+                            FatalityControlArchive::create([
+                                'fatality_risk_archive_id' => $fatalRisk->id,
+                                'description' => $control->description,
+                            ]);
+                        }
+                    }
+
                     if ($fatalityRisk->hazardControls) {
                         foreach ($fatalityRisk->hazardControls as $hazard) {
                             HazardControlArchive::create([
@@ -262,6 +245,39 @@ class ArchieService
                 }
             }
         }
+    }
+
+    private function storeShiftLogArchive($log, $note)
+    {
+        return ShiftLogArchive::create([
+            'shift_name' => $log->shift_name,
+            'wo_number' => $log->wo_number,
+            'asset_no' => $log->asset_no,
+            'asset_description' => $log->asset_description,
+            'work_description' => $log->work_description,
+            'labour' => $log->labour,
+            'duration' => $log->duration,
+            'trades' => $log->trades,
+            'due_start' => $log->due_start,
+            'status' => $log->status,
+            'raised' => $log->raised,
+            'start_date' => $log->start_date,
+            'priority' => $log->priority,
+            'job_type' => $log->job_type,
+            'department' => $log->department,
+            'material_cost' => $log->material_cost,
+            'labor_cost' => $log->labor_cost,
+            'other_cost' => $log->other_cost,
+            'is_excel_upload' => $log->is_excel_upload,
+            'position' => $log->position,
+            'supervisor_notes' => $log->supervisor_notes,
+            'mark_as_complete' => $log->mark_as_complete,
+            'progress' => $log->progress,
+            'requisition' => $log->requisition,
+            'log_date' => $log->log_date,
+            'note' => $note,
+            'critical_work' => $log->critical_work,
+        ]);
     }
 
     public function archivedFatalityRisk($id)
