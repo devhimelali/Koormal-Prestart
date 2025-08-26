@@ -11,6 +11,7 @@ use App\Models\FatalityRisk;
 use App\Models\FatalityRiskArchive;
 use App\Models\FatalRiskToDiscuss;
 use App\Models\FatalRiskToDiscussArchive;
+use App\Models\FatalRiskToDiscussControlArchive;
 use App\Models\HazardControl;
 use App\Models\HazardControlArchive;
 use App\Models\HealthSafetyCrossCriteria;
@@ -56,10 +57,10 @@ class ArchieService
             HealthSafetyReviewArchive::create([
                 'crew' => $review->shift->name,
                 'shift_rotation' => $review->shiftRotation->rotation_days,
-                'start_date' => $review->start_date,
-                'end_date' => $review->end_date,
+                'start_date' => $this->changeDateFormat($review->start_date),
+                'end_date' => $this->changeDateFormat($review->end_date),
                 'shift_type' => $review->shift_type,
-                'date' => $review->date,
+                'date' => $this->changeDateFormat($review->date),
                 'question_number' => $review->question_number,
                 'answer' => $review->answer,
                 'supervisor_name' => $supervisor,
@@ -70,36 +71,35 @@ class ArchieService
 
     public function archivedHealthAndSafetyCrossCriteria($date, $shift_type)
     {
-        $healthSafetyCrossCriteria = HealthSafetyCrossCriteria::with('shift', 'shiftRotation', 'crossCriteria')
+        $criteria = HealthSafetyCrossCriteria::with('shift', 'shiftRotation', 'crossCriteria')
             ->where('date', $date)
             ->where('shift_type', $shift_type)
             ->first();
 
-        if (!$healthSafetyCrossCriteria) {
+        if (!$criteria) {
             return;
         }
 
-        foreach ($healthSafetyCrossCriteria as $criteria) {
-            $formatedDate = Carbon::parse($date)->format('d-m-Y');
-            $supervisor = $this->getSupervisorName($formatedDate, $criteria->shift_type);
-            $labour = $this->getLabourNames($formatedDate, $criteria->shift_type);
+        $formatedDate = Carbon::parse($date)->format('d-m-Y');
+        $supervisor = $this->getSupervisorName($formatedDate, $criteria->shift_type);
+        $labour = $this->getLabourNames($formatedDate, $criteria->shift_type);
 
-            HealthSafetyCrossCriteriaArchive::create([
-                'criteria_name' => $criteria->crossCriteria->name,
-                'criteria_description' => $criteria->crossCriteria->description,
-                'criteria_color' => $criteria->crossCriteria->color,
-                'criteria_bg_color' => $criteria->crossCriteria->bg_color,
-                'crew' => $criteria->shift->name,
-                'shift_rotation' => $criteria->shiftRotation->rotation_days,
-                'start_date' => $criteria->start_date,
-                'end_date' => $criteria->end_date,
-                'shift_type' => $criteria->shift_type,
-                'date' => $criteria->date,
-                'cell_number' => $criteria->cell_number,
-                'supervisor_name' => $supervisor,
-                'labour_name' => $labour,
-            ]);
-        }
+        HealthSafetyCrossCriteriaArchive::create([
+            'criteria_name' => $criteria->crossCriteria->name,
+            'criteria_description' => $criteria->crossCriteria->description,
+            'criteria_color' => $criteria->crossCriteria->color,
+            'criteria_bg_color' => $criteria->crossCriteria->bg_color,
+            'crew' => $criteria->shift->name,
+            'shift_rotation' => $criteria->shiftRotation->rotation_days,
+            'start_date' => $this->changeDateFormat($criteria->start_date),
+            'end_date' => $this->changeDateFormat($criteria->end_date),
+            'shift_type' => $criteria->shift_type,
+            'date' => $this->changeDateFormat($criteria->date),
+            'cell_number' => $criteria->cell_number,
+            'supervisor_name' => $supervisor,
+            'labour_name' => $labour,
+        ]);
+
     }
 
     public function archivedReviewPreviousShift($date, $shift_type)
@@ -121,10 +121,10 @@ class ArchieService
             ReviewPreviousShiftArchive::create([
                 'crew' => $previousShift->shift->name,
                 'shift_rotation' => $previousShift->shiftRotation->rotation_days,
-                'start_date' => $previousShift->start_date,
-                'end_date' => $previousShift->end_date,
+                'start_date' => $this->changeDateFormat($previousShift->start_date),
+                'end_date' => $this->changeDateFormat($previousShift->end_date),
                 'shift_type' => $previousShift->shift_type,
-                'date' => $previousShift->date,
+                'date' => $this->changeDateFormat($previousShift->date),
                 'question_number' => $previousShift->question_number,
                 'answer' => $previousShift->answer,
                 'supervisor_name' => $supervisor,
@@ -135,32 +135,31 @@ class ArchieService
 
     public function archivedCelebrateSuccess($date, $shift_type)
     {
-        $celebrateSuccesses = CelebrateSuccess::with('shift', 'shiftRotation')
+        $successNote = CelebrateSuccess::with('shift', 'shiftRotation')
             ->where('date', $date)
             ->where('shift_type', $shift_type)
             ->first();
 
-        if (!$celebrateSuccesses) {
+        if (!$successNote) {
             return;
         }
 
-        foreach ($celebrateSuccesses as $successNote) {
-            $formatedDate = Carbon::parse($date)->format('d-m-Y');
-            $supervisor = $this->getSupervisorName($formatedDate, $successNote->shift_type);
-            $labour = $this->getLabourNames($formatedDate, $successNote->shift_type);
+        $formatedDate = Carbon::parse($date)->format('d-m-Y');
+        $supervisor = $this->getSupervisorName($formatedDate, $successNote->shift_type);
+        $labour = $this->getLabourNames($formatedDate, $successNote->shift_type);
 
-            CelebrateSuccessArchive::create([
-                'crew' => $successNote->shift->name,
-                'shift_rotation' => $successNote->shiftRotation->rotation_days,
-                'start_date' => $successNote->start_date,
-                'end_date' => $successNote->end_date,
-                'shift_type' => $successNote->shift_type,
-                'date' => $successNote->date,
-                'note' => $successNote->note,
-                'supervisor_name' => $supervisor,
-                'labour_name' => $labour,
-            ]);
-        }
+        CelebrateSuccessArchive::create([
+            'crew' => $successNote->shift->name,
+            'shift_rotation' => $successNote->shiftRotation->rotation_days,
+            'start_date' => $this->changeDateFormat($successNote->start_date),
+            'end_date' => $this->changeDateFormat($successNote->end_date),
+            'shift_type' => $successNote->shift_type,
+            'date' => $this->changeDateFormat($successNote->date),
+            'note' => $successNote->note,
+            'supervisor_name' => $supervisor,
+            'labour_name' => $labour,
+        ]);
+
     }
 
     public function archivedSiteCommunication($date, $shift_type)
@@ -189,10 +188,12 @@ class ArchieService
             SiteCommunicationArchive::create([
                 'crew' => $siteCommunication->shift,
                 'shift_rotation' => $siteCommunication->shiftRotation->rotation_days,
-                'start_date' => $siteCommunication->start_date,
-                'end_date' => $siteCommunication->end_date,
+                'start_date' => $this->changeDateFormat($siteCommunication->start_date),
+                'end_date' => $this->changeDateFormat($siteCommunication->end_date),
                 'shift_type' => $siteCommunication->shift_type,
-                'date' => $siteCommunication->date,
+                'date' => $this->changeDateFormat($siteCommunication->date),
+                'title' => $siteCommunication->title,
+                'description' => $siteCommunication->description,
                 'path' => $newPath,
                 'supervisor_name' => $supervisor,
                 'labour_name' => $labour,
@@ -389,10 +390,10 @@ class ArchieService
         ImproveOurPerformanceArchive::create([
             'crew' => $improvedPerformance->shift->name,
             'shift_rotation' => $improvedPerformance->shiftRotation->rotation_days,
-            'start_date' => $improvedPerformance->start_date,
-            'end_date' => $improvedPerformance->end_date,
+            'start_date' => $this->changeDateFormat($improvedPerformance->start_date),
+            'end_date' => $this->changeDateFormat($improvedPerformance->end_date),
             'shift_type' => $improvedPerformance->shift_type,
-            'date' => $improvedPerformance->date,
+            'date' => $this->changeDateFormat($improvedPerformance->date),
             'issues' => $improvedPerformance->issues,
             'who' => $improvedPerformance->who,
             'supervisor_name' => $supervisor,
@@ -407,6 +408,10 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->first();
 
+        if (!$focus) {
+            return;
+        }
+
         $formatedDate = Carbon::parse($date)->format('d-m-Y');
         $supervisor = $this->getSupervisorName($formatedDate, $focus->shift_type);
         $labour = $this->getLabourNames($formatedDate, $focus->shift_type);
@@ -414,10 +419,10 @@ class ArchieService
         HealthSafetyFocusArchive::create([
             'crew' => $focus->shift->name,
             'shift_rotation' => $focus->shiftRotation->rotation_days,
-            'start_date' => $focus->start_date,
-            'end_date' => $focus->end_date,
+            'start_date' => $this->changeDateFormat($focus->start_date),
+            'end_date' => $this->changeDateFormat($focus->end_date),
             'shift_type' => $focus->shift_type,
-            'date' => $focus->date,
+            'date' => $this->changeDateFormat($focus->date),
             'note' => $focus->note,
             'supervisor_name' => $supervisor,
             'labour_name' => $labour,
@@ -432,6 +437,10 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->get();
 
+        if (!$fatalRiskToDiscuss) {
+            return;
+        }
+
         foreach ($fatalRiskToDiscuss as $fatalRisk) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
             $supervisor = $this->getSupervisorName($formatedDate, $fatalRisk->shift_type);
@@ -442,20 +451,23 @@ class ArchieService
                 'crew' => $fatalRisk->shift->name,
                 'shift_rotation' => $fatalRisk->shiftRotation->rotation_days,
                 'fatality_risk_archive_id' => $fatalityRiskArchive->id,
-                'start_date' => $fatalRisk->start_date,
-                'end_date' => $fatalRisk->end_date,
+                'start_date' => $this->changeDateFormat($fatalRisk->start_date),
+                'end_date' => $this->changeDateFormat($fatalRisk->end_date),
                 'shift_type' => $fatalRisk->shift_type,
-                'date' => $fatalRisk->date,
+                'date' => $this->changeDateFormat($fatalRisk->date),
                 'discuss_note' => $fatalRisk->discuss_note,
                 'supervisor_name' => $supervisor,
                 'labour_name' => $labour,
             ]);
 
-            if($fatalRisk->fatalToDiscussControls){
-                $fatal->fatalRiskToDiscussControlArchives::create([
-                    'description' => $fatalRisk->fatalToDiscussControls->description,
-                    'is_manual_entry' => $fatalRisk->fatalToDiscussControls->is_manual_entry,
-                ]);
+            if ($fatalRisk->fatalToDiscussControls) {
+                foreach ($fatalRisk->fatalToDiscussControls as $discussControl){
+                    FatalRiskToDiscussControlArchive::create([
+                        'fatal_risk_to_discuss_archive_id' => $fatal->id,
+                        'description' => $discussControl?->description,
+                        'is_manual_entry' => $discussControl->is_manual_entry,
+                    ]);
+                }
             }
         }
     }
@@ -541,5 +553,10 @@ class ArchieService
         }
         $fatalityRiskArchive = FatalityRiskArchive::where('name', $fatalityRisk->name)->first();
         return $fatalityRiskArchive->id;
+    }
+
+    private function changeDateFormat($date)
+    {
+        return Carbon::parse($date)->format('Y-m-d');
     }
 }

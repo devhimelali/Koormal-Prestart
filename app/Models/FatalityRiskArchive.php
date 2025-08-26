@@ -31,7 +31,7 @@ class FatalityRiskArchive extends Model
     {
         return $this->belongsToMany(
             ShiftLogArchive::class,
-            'table_shift_log_fatality_risk_archive',
+            'shift_log_fatality_risk_archive',
             'fatality_risk_archive_id',
             'shift_log_archive_id'
         )->withTimestamps();
