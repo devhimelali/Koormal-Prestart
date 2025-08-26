@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('fatal_risk_to_discuss_control_archives', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fatal_risk_to_discuss_archive_id')->constrained('fatal_risk_to_discuss_archives')->cascadeOnDelete();
+            $table->unsignedBigInteger('fatal_risk_to_discuss_archive_id');
+            $table->index('fatal_risk_to_discuss_archive_id', 'frtda_idx');
+            $table->foreign('fatal_risk_to_discuss_archive_id', 'frtda_fk')
+                ->references('id')
+                ->on('fatal_risk_to_discuss_archives')
+                ->cascadeOnDelete();
             $table->text('description');
             $table->boolean('is_manual_entry')->default(false);
             $table->timestamps();
@@ -25,6 +30,13 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('fatal_risk_to_discuss_control_archives', function (Blueprint $table) {
+            if (Schema::hasColumn('fatal_risk_to_discuss_control_archives', 'fatal_risk_to_discuss_archive_id')) {
+                $table->dropForeign('frtda_fk');
+                $table->dropIndex('frtda_idx');
+            }
+        });
+
         Schema::dropIfExists('fatal_risk_to_discuss_control_archives');
     }
 };

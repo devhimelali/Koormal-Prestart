@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('table_shift_log_fatality_risk_archive', function (Blueprint $table) {
+        Schema::create('shift_log_fatality_risk_archive', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shift_log_archive_id')->constrained('shift_log_archives')->cascadeOnDelete();
             $table->foreignId('fatality_risk_archive_id')->constrained('fatality_risk_archives')->cascadeOnDelete();
