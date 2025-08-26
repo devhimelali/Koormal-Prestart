@@ -155,41 +155,38 @@ class ArchieService
         }
     }
 
-    public function archivedSiteCommunication($dates)
+    public function archivedSiteCommunication($date, $shift_type)
     {
-        $siteCommunications = SiteCommunication::whereIn('date', $dates)
-            ->orderBy('date')
-            ->orderBy('shift_type')
-            ->get()
-            ->groupBy('date');
+        $siteCommunications = SiteCommunication::with('shiftRotation')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->get();
 
-        foreach ($siteCommunications as $date => $communications) {
-            foreach ($communications as $siteCommunication) {
-                $crew = $this->getShiftName($siteCommunication->shift_id);
-                $shiftRotation = $this->getShiftRotationDay($siteCommunication->shift_rotation_id);
-                $formatedDate = Carbon::parse($date)->format('d-m-Y');
-                $supervisor = $this->getSupervisorName($formatedDate, $siteCommunication->shift_type);
-                $labour = $this->getLabourNames($formatedDate, $siteCommunication->shift_type);
+        if(!$siteCommunications) return;
 
-                $newPath = null;
-                if ($siteCommunication->path && Storage::disk('public')->exists($siteCommunication->path)) {
-                    $newPath = "archie/{$date}/".basename($siteCommunication->path);
-                    Storage::disk('public')->makeDirectory("archie/{$date}");
-                    Storage::disk('public')->copy($siteCommunication->path, $newPath);
-                }
+        foreach ($siteCommunications as $siteCommunication){
+            $formatedDate = Carbon::parse($date)->format('d-m-Y');
+            $supervisor = $this->getSupervisorName($formatedDate, $siteCommunication->shift_type);
+            $labour = $this->getLabourNames($formatedDate, $siteCommunication->shift_type);
 
-                SiteCommunicationArchive::create([
-                    'crew' => $crew,
-                    'shift_rotation' => $shiftRotation,
-                    'start_date' => $siteCommunication->start_date,
-                    'end_date' => $siteCommunication->end_date,
-                    'shift_type' => $siteCommunication->shift_type,
-                    'date' => $siteCommunication->date,
-                    'path' => $newPath,
-                    'supervisor_name' => $supervisor,
-                    'labour_name' => $labour,
-                ]);
+            $newPath = null;
+            if ($siteCommunication->path && Storage::disk('public')->exists($siteCommunication->path)) {
+                $newPath = "archie/{$date}/".basename($siteCommunication->path);
+                Storage::disk('public')->makeDirectory("archie/{$date}");
+                Storage::disk('public')->copy($siteCommunication->path, $newPath);
             }
+
+            SiteCommunicationArchive::create([
+                'crew' => $siteCommunication->shift,
+                'shift_rotation' => $siteCommunication->shiftRotation->rotation_days,
+                'start_date' => $siteCommunication->start_date,
+                'end_date' => $siteCommunication->end_date,
+                'shift_type' => $siteCommunication->shift_type,
+                'date' => $siteCommunication->date,
+                'path' => $newPath,
+                'supervisor_name' => $supervisor,
+                'labour_name' => $labour,
+            ]);
         }
     }
 
