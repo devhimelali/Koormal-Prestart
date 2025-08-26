@@ -102,7 +102,7 @@
     </x-modal>
 
     <x-modal id="viewAllDiscussListModal" title="Fatal Risk to Discuss" :staticBackdrop="true"
-             size="modal-xl"
+             size="modal-xl" :scrollable="'true'"
     >
 
     </x-modal>
