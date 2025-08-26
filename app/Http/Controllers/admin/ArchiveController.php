@@ -19,8 +19,21 @@ class ArchiveController extends Controller
     {
         $date = $this->getShiftDate();
         $shift_type = $request->header('shift-type') ?? 'day';
-        $data = $this->archieService->archivedImprovedOurPerformance($date, $shift_type);
-        return response()->json($data);
+        $this->archieService->archivedHealthAndSafetyReview($date, $shift_type);
+        $this->archieService->archivedHealthAndSafetyCrossCriteria($date, $shift_type);
+        $this->archieService->archivedCelebrateSuccess($date, $shift_type);
+        $this->archieService->archivedSiteCommunication($date, $shift_type);
+        $this->archieService->archivedShiftLog($date, $shift_type);
+        $this->archieService->archivedImprovedOurPerformance($date, $shift_type);
+        $this->archieService->archivedFatalRiskToDiscuss($date, $shift_type);
+        $this->archieService->archivedHealthSafetyFocus($date, $shift_type);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Archived successfully',
+            'date' => $date,
+            'shift_type' => $shift_type,
+        ]);
     }
 
     private function getShiftDate()
