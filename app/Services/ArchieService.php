@@ -44,6 +44,8 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->get();
 
+        if(!$healthSafetyReviews) return;
+
         foreach ($healthSafetyReviews as $review) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
             $supervisor = $this->getSupervisorName($formatedDate, $review->shift_type);
@@ -70,6 +72,8 @@ class ArchieService
             ->where('date', $date)
             ->where('shift_type', $shift_type)
             ->first();
+
+        if(!$healthSafetyCrossCriteria) return;
 
         foreach ($healthSafetyCrossCriteria as $criteria) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
@@ -101,6 +105,8 @@ class ArchieService
             ->where('shift_type', $shift_type)
             ->get();
 
+        if(!$reviewPreviousShifts) return;
+
         foreach ($reviewPreviousShifts as $previousShift) {
             $formatedDate = Carbon::parse($date)->format('d-m-Y');
             $supervisor = $this->getSupervisorName($formatedDate, $previousShift->shift_type);
@@ -121,34 +127,31 @@ class ArchieService
         }
     }
 
-    public function archivedCelebrateSuccess($dates)
+    public function archivedCelebrateSuccess($date, $shift_type)
     {
-        $celebrateSuccesses = CelebrateSuccess::whereIn('date', $dates)
-            ->orderBy('date')
-            ->orderBy('shift_type')
-            ->get()
-            ->groupBy('date');
+        $celebrateSuccesses = CelebrateSuccess::with('shift', 'shiftRotation')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
 
-        foreach ($celebrateSuccesses as $date => $successNotes) {
-            foreach ($successNotes as $successNote) {
-                $crew = $this->getShiftName($successNote->shift_id);
-                $shiftRotation = $this->getShiftRotationDay($successNote->shift_rotation_id);
-                $formatedDate = Carbon::parse($date)->format('d-m-Y');
-                $supervisor = $this->getSupervisorName($formatedDate, $successNote->shift_type);
-                $labour = $this->getLabourNames($formatedDate, $successNote->shift_type);
+        if(!$celebrateSuccesses) return;
 
-                CelebrateSuccessArchive::create([
-                    'crew' => $crew,
-                    'shift_rotation' => $shiftRotation,
-                    'start_date' => $successNote->start_date,
-                    'end_date' => $successNote->end_date,
-                    'shift_type' => $successNote->shift_type,
-                    'date' => $successNote->date,
-                    'note' => $successNote->note,
-                    'supervisor_name' => $supervisor,
-                    'labour_name' => $labour,
-                ]);
-            }
+        foreach ($celebrateSuccesses as $successNote) {
+            $formatedDate = Carbon::parse($date)->format('d-m-Y');
+            $supervisor = $this->getSupervisorName($formatedDate, $successNote->shift_type);
+            $labour = $this->getLabourNames($formatedDate, $successNote->shift_type);
+
+            CelebrateSuccessArchive::create([
+                'crew' => $successNote->shift->name,
+                'shift_rotation' => $successNote->shiftRotation->rotation_days,
+                'start_date' => $successNote->start_date,
+                'end_date' => $successNote->end_date,
+                'shift_type' => $successNote->shift_type,
+                'date' => $successNote->date,
+                'note' => $successNote->note,
+                'supervisor_name' => $supervisor,
+                'labour_name' => $labour,
+            ]);
         }
     }
 
