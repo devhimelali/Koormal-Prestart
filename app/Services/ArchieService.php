@@ -371,36 +371,33 @@ class ArchieService
         ]);
     }
 
-    public function archivedImprovedOurPerformance($dates)
+    public function archivedImprovedOurPerformance($date, $shift_type)
     {
-        $improvedOurPerformances = ImproveOurPerformance::whereIn('date', $dates)
-            ->orderBy('date')
-            ->orderBy('shift_type')
-            ->get()
-            ->groupBy('date');
+        $improvedPerformance = ImproveOurPerformance::with('shift', 'shiftRotation')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
 
-        foreach ($improvedOurPerformances as $date => $improvedPerformances) {
-            foreach ($improvedPerformances as $improvedPerformance) {
-                $crew = $this->getShiftName($improvedPerformance->shift_id);
-                $shiftRotation = $this->getShiftRotationDay($improvedPerformance->shift_rotation_id);
-                $formatedDate = Carbon::parse($date)->format('d-m-Y');
-                $supervisor = $this->getSupervisorName($formatedDate, $improvedPerformance->shift_type);
-                $labour = $this->getLabourNames($formatedDate, $improvedPerformance->shift_type);
-
-                ImproveOurPerformanceArchive::create([
-                    'crew' => $crew,
-                    'shift_rotation' => $shiftRotation,
-                    'start_date' => $improvedPerformance->start_date,
-                    'end_date' => $improvedPerformance->end_date,
-                    'shift_type' => $improvedPerformance->shift_type,
-                    'date' => $improvedPerformance->date,
-                    'issues' => $improvedPerformance->issues,
-                    'who' => $improvedPerformance->who,
-                    'supervisor_name' => $supervisor,
-                    'labour_name' => $labour,
-                ]);
-            }
+        if (!$improvedPerformance) {
+            return null;
         }
+
+        $formatedDate = Carbon::parse($date)->format('d-m-Y');
+        $supervisor = $this->getSupervisorName($formatedDate, $improvedPerformance->shift_type);
+        $labour = $this->getLabourNames($formatedDate, $improvedPerformance->shift_type);
+
+        ImproveOurPerformanceArchive::create([
+            'crew' => $improvedPerformance->shift->name,
+            'shift_rotation' => $improvedPerformance->shiftRotation->rotation_days,
+            'start_date' => $improvedPerformance->start_date,
+            'end_date' => $improvedPerformance->end_date,
+            'shift_type' => $improvedPerformance->shift_type,
+            'date' => $improvedPerformance->date,
+            'issues' => $improvedPerformance->issues,
+            'who' => $improvedPerformance->who,
+            'supervisor_name' => $supervisor,
+            'labour_name' => $labour,
+        ]);
     }
 
     public function archivedHealthSafetyFocus($dates)
