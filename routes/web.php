@@ -28,3 +28,7 @@ Route::get('storage-link', function () {
     $output = Artisan::output();
     return redirect()->back()->with('status', 'Storage linked successfully! Output: '.$output);
 });
+
+Route::get('/archived-board', function(\Illuminate\Http\Request $request){
+    return $request->header('shift-type');
+});

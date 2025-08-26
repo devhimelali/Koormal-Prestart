@@ -490,6 +490,16 @@ class BoardService
     {
         $timezone = Config::get('app.timezone', 'Australia/Perth');
         $now = Carbon::now($timezone);
-        return $now->copy()->format('Y-m-d');
+
+        $sixAm = $now->copy()->startOfDay()->addHours(6);
+        $sixPm = $now->copy()->startOfDay()->addHours(18);
+
+        if ($now->between($sixAm, $sixPm)) {
+            return $sixAm->format('Y-m-d');
+        } elseif ($now->greaterThanOrEqualTo($sixPm)) {
+            return $sixPm->format('Y-m-d');
+        } else {
+            return $sixPm->subDay()->format('Y-m-d');
+        }
     }
 }
