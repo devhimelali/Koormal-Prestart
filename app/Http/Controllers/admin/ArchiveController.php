@@ -19,7 +19,7 @@ class ArchiveController extends Controller
     {
         $date = $this->getShiftDate();
         $shift_type = $request->header('shift-type') ?? 'day';
-        $data = $this->archieService->archivedHealthAndSafetyCrossCriteria($date, $shift_type);
+        $data = $this->archieService->archivedReviewPreviousShift($date, $shift_type);
         return response()->json($data);
     }
 
