@@ -17,12 +17,13 @@ class ArchiveController extends Controller
 
     public function archivedAllBoards(Request $request)
     {
-//        $date = $this->getShiftDate();
-        $date = Carbon::create(2025, 8, 26)->format('Y-m-d');
-
+        $date = $this->getShiftDate();
+//        $date = Carbon::create(2025, 8, 26)->format('Y-m-d');
         $shift_type = $request->header('shift-type') ?? 'day';
+
         $this->archieService->archivedHealthAndSafetyReview($date, $shift_type);
         $this->archieService->archivedHealthAndSafetyCrossCriteria($date, $shift_type);
+        $this->archieService->archivedReviewPreviousShift($date, $shift_type);
         $this->archieService->archivedCelebrateSuccess($date, $shift_type);
         $this->archieService->archivedSiteCommunication($date, $shift_type);
         $this->archieService->archivedShiftLog($date, $shift_type);
