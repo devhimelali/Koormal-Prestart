@@ -485,13 +485,6 @@ class BoardController extends Controller
             'labor_name' => $labour->name ?? 'N/A',
         ]);
     }
-
-    public function history()
-    {
-        return view('admin.boards-history.index', [
-            'crews' => Shift::orderBy('name')->get()
-        ]);
-    }
 }
 
 

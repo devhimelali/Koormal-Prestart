@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\BoardController;
+use App\Http\Controllers\admin\BoardHistoryController;
 use App\Http\Controllers\admin\CrossCriteriaController;
 use App\Http\Controllers\admin\FatalityControlController;
 use App\Http\Controllers\admin\FatalityRiskControlController;
@@ -92,5 +93,6 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::get('preview-site-communication/{path}',
         [SiteCommunicationController::class, 'preview'])->name('site-communications.preview');
 
-    Route::get('board-history', [BoardController::class, 'history'])->name('boards.history');
+    Route::get('board-history', [BoardHistoryController::class, 'history'])->name('boards.history');
+    Route::get('get-board-history-list', [BoardHistoryController::class, 'getBoardHistoryList'])->name('boards.get-board-history-list');
 });
