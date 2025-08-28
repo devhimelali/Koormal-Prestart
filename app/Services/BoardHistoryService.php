@@ -14,6 +14,7 @@ use App\Models\ImproveOurPerformanceArchive;
 use App\Models\ReviewPreviousShiftArchive;
 use App\Models\ShiftLogArchive;
 use App\Models\SiteCommunicationArchive;
+use Carbon\Carbon;
 
 class BoardHistoryService
 {
@@ -131,15 +132,24 @@ class BoardHistoryService
     public function getFatalityRiskManagement(BoardHistoryRequest $request)
     {
         $dates = $this->dateFormat($request->date_range);
-
+        $startDate = Carbon::parse($dates['start_date'])->format('d-m-Y');
+        $endDate = Carbon::parse($dates['end_date'])->format('d-m-Y');
         $fatalityRiskManagements = ShiftLogArchive::with('hazardControlArchives', 'fatalityRisks')
-            ->where('date', '>=', $dates['start_date'])
-            ->where('date', '<=', $dates['end_date'])
+            ->whereRaw("STR_TO_DATE(log_date, '%d-%m-%Y') >= STR_TO_DATE(?, '%d-%m-%Y')", $startDate)
+            ->whereRaw("STR_TO_DATE(log_date, '%d-%m-%Y') <= STR_TO_DATE(?, '%d-%m-%Y')", $endDate)
             ->where('crew', $request->crew)
-            ->where('shift_type', $request->shift)
+            ->where('shift_name', $request->shift)
             ->get();
 
-        dd($fatalityRiskManagements);
+        return view('admin.boards-history.fatality-risk-management', [
+            'fatalityRiskManagements' => $fatalityRiskManagements,
+            'supervisor' => $fatalityRiskManagements->last()->supervisor_name,
+            'labour' => $fatalityRiskManagements->last()->labour_name,
+            'start_date' => $fatalityRiskManagements->last()->sh_start_date,
+            'end_date' => $fatalityRiskManagements->last()->sh_end_date,
+            'shift_type' => $fatalityRiskManagements->last()->shift_name,
+            'crew' => $fatalityRiskManagements->last()->crew,
+        ]);
     }
 
     public function getImproveOurPerformance(BoardHistoryRequest $request)

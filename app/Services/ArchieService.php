@@ -214,8 +214,11 @@ class ArchieService
 
         foreach ($shiftLogs as $log) {
             $note = $this->getShiftLogNote($log->note_id);
-            $crew = $this->getCrewName($date, $shift_type);
-            $shiftLog = $this->storeShiftLogArchive($log, $note, $crew);
+            $shiftDetail = $this->getShiftDetails($date, $shift_type);
+            $formatedDate = Carbon::parse($date)->format('d-m-Y');
+            $supervisor = $this->getSupervisorName($formatedDate, $shift_type);
+            $labour = $this->getLabourNames($formatedDate, $shift_type);
+            $shiftLog = $this->storeShiftLogArchive($log, $note, $shiftDetail, $supervisor, $labour);
 
             if ($log->fatalityRiskControls) {
                 foreach ($log->fatalityRiskControls as $risk) {
@@ -248,11 +251,15 @@ class ArchieService
         }
     }
 
-    private function storeShiftLogArchive($log, $note, $crew)
+    private function storeShiftLogArchive($log, $note, $shiftDetail, $supervisor, $labour)
     {
         return ShiftLogArchive::create([
             'shift_name' => $log->shift_name,
-            'crew' => $crew,
+            'crew' => $shiftDetail['crew'],
+            'supervisor_name' => $supervisor,
+            'labour_name' => $labour,
+            'sh_start_date' => $shiftDetail['start_date'],
+            'sh_end_date' => $shiftDetail['end_date'],
             'wo_number' => $log->wo_number,
             'asset_no' => $log->asset_no,
             'asset_description' => $log->asset_description,
@@ -473,7 +480,7 @@ class ArchieService
         }
     }
 
-    private function getCrewName($date, $shift_type)
+    private function getShiftDetails($date, $shift_type)
     {
         $healthSafetyReview = HealthSafetyReview::with('shift')
             ->where('date', $date)
@@ -481,7 +488,11 @@ class ArchieService
             ->first();
 
         if ($healthSafetyReview) {
-            return $healthSafetyReview->shift->name;
+            return [
+                'crew' => $healthSafetyReview->shift->name,
+                'start_date' => $this->changeDateFormat($healthSafetyReview->start_date),
+                'end_date' => $this->changeDateFormat($healthSafetyReview->end_date),
+            ];
         }
 
         $criteria = HealthSafetyCrossCriteria::with('shift')
@@ -490,7 +501,11 @@ class ArchieService
             ->first();
 
         if ($criteria) {
-            return $criteria->shift->name;
+            return [
+                'crew' => $criteria->shift->name,
+                'start_date' => $this->changeDateFormat($criteria->start_date),
+                'end_date' => $this->changeDateFormat($criteria->end_date),
+            ];
         }
 
         $focus = HealthSafetyFocus::with('shift')
@@ -499,7 +514,11 @@ class ArchieService
             ->first();
 
         if ($focus) {
-            return $focus->shift->name;
+            return [
+                'crew' => $focus->shift->name,
+                'start_date' => $this->changeDateFormat($focus->start_date),
+                'end_date' => $this->changeDateFormat($focus->end_date),
+            ];
         }
 
         $review = ReviewPreviousShift::with('shift')
@@ -508,7 +527,11 @@ class ArchieService
             ->first();
 
         if ($review) {
-            return $review->shift->name;
+            return [
+                'crew' => $review->shift->name,
+                'start_date' => $this->changeDateFormat($review->start_date),
+                'end_date' => $this->changeDateFormat($review->end_date),
+            ];
         }
 
         $improvedPerformance = ImproveOurPerformance::with('shift')
@@ -517,7 +540,11 @@ class ArchieService
             ->first();
 
         if ($improvedPerformance) {
-            return $improvedPerformance->shift->name;
+            return [
+                'crew' => $improvedPerformance->shift->name,
+                'start_date' => $this->changeDateFormat($improvedPerformance->start_date),
+                'end_date' => $this->changeDateFormat($improvedPerformance->end_date),
+            ];
         }
     }
 

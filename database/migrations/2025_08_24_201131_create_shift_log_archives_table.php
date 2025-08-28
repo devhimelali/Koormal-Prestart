@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('shift_name')->nullable();
             $table->string('crew')->nullable();
+            $table->string('supervisor_name')->nullable();
+            $table->text('labour_name')->nullable();
+            $table->date('sh_start_date')->nullable();
+            $table->date('sh_end_date')->nullable();
             $table->string('wo_number')->nullable();
             $table->string('asset_no')->nullable();
             $table->longText('asset_description')->nullable();
