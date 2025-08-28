@@ -95,4 +95,5 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
 
     Route::get('board-history', [BoardHistoryController::class, 'history'])->name('boards.history');
     Route::get('get-board-history-list', [BoardHistoryController::class, 'getBoardHistoryList'])->name('boards.get-board-history-list');
+    Route::get('hazard-controls-archive', [BoardHistoryController::class, 'getHazardControlListArchive'])->name('hazard-controls-archive.index');
 });

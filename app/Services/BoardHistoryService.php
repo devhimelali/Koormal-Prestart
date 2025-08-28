@@ -140,7 +140,7 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_name', $request->shift)
             ->get();
-
+//dd($fatalityRiskManagements->hazardControlArchives);
         return view('admin.boards-history.fatality-risk-management', [
             'fatalityRiskManagements' => $fatalityRiskManagements,
             'supervisor' => $fatalityRiskManagements->last()->supervisor_name,

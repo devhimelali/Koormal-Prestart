@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BoardHistoryRequest;
+use App\Models\FatalityRiskArchive;
+use App\Models\HazardControlArchive;
 use App\Models\Shift;
 use App\Services\BoardHistoryService;
 use Illuminate\Http\Request;
@@ -53,6 +55,19 @@ class BoardHistoryController extends Controller
             'safety_focus' => $this->boardHistoryService->getHealthAndSafetyFocus($request),
             default => response()->json(['message' => 'Invalid board'], 400),
         };
+    }
+
+    public function getHazardControlListArchive(Request $request)
+    {
+        $fatalityRisk = FatalityRiskArchive::find($request->fatality_risk_id);
+        $controls = HazardControlArchive::where('shift_log_archive_id', $request->shift_log_id)
+            ->where('fatality_risk_archive_id', $request->fatality_risk_id)
+            ->get();
+
+        return view('admin.boards-history.control-list', [
+            'controls' => $controls,
+            'fatalityRisk' => $fatalityRisk,
+        ]);
     }
 
 }
