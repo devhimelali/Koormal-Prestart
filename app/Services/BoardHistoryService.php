@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\BoardHistoryRequest;
 use App\Models\CelebrateSuccessArchive;
+use App\Models\CrossCriteria;
 use App\Models\FatalRiskToDiscussArchive;
 use App\Models\HealthSafetyCrossCriteriaArchive;
 use App\Models\HealthSafetyFocusArchive;
@@ -54,7 +55,20 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
-        dd($healthSafetyCrossCriteria);
+
+        $crossCriteria = CrossCriteria::get();
+
+
+        return view('admin.boards-history.health-safety-cross-criteria', [
+            'healthSafetyCrossCriteria' => $healthSafetyCrossCriteria,
+            'crossCriteria' => $crossCriteria,
+            'supervisor' => $healthSafetyCrossCriteria->last()->supervisor_name,
+            'labour' => $healthSafetyCrossCriteria->last()->labour_name,
+            'start_date' => $healthSafetyCrossCriteria->last()->start_date,
+            'end_date' => $healthSafetyCrossCriteria->last()->end_date,
+            'shift_type' => $healthSafetyCrossCriteria->last()->shift_type,
+            'crew' => $healthSafetyCrossCriteria->last()->crew,
+        ]);
     }
 
     public function getReviewOfPreviousShift(BoardHistoryRequest $request)
