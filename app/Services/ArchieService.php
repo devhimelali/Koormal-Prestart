@@ -214,8 +214,8 @@ class ArchieService
 
         foreach ($shiftLogs as $log) {
             $note = $this->getShiftLogNote($log->note_id);
-
-            $shiftLog = $this->storeShiftLogArchive($log, $note);
+            $crew = $this->getCrewName($date, $shift_type);
+            $shiftLog = $this->storeShiftLogArchive($log, $note, $crew);
 
             if ($log->fatalityRiskControls) {
                 foreach ($log->fatalityRiskControls as $risk) {
@@ -248,10 +248,11 @@ class ArchieService
         }
     }
 
-    private function storeShiftLogArchive($log, $note)
+    private function storeShiftLogArchive($log, $note, $crew)
     {
         return ShiftLogArchive::create([
             'shift_name' => $log->shift_name,
+            'crew' => $crew,
             'wo_number' => $log->wo_number,
             'asset_no' => $log->asset_no,
             'asset_description' => $log->asset_description,
@@ -461,7 +462,7 @@ class ArchieService
             ]);
 
             if ($fatalRisk->fatalToDiscussControls) {
-                foreach ($fatalRisk->fatalToDiscussControls as $discussControl){
+                foreach ($fatalRisk->fatalToDiscussControls as $discussControl) {
                     FatalRiskToDiscussControlArchive::create([
                         'fatal_risk_to_discuss_archive_id' => $fatal->id,
                         'description' => $discussControl?->description,
@@ -469,6 +470,54 @@ class ArchieService
                     ]);
                 }
             }
+        }
+    }
+
+    private function getCrewName($date, $shift_type)
+    {
+        $healthSafetyReview = HealthSafetyReview::with('shift')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
+
+        if ($healthSafetyReview) {
+            return $healthSafetyReview->shift->name;
+        }
+
+        $criteria = HealthSafetyCrossCriteria::with('shift')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
+
+        if ($criteria) {
+            return $criteria->shift->name;
+        }
+
+        $focus = HealthSafetyFocus::with('shift')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
+
+        if ($focus) {
+            return $focus->shift->name;
+        }
+
+        $review = ReviewPreviousShift::with('shift')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
+
+        if ($review) {
+            return $review->shift->name;
+        }
+
+        $improvedPerformance = ImproveOurPerformance::with('shift')
+            ->where('date', $date)
+            ->where('shift_type', $shift_type)
+            ->first();
+
+        if ($improvedPerformance) {
+            return $improvedPerformance->shift->name;
         }
     }
 

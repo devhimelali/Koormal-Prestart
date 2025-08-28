@@ -8,6 +8,7 @@ class ShiftLogArchive extends Model
 {
     protected $fillable = [
         'position',
+        'crew',
         'shift_name',
         'wo_number',
         'work_description',
