@@ -27,22 +27,15 @@ class BoardHistoryService
             ->get()
             ->groupBy('question_number');
 
-        $supervisor = $healthSafetyReviews->first()->last()->supervisor_name;
-        $labour = $healthSafetyReviews->first()->last()->labour_name;
-        $start_date = $healthSafetyReviews->first()->last()->start_date;
-        $end_date = $healthSafetyReviews->first()->last()->end_date;
-        $shift_type = $healthSafetyReviews->first()->last()->shift_type;
-        $crew = $healthSafetyReviews->first()->last()->crew;
-
         return view('admin.boards-history.health-safety-review', [
             'healthSafetyReviewsQuestionOne' => $healthSafetyReviews->first(),
             'healthSafetyReviewsQuestionTwo' => $healthSafetyReviews->last(),
-            'supervisor' => $supervisor,
-            'labour' => $labour,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'shift_type' => $shift_type,
-            'crew' => $crew,
+            'supervisor' => $healthSafetyReviews->first()->last()->supervisor_name,
+            'labour' => $healthSafetyReviews->first()->last()->labour_name,
+            'start_date' => $healthSafetyReviews->first()->last()->start_date,
+            'end_date' => $healthSafetyReviews->first()->last()->end_date,
+            'shift_type' => $healthSafetyReviews->first()->last()->shift_type,
+            'crew' => $healthSafetyReviews->first()->last()->crew,
         ]);
     }
 
@@ -56,12 +49,9 @@ class BoardHistoryService
             ->where('shift_type', $request->shift)
             ->get();
 
-        $crossCriteria = CrossCriteria::get();
-
-
         return view('admin.boards-history.health-safety-cross-criteria', [
             'healthSafetyCrossCriteria' => $healthSafetyCrossCriteria,
-            'crossCriteria' => $crossCriteria,
+            'crossCriteria' => CrossCriteria::get(),
             'supervisor' => $healthSafetyCrossCriteria->last()->supervisor_name,
             'labour' => $healthSafetyCrossCriteria->last()->labour_name,
             'start_date' => $healthSafetyCrossCriteria->last()->start_date,
@@ -83,22 +73,15 @@ class BoardHistoryService
             ->get()
             ->groupBy('question_number');
 
-        $supervisor = $reviewOfPreviousShifts->first()->last()->supervisor_name;
-        $labour = $reviewOfPreviousShifts->first()->last()->labour_name;
-        $start_date = $reviewOfPreviousShifts->first()->last()->start_date;
-        $end_date = $reviewOfPreviousShifts->first()->last()->end_date;
-        $shift_type = $reviewOfPreviousShifts->first()->last()->shift_type;
-        $crew = $reviewOfPreviousShifts->first()->last()->crew;
-
         return view('admin.boards-history.review-of-previous-shift', [
             'reviewOfPreviousShiftsQuestionOne' => $reviewOfPreviousShifts->first(),
             'reviewOfPreviousShiftsQuestionTwo' => $reviewOfPreviousShifts->last(),
-            'supervisor' => $supervisor,
-            'labour' => $labour,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'shift_type' => $shift_type,
-            'crew' => $crew,
+            'supervisor' => $reviewOfPreviousShifts->first()->last()->supervisor_name,
+            'labour' => $reviewOfPreviousShifts->first()->last()->labour_name,
+            'start_date' => $reviewOfPreviousShifts->first()->last()->start_date,
+            'end_date' => $reviewOfPreviousShifts->first()->last()->end_date,
+            'shift_type' => $reviewOfPreviousShifts->first()->last()->shift_type,
+            'crew' => $reviewOfPreviousShifts->first()->last()->crew,
         ]);
     }
 
@@ -112,21 +95,14 @@ class BoardHistoryService
             ->where('shift_type', $request->shift)
             ->get();
 
-        $supervisor = $celebrateSuccesses->last()->supervisor_name;
-        $labour = $celebrateSuccesses->last()->labour_name;
-        $start_date = $celebrateSuccesses->last()->start_date;
-        $end_date = $celebrateSuccesses->last()->end_date;
-        $shift_type = $celebrateSuccesses->last()->shift_type;
-        $crew = $celebrateSuccesses->last()->crew;
-
         return view('admin.boards-history.celebrate-success', [
             'celebrateSuccesses' => $celebrateSuccesses,
-            'supervisor' => $supervisor,
-            'labour' => $labour,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'shift_type' => $shift_type,
-            'crew' => $crew,
+            'supervisor' => $celebrateSuccesses->last()->supervisor_name,
+            'labour' => $celebrateSuccesses->last()->labour_name,
+            'start_date' => $celebrateSuccesses->last()->start_date,
+            'end_date' => $celebrateSuccesses->last()->end_date,
+            'shift_type' => $celebrateSuccesses->last()->shift_type,
+            'crew' => $celebrateSuccesses->last()->crew,
         ]);
     }
 
