@@ -139,6 +139,16 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
+
+        return view('admin.boards-history.site-communication', [
+            'siteCommunications' => $siteCommunications,
+            'supervisor' => $siteCommunications->last()->supervisor_name,
+            'labour' => $siteCommunications->last()->labour_name,
+            'start_date' => $siteCommunications->last()->start_date,
+            'end_date' => $siteCommunications->last()->end_date,
+            'shift_type' => $siteCommunications->last()->shift_type,
+            'crew' => $siteCommunications->last()->crew,
+        ]);
     }
 
     public function getFatalityRiskManagement(BoardHistoryRequest $request)

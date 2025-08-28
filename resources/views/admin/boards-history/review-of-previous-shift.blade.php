@@ -40,7 +40,7 @@
 <div class="col-12">
     <div class="card shadow">
         <div class="card-header text-center">
-            <h4 class="card-title mb-0" id="board-title">Our Health & Safety</h4>
+            <h4 class="card-title mb-0" id="board-title">Our Productivity</h4>
         </div>
         <div class="card-body">
             <div class="board-container">
