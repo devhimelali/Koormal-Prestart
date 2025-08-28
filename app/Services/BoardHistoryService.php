@@ -111,6 +111,23 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
+
+        $supervisor = $celebrateSuccesses->last()->supervisor_name;
+        $labour = $celebrateSuccesses->last()->labour_name;
+        $start_date = $celebrateSuccesses->last()->start_date;
+        $end_date = $celebrateSuccesses->last()->end_date;
+        $shift_type = $celebrateSuccesses->last()->shift_type;
+        $crew = $celebrateSuccesses->last()->crew;
+
+        return view('admin.boards-history.celebrate-success', [
+            'celebrateSuccesses' => $celebrateSuccesses,
+            'supervisor' => $supervisor,
+            'labour' => $labour,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'shift_type' => $shift_type,
+            'crew' => $crew,
+        ]);
     }
 
     public function getSiteCommunication(BoardHistoryRequest $request)
