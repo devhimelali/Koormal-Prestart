@@ -137,6 +137,8 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
+
+        dd($fatalityRiskManagements);
     }
 
     public function getImproveOurPerformance(BoardHistoryRequest $request)
@@ -148,6 +150,16 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
+
+        return view('admin.boards-history.improve-our-performance', [
+            'improveOurPerformances' => $improveOurPerformances,
+            'supervisor' => $improveOurPerformances->last()->supervisor_name,
+            'labour' => $improveOurPerformances->last()->labour_name,
+            'start_date' => $improveOurPerformances->last()->start_date,
+            'end_date' => $improveOurPerformances->last()->end_date,
+            'shift_type' => $improveOurPerformances->last()->shift_type,
+            'crew' => $improveOurPerformances->last()->crew,
+        ]);
     }
 
     public function getFatalRiskToDiscuss(BoardHistoryRequest $request)
