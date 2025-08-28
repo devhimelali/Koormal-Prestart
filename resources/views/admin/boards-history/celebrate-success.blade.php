@@ -79,7 +79,6 @@
                                             </td>
                                             <td class="p-1 align-top w-auto">
                                                 <div style="
-                                                    border: 1px solid #ccc;
                                                          padding: 6px 8px;
                                                          min-height: 25px;
                                                          width: 100%;
@@ -87,8 +86,6 @@
                                                          word-break: break-word;
                                                          overflow-wrap: break-word;
                                                          white-space: normal;
-                                                         background-color: #fff;
-                                                         border-radius: 4px;
                                                 ">
                                                     {{ $celebrateSuccess->note }}
                                                 </div>
