@@ -174,7 +174,6 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
-//        dd($fatalRiskToDiscusses->toArray());
 
         return view('admin.boards-history.fatal-risk-to-discuss', [
             'fatalRiskToDiscusses' => $fatalRiskToDiscusses,
@@ -196,6 +195,16 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
+
+        return view('admin.boards-history.health-and-safety-focus', [
+            'healthSafetyFocuses' => $healthSafetyFocuses,
+            'supervisor' => $healthSafetyFocuses->last()->supervisor_name,
+            'labour' => $healthSafetyFocuses->last()->labour_name,
+            'start_date' => $healthSafetyFocuses->last()->start_date,
+            'end_date' => $healthSafetyFocuses->last()->end_date,
+            'shift_type' => $healthSafetyFocuses->last()->shift_type,
+            'crew' => $healthSafetyFocuses->last()->crew,
+        ]);
     }
 
     private function dateFormat($date)
