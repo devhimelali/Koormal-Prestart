@@ -79,7 +79,27 @@ class BoardHistoryService
             ->where('date', '<=', $dates['end_date'])
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
-            ->get();
+            ->orderBy('question_number')
+            ->get()
+            ->groupBy('question_number');
+
+        $supervisor = $reviewOfPreviousShifts->first()->last()->supervisor_name;
+        $labour = $reviewOfPreviousShifts->first()->last()->labour_name;
+        $start_date = $reviewOfPreviousShifts->first()->last()->start_date;
+        $end_date = $reviewOfPreviousShifts->first()->last()->end_date;
+        $shift_type = $reviewOfPreviousShifts->first()->last()->shift_type;
+        $crew = $reviewOfPreviousShifts->first()->last()->crew;
+
+        return view('admin.boards-history.review-of-previous-shift', [
+            'reviewOfPreviousShiftsQuestionOne' => $reviewOfPreviousShifts->first(),
+            'reviewOfPreviousShiftsQuestionTwo' => $reviewOfPreviousShifts->last(),
+            'supervisor' => $supervisor,
+            'labour' => $labour,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'shift_type' => $shift_type,
+            'crew' => $crew,
+        ]);
     }
 
     public function getCelebrateSuccess(BoardHistoryRequest $request)
