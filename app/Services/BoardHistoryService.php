@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\BoardHistoryRequest;
 use App\Models\CelebrateSuccessArchive;
 use App\Models\CrossCriteria;
+use App\Models\FatalityRiskArchive;
 use App\Models\FatalRiskToDiscussArchive;
 use App\Models\HealthSafetyCrossCriteriaArchive;
 use App\Models\HealthSafetyFocusArchive;
@@ -173,6 +174,17 @@ class BoardHistoryService
             ->where('crew', $request->crew)
             ->where('shift_type', $request->shift)
             ->get();
+//        dd($fatalRiskToDiscusses->toArray());
+
+        return view('admin.boards-history.fatal-risk-to-discuss', [
+            'fatalRiskToDiscusses' => $fatalRiskToDiscusses,
+            'supervisor' => $fatalRiskToDiscusses->last()->supervisor_name,
+            'labour' => $fatalRiskToDiscusses->last()->labour_name,
+            'start_date' => $fatalRiskToDiscusses->last()->start_date,
+            'end_date' => $fatalRiskToDiscusses->last()->end_date,
+            'shift_type' => $fatalRiskToDiscusses->last()->shift_type,
+            'crew' => $fatalRiskToDiscusses->last()->crew,
+        ]);
     }
 
     public function getHealthAndSafetyFocus(BoardHistoryRequest $request)
